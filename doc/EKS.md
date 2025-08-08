@@ -33,6 +33,8 @@
         - [X] GetClusterEvents
     - [X] 节点管理
         - [X] CreateNode
+        - [X] GetNode
+        - [X] ListNodes
         - [X] DeleteNode
         - [X] OperateNode
     - [X] 节点池管理(待开发)
