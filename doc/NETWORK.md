@@ -1,0 +1,120 @@
+# 网络服务
+
+# 概述
+本文档主要介绍网络 GO SDK的使用
+
+# 使用指南
+
+## 获取密钥
+要使用网络相关服务，您需要拥有一个有效的AK(Access Key ID)和SK(Secret Access Key)用来进行签名认证。AK/SK是由系统分配给用户的，均为字符串，用于标识用户，为访问网络相关服务做签名验证。
+
+
+## 代码示例
+
+```go
+        // Init a credential with Access Key Id and Secret Access Key
+    // You can apply them from the CDS web portal
+    credential := common.NewCredential(
+        os.Getenv("CDS_SECRET_ID"),
+        os.Getenv("CDS_SECRET_KEY"),
+    )
+    
+    ...
+```
+# SDK接口列表
+- [X] 私有网络（VPC）
+    - [X] 私有网络管理
+        - [X] CreateVpc
+        - [X] GetVpc
+        - [X] ListVpcs
+        - [X] DeleteVpc
+        - [X] ModifyVpcAttributes
+    - [X] 子网管理
+        - [X] CreateSubnet
+        - [X] GetSubnet
+        - [X] ListSubnets
+        - [X] DeleteSubnet
+        - [X] ModifySubnetAttributes
+
+- [X] 弹性公网IP(EIP)
+    - [X] 弹性公网IP(EIp)管理
+        - [X] CreateEip
+        - [X] GetEip
+        - [X] ListEips
+        - [X] ReleaseEip
+        - [X] ModifyEipAttributes
+        - [X] EipBindResource
+        - [X] EipUnbindResource
+
+        
+- [X] 共享带宽包
+    - [X] 共享带宽包管理
+        - [X] CreateBandwidthPackage
+        - [X] GetBandwidthPackage
+        - [X] ListBandwidthPackages
+        - [X] ModifyBandwidthPackageAttributes
+        - [X] AddBandwidthPackageIp
+        - [X] RemoveBandwidthPackageIp
+        - [X] DeleteBandwidthPackage
+        - [X] BandwidthPackageBindResource
+        - [X] BandwidthPackageUnbindResource
+
+
+- [X] NAT网关
+    - [X] NAT网关管理
+        - [X] CreateNatGateway
+        - [X] GetNatGateway
+        - [X] ListNatGateways
+        - [X] ModifyNatGatewayAttributes
+        - [X] DeleteNatGateways
+    - [X] SANT规则管理
+        - [X] CreateSnat
+        - [X] GetSnat
+        - [X] ListSnats
+        - [X] ModifySnat
+        - [X] DeleteSnat
+    - [X] DNAT规则管理
+        - [X] CreateDnat
+        - [X] GetDnat
+        - [X] ListDnat
+        - [X] ModifyDnat
+        - [X] DeleteDnat
+
+
+- [X] 高性能负载均衡管理
+    - [X] SLB实例管理
+        - [X] CreateSlb
+        - [X] GetSlb
+        - [X] ListSlb
+        - [X] ModifySlb
+        - [X] DeleteSlb
+    - [X] ACL管理
+        - [x] CreateAcl
+        - [x] ListAcl
+        - [x] ModifyAcl
+        - [x] DeleteAcl
+        - [x] ListAclMember
+        - [x] ModifyAclAddMember
+        - [x] ModifyAclDeleteMember
+    - [X] SLB监听管理
+        - [x] CreateListen
+        - [x] GetListen
+        - [x] ListListen
+        - [x] ModifyListen
+        - [x] DeleteListen
+    - [X] SLB监听转发端口管理
+        - [x] ModifyListenAddPort
+        - [x] ModifyListendeletePort
+        - [x] ListListenPort
+        - [x] ModifyListenPort
+    - [X] SLB监控数据查询
+        - [x] GetBandwidth
+        - [x] GetConcurrentConn
+        - [x] GetNewConn
+        - [x] GetPackage
+
+
+
+
+
+
