@@ -16,26 +16,6 @@ limitations under the License.
 
 package eks
 
-import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
-
-const (
-	eksHost   = "cdsapi.capitalonline.net"
-	UriPrefix = "/eks/v1"
-)
-
-// Client of EKS service is a kind of CdsClient, so derived from CdsClient
-type Client struct {
-	*cds.CdsClient
-}
-
-func NewClient(ak, sk, endPoint string) (*Client, error) {
-	if endPoint == "" {
-		endPoint = eksHost
-	}
-	client, err := cds.NewCdsClientWithAkSk(ak, sk, endPoint)
-	if err != nil {
-		return nil, err
-	}
-	client.Config.Retry = cds.NewNoRetryPolicy()
-	return &Client{client}, nil
+type DescribeScalingGroupReq struct {
+	ScalingGroupId string `json:"ScalingGroupId,omitempty"`
 }
