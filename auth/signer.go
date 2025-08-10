@@ -41,7 +41,7 @@ const (
 // Signer abstracts the entity that implements the `Sign` method
 type Signer interface {
 	// Sign the given Request with the Credentials and SignOptions
-	Sign(*http.Request, *CdsCredentials, *SignOptions)
+	Sign(*http.Request, *CdsCredentials)
 }
 
 // SignOptions defines the data structure used by Signer
@@ -62,7 +62,7 @@ func (opt *SignOptions) String() string {
 // CdsSigner implements the sign algorithm
 type CdsSigner struct{}
 
-func (b *CdsSigner) Sign(req *http.Request, cred *CdsCredentials, opt *SignOptions) {
+func (b *CdsSigner) Sign(req *http.Request, cred *CdsCredentials) {
 	if req == nil {
 		log.Fatal("request should not be null for sign")
 		return

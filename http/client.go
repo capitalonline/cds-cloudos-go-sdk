@@ -46,8 +46,8 @@ var (
 
 type Dialer struct {
 	net.Dialer
-	ReadTimeout  *time.Duration
-	WriteTimeout *time.Duration
+	ReadTimeout  *time.Duration // 自定义读取超时
+	WriteTimeout *time.Duration // 自定义写入超时
 }
 
 func NewDialer(config *ClientConfig) *Dialer {
@@ -216,14 +216,18 @@ func MergeWithDefaultConfig(cfgs ...*ClientConfig) *ClientConfig {
 var customizeInit sync.Once
 
 func InitClient(config ClientConfig) {
+	// Ensure that the http client can only be initialized once, even if the sdk is called multiple times
 	customizeInit.Do(func() {
 		httpClient = &http.Client{}
-		maxIdleConnsPerHost := defaultMaxIdleConnsPerHost
+
+		// Set the maximum number of idle connections per host
+		maxIdleConPerHost := defaultMaxIdleConnsPerHost
 		if config.DisableKeepAlives {
-			maxIdleConnsPerHost = -1
+			maxIdleConPerHost = -1
 		}
+
 		transport = &http.Transport{
-			MaxIdleConnsPerHost:   maxIdleConnsPerHost,
+			MaxIdleConnsPerHost:   maxIdleConPerHost,
 			ResponseHeaderTimeout: defaultResponseHeaderTimeout,
 			DisableKeepAlives:     config.DisableKeepAlives,
 			Dial: func(network, address string) (net.Conn, error) {
@@ -241,6 +245,8 @@ func InitClient(config ClientConfig) {
 			},
 		}
 		httpClient.Transport = transport
+
+		// http Redirect settings
 		if config.RedirectDisabled {
 			httpClient.CheckRedirect = func(req *http.Request, via []*http.Request) error {
 				return http.ErrUseLastResponse
@@ -297,22 +303,17 @@ func Execute(request *Request) (*Response, error) {
 		ProtoMinor: 1,
 	}
 
-	if request.Context() != nil {
-		httpRequest = httpRequest.WithContext(request.Context())
-	} else {
-		// Set the connection timeout for current request
-		httpClient.Timeout = time.Duration(request.Timeout()) * time.Second
-	}
-
-	// Set the request method
+	// set http request method
 	httpRequest.Method = request.Method()
 
 	// Set the request url
 	internalUrl := &url.URL{
-		Scheme:   request.Protocol(),
-		Host:     request.Host(),
-		Path:     request.Uri(),
+		Scheme: request.Protocol(),
+		Host:   request.Host(),
+		Path:   request.Uri(),
+		// todo 拼接所有params
 		RawQuery: request.QueryString()}
+
 	httpRequest.URL = internalUrl
 
 	// Set the request headers
@@ -331,13 +332,6 @@ func Execute(request *Request) (*Response, error) {
 		} else if request.Length() < 0 {
 			// if set body and ContentLength <= 0, will be chunked
 			httpRequest.Body = request.Body()
-		} // else {} body == nil and ContentLength == 0
-	}
-
-	// Set the proxy setting if needed
-	if len(request.ProxyUrl()) != 0 {
-		transport.Proxy = func(_ *http.Request) (*url.URL, error) {
-			return url.Parse(request.ProxyUrl())
 		}
 	}
 
@@ -346,6 +340,8 @@ func Execute(request *Request) (*Response, error) {
 	// that may continue sending request's data subsequently.
 	start := time.Now()
 
+	// setting http client timeout
+	httpClient.Timeout = time.Duration(request.Timeout()) * time.Second
 	httpResponse, err := httpClient.Do(httpRequest)
 
 	end := time.Now()
@@ -353,6 +349,7 @@ func Execute(request *Request) (*Response, error) {
 		transport.CloseIdleConnections()
 		return nil, err
 	}
+
 	if httpResponse.StatusCode >= 400 &&
 		(httpRequest.Method == PUT || httpRequest.Method == POST) {
 		transport.CloseIdleConnections()

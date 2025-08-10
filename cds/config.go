@@ -20,12 +20,15 @@ import (
 	"fmt"
 	"github.com/capitalonline/cds-cloudos-go-sdk/auth"
 	"reflect"
+	"runtime"
 	"time"
 )
 
 // Constants and default values for the package cds
 const (
+	SDK_VERSION                          = "2.0"
 	DEFAULT_DOMAIN                       = "cdsapi.capitalonline.net"
+	DEFAULT_REGION                       = "bj"
 	DEFAULT_PROTOCOL                     = "http"
 	HTTPS_PROTOCAL                       = "https"
 	DEFAULT_CONTENT_TYPE                 = "application/json;charset=utf-8"
@@ -34,24 +37,30 @@ const (
 )
 
 var (
+	DEFAULT_USER_AGENT   string
 	DEFAULT_RETRY_POLICY = NewBackOffRetryPolicy(3, 20000, 300)
 )
+
+func init() {
+	DEFAULT_USER_AGENT = "cds-sdk-go"
+	DEFAULT_USER_AGENT += "/" + SDK_VERSION
+	DEFAULT_USER_AGENT += "/" + runtime.Version()
+	DEFAULT_USER_AGENT += "/" + runtime.GOOS
+	DEFAULT_USER_AGENT += "/" + runtime.GOARCH
+}
 
 // CdsClientConfiguration defines the config components structure.
 type CdsClientConfiguration struct {
 	Endpoint                  string
-	ProxyUrl                  string
 	Region                    string
 	UserAgent                 string
 	Credentials               *auth.CdsCredentials
-	SignOption                *auth.SignOptions
 	Retry                     RetryPolicy
 	ConnectionTimeoutInMillis int
-	// CnameEnabled should be true when use custom domain as endpoint to visit bos resource
-	CnameEnabled          bool
-	BackupEndpoint        string
-	RedirectDisabled      bool
-	DisableKeepAlives     bool
+	RedirectDisabled          bool
+	DisableKeepAlives         bool
+
+	// http request settings
 	DialTimeout           *time.Duration // timeout of building a connection
 	KeepAlive             *time.Duration // the interval between keep-alive probes for an active connection
 	ReadTimeout           *time.Duration // read timeout of net.Conn
@@ -65,14 +74,11 @@ type CdsClientConfiguration struct {
 func (c *CdsClientConfiguration) String() string {
 	return fmt.Sprintf(`CdsClientConfiguration [
         Endpoint=%s;
-        ProxyUrl=%s;
-        Region=%s;
         UserAgent=%s;
         Credentials=%v;
-        SignOption=%v;
         RetryPolicy=%v;
         ConnectionTimeoutInMillis=%v;
 		RedirectDisabled=%v
-    ]`, c.Endpoint, c.ProxyUrl, c.Region, c.UserAgent, c.Credentials,
-		c.SignOption, reflect.TypeOf(c.Retry).Name(), c.ConnectionTimeoutInMillis, c.RedirectDisabled)
+    ]`, c.Endpoint, c.UserAgent, c.Credentials, reflect.TypeOf(c.Retry).Name(),
+		c.ConnectionTimeoutInMillis, c.RedirectDisabled)
 }

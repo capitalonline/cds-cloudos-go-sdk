@@ -54,9 +54,7 @@ func (c *CdsClient) buildHttpRequest(request *CdsRequest) {
 	if request.Protocol() == "" {
 		request.SetProtocol(DEFAULT_PROTOCOL)
 	}
-	if len(c.Config.ProxyUrl) != 0 {
-		request.SetProxyUrl(c.Config.ProxyUrl)
-	}
+
 	request.SetTimeout(c.Config.ConnectionTimeoutInMillis / 1000)
 
 	// Set the CDS request headers
@@ -70,7 +68,7 @@ func (c *CdsClient) buildHttpRequest(request *CdsRequest) {
 
 	// Generate the auth string if needed
 	if c.Config.Credentials != nil {
-		c.Signer.Sign(&request.Request, c.Config.Credentials, c.Config.SignOption)
+		c.Signer.Sign(&request.Request, c.Config.Credentials)
 	}
 }
 
@@ -164,12 +162,50 @@ func (c *CdsClient) GetCdsClientConfig() *CdsClientConfiguration {
 	return c.Config
 }
 
-func NewCdsClient(conf *CdsClientConfiguration, sign auth.Signer) *CdsClient {
-	clientConfig := http.ClientConfig{
-		RedirectDisabled:  conf.RedirectDisabled,
-		DisableKeepAlives: conf.DisableKeepAlives,
+// NewCdsClientWithTimeout 创建一个可自定义HTTP参数和超时配置的CDS客户端
+//
+// 该函数会基于提供的配置初始化一个具有精细超时控制的HTTP客户端，
+// 适用于需要严格管理网络请求生命周期的场景。
+//
+// 参数:
+//   - conf: CDS客户端配置，包含各类超时和连接参数
+//   - RedirectDisabled: 是否禁用HTTP重定向
+//   - DisableKeepAlives: 是否禁用连接复用
+//   - DialTimeout: 连接建立超时时间
+//   - KeepAlive: 保持连接存活时间
+//   - ReadTimeout: 读取操作超时时间
+//   - WriteTimeOut: 写入操作超时时间
+//   - TLSHandshakeTimeout: TLS握手超时时间
+//   - IdleConnectionTimeout: 空闲连接超时时间
+//   - ResponseHeaderTimeout: 响应头等待超时时间
+//   - HTTPClientTimeout: 整体请求超时时间
+//   - sign: 请求签名器，用于生成请求签名
+//
+// 返回值:
+//   - *CdsClient: 初始化完成的CDS客户端实例，包含配置和签名器
+//
+// 示例:
+//
+//	config := &CdsClientConfiguration{
+//	    DialTimeout:           30 * time.Second,
+//	    HTTPClientTimeout:     120 * time.Second,
+//	}
+//	client := NewCdsClientWithTimeout(config, mySigner)
+func NewCdsClientWithTimeout(conf *CdsClientConfiguration, sign auth.Signer) *CdsClient {
+	clientConfig := &http.ClientConfig{
+		RedirectDisabled:      conf.RedirectDisabled,
+		DisableKeepAlives:     conf.DisableKeepAlives,
+		DialTimeout:           conf.DialTimeout,
+		KeepAlive:             conf.KeepAlive,
+		ReadTimeout:           conf.ReadTimeout,
+		WriteTimeout:          conf.WriteTimeOut,
+		TLSHandshakeTimeout:   conf.TLSHandshakeTimeout,
+		IdleConnectionTimeout: conf.IdleConnectionTimeout,
+		ResponseHeaderTimeout: conf.ResponseHeaderTimeout,
+		HTTPClientTimeout:     conf.HTTPClientTimeout,
 	}
-	http.InitClient(clientConfig)
+
+	http.InitClientWithTimeout(clientConfig)
 	return &CdsClient{conf, sign}
 }
 
@@ -182,11 +218,24 @@ func NewCdsClientWithAkSk(ak, sk, endPoint string) (*CdsClient, error) {
 	defaultConf := &CdsClientConfiguration{
 		Endpoint:                  endPoint,
 		Credentials:               credentials,
+		UserAgent:                 DEFAULT_USER_AGENT,
+		Region:                    DEFAULT_REGION,
 		Retry:                     DEFAULT_RETRY_POLICY,
-		ConnectionTimeoutInMillis: DEFAULT_CONNECTION_TIMEOUT_IN_MILLIS,
+		ConnectionTimeoutInMillis: DEFAULT_CONNECTION_TIMEOUT_IN_MILLIS, // http client timeout
 		RedirectDisabled:          false,
+		DisableKeepAlives:         false,
 	}
-	v1Signer := &auth.CdsSigner{}
+	Signer := &auth.CdsSigner{}
 
-	return NewCdsClient(defaultConf, v1Signer), nil
+	return NewCdsClient(defaultConf, Signer), nil
+}
+
+func NewCdsClient(conf *CdsClientConfiguration, sign auth.Signer) *CdsClient {
+	clientConfig := http.ClientConfig{
+		RedirectDisabled:  conf.RedirectDisabled,
+		DisableKeepAlives: conf.DisableKeepAlives,
+	}
+	// init http client
+	http.InitClient(clientConfig)
+	return &CdsClient{conf, sign}
 }
