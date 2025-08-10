@@ -23,7 +23,7 @@ import (
 
 // GetScalingGroupDetail 以下为示例代码，实际开发中请根据需要进行修改和补充
 func GetScalingGroupDetail() {
-	ak, sk := "a16778b045e111f0854feed872efed50", "06d457e46893b1303d17d472e1e59b06"
+	ak, sk := "ak", "sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
