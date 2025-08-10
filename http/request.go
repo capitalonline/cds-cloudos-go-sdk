@@ -50,16 +50,6 @@ type Request struct {
 	ctx    context.Context
 }
 
-func (r *Request) Context() context.Context {
-	return r.ctx
-}
-
-func (r *Request) SetContext(ctx context.Context) {
-	if ctx != nil {
-		r.ctx = ctx
-	}
-}
-
 func (r *Request) Protocol() string {
 	return r.protocol
 }
@@ -164,18 +154,6 @@ func (r *Request) SetParam(key, value string) {
 	r.params[key] = value
 }
 
-func (r *Request) QueryString() string {
-	buf := make([]string, 0, len(r.params))
-	for k, v := range r.params {
-		if len(v) == 0 {
-			buf = append(buf, util.UriEncode(k, true))
-		} else {
-			buf = append(buf, util.UriEncode(k, true)+"="+util.UriEncode(v, true))
-		}
-	}
-	return strings.Join(buf, "&")
-}
-
 func (r *Request) Method() string {
 	return r.method
 }
@@ -190,14 +168,6 @@ func (r *Request) Uri() string {
 
 func (r *Request) SetUri(uri string) {
 	r.uri = uri
-}
-
-func (r *Request) ProxyUrl() string {
-	return r.proxyUrl
-}
-
-func (r *Request) SetProxyUrl(url string) {
-	r.proxyUrl = url
 }
 
 func (r *Request) Timeout() int {
@@ -224,21 +194,24 @@ func (r *Request) SetLength(l int64) {
 	r.length = l
 }
 
-func (r *Request) WithApiInfo(service, action string) {
-	r.service = service
-	r.action = action
-}
-
 func (r *Request) Action() string {
 	return r.action
 }
 
-func (r *Request) Service() string {
-	return r.service
+func (r *Request) QueryString() string {
+	buf := make([]string, 0, len(r.params))
+	for k, v := range r.params {
+		if len(v) == 0 {
+			buf = append(buf, util.UriEncode(k, true))
+		} else {
+			buf = append(buf, util.UriEncode(k, true)+"="+util.UriEncode(v, true))
+		}
+	}
+	return strings.Join(buf, "&")
 }
 
-func (r *Request) ProductType() string {
-	return r.productType
+func (r *Request) GetQueryString() string {
+	return r.queryString
 }
 
 func (r *Request) SetQueryString(s string) {

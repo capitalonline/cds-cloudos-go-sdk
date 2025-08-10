@@ -21,6 +21,10 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
 
+const (
+	DescribeScalingGroupAction = "DescribeScalingGroup"
+)
+
 // GetScalingGroupDetail - Get Scale Group Detail
 //
 // PARAMS:
@@ -34,6 +38,7 @@ func (c *Client) GetScalingGroupDetail(ScalingGroupId string) (*GetScalingGroupD
 	err := cds.NewRequestBuilder(c).
 		WithURL(eksUri).
 		WithMethod(http.GET).
+		WithQueryParam("Action", DescribeScalingGroupAction).
 		WithQueryParam("ScalingGroupId", ScalingGroupId).
 		WithResult(result).
 		Do()

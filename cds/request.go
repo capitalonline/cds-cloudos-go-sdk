@@ -102,39 +102,39 @@ type CdsRequest struct {
 	clientError *CdsClientError
 }
 
-func (b *CdsRequest) RequestId() string { return b.requestId }
+func (c *CdsRequest) RequestId() string { return c.requestId }
 
-func (b *CdsRequest) SetRequestId(val string) { b.requestId = val }
+func (c *CdsRequest) SetRequestId(val string) { c.requestId = val }
 
-func (b *CdsRequest) ClientError() *CdsClientError { return b.clientError }
+func (c *CdsRequest) ClientError() *CdsClientError { return c.clientError }
 
-func (b *CdsRequest) SetClientError(err *CdsClientError) { b.clientError = err }
+func (c *CdsRequest) SetClientError(err *CdsClientError) { c.clientError = err }
 
-func (b *CdsRequest) SetBody(body *Body) { // override SetBody derived from http.Request
-	b.Request.SetBody(body)
-	b.SetLength(body.Size()) // set field of "net/http.Request.ContentLength"
+func (c *CdsRequest) SetBody(body *Body) { // override SetBody derived from http.Request
+	c.Request.SetBody(body)
+	c.SetLength(body.Size()) // set field of "net/http.Request.ContentLength"
 	if body.ContentMD5() != "" {
-		b.SetHeader(http.CONTENT_MD5, body.ContentMD5())
+		c.SetHeader(http.CONTENT_MD5, body.ContentMD5())
 	}
 	if body.Size() > 0 {
-		b.SetHeader(http.CONTENT_LENGTH, fmt.Sprintf("%d", body.Size()))
+		c.SetHeader(http.CONTENT_LENGTH, fmt.Sprintf("%d", body.Size()))
 	}
 }
 
-func (b *CdsRequest) BuildHttpRequest() {
+func (c *CdsRequest) BuildHttpRequest() {
 	// Only need to build the specific `requestId` field for CDS, other fields are same as the
 	// `http.Request` as well as its methods.
-	if len(b.requestId) == 0 {
+	if len(c.requestId) == 0 {
 		// Construct the request ID with UUID
-		b.requestId = util.NewRequestId()
+		c.requestId = util.NewRequestId()
 	}
-	b.SetHeader(http.CDS_REQUEST_ID, b.requestId)
+	c.SetHeader(http.CDS_REQUEST_ID, c.requestId)
 }
 
-func (b *CdsRequest) String() string {
-	requestIdStr := "requestId=" + b.requestId
-	if b.clientError != nil {
-		return requestIdStr + ", client error: " + b.ClientError().Error()
+func (c *CdsRequest) String() string {
+	requestIdStr := "requestId=" + c.requestId
+	if c.clientError != nil {
+		return requestIdStr + ", client error: " + c.ClientError().Error()
 	}
-	return requestIdStr + "\n" + b.Request.String()
+	return requestIdStr + "\n" + c.Request.String()
 }

@@ -115,14 +115,14 @@ func (b *RequestBuilder) Do() error {
 		return err
 	}
 
-	// build BceRequest
-	req, err := b.buildBceRequest()
+	// build CdsRequest
+	req, err := b.buildCdsRequest()
 	if err != nil {
 		return err
 	}
 
-	// get result from BceResponse
-	if err := b.buildBceResponse(req); err != nil {
+	// get result from CdsResponse
+	if err := b.buildCdsResponse(req); err != nil {
 		return err
 	}
 
@@ -143,8 +143,8 @@ func (b *RequestBuilder) validate() error {
 	return nil
 }
 
-func (b *RequestBuilder) buildBceRequest() (*CdsRequest, error) {
-	// Build the request
+func (b *RequestBuilder) buildCdsRequest() (*CdsRequest, error) {
+	// Build the cds http request
 	req := &CdsRequest{}
 	req.SetUri(b.url)
 	req.SetMethod(b.method)
@@ -170,7 +170,7 @@ func (b *RequestBuilder) buildBceRequest() (*CdsRequest, error) {
 	return req, nil
 }
 
-func (b *RequestBuilder) buildBceResponse(req *CdsRequest) error {
+func (b *RequestBuilder) buildCdsResponse(req *CdsRequest) error {
 	// Send request and get response
 	resp := &CdsResponse{}
 	if err := b.client.SendRequest(req, resp); err != nil {

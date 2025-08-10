@@ -308,11 +308,10 @@ func Execute(request *Request) (*Response, error) {
 
 	// Set the request url
 	internalUrl := &url.URL{
-		Scheme: request.Protocol(),
-		Host:   request.Host(),
-		Path:   request.Uri(),
-		// todo 拼接所有params
-		RawQuery: request.QueryString()}
+		Scheme:   request.Protocol(),
+		Host:     request.Host(),
+		Path:     request.Uri(),
+		RawQuery: request.GetQueryString()}
 
 	httpRequest.URL = internalUrl
 
