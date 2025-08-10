@@ -29,6 +29,10 @@ type CommonOpenApiPage struct {
 	PageSize   int `json:"PageSize,omitempty"`
 }
 
+type CommonScalingGroupTask struct {
+	TaskId string `json:"TaskId"`
+}
+
 type GetScalingGroupDetailResult struct {
 	Data ScalingGroupDetail `json:"Data,omitempty"`
 	OpenApiCommonResp
@@ -48,4 +52,14 @@ type ScalingGroupDetail struct {
 	ScalingGroupId   string `json:"ScalingGroupId"`
 	Status           string `json:"Status"`
 	StatusStr        string `json:"StatusStr"`
+}
+
+type AddScalingGroupNodeReq struct {
+	ScalingGroupId string
+	AddNum         int
+}
+
+type AddScalingGroupNodeResult struct {
+	Data CommonScalingGroupTask `json:"Data,omitempty"`
+	OpenApiCommonResp
 }

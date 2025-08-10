@@ -23,6 +23,7 @@ import (
 
 const (
 	DescribeScalingGroupAction = "DescribeScalingGroup"
+	AddScalingNodeAction       = "AddScalingNode"
 )
 
 // GetScalingGroupDetail - Get Scale Group Detail
@@ -40,6 +41,20 @@ func (c *Client) GetScalingGroupDetail(ScalingGroupId string) (*GetScalingGroupD
 		WithMethod(http.GET).
 		WithQueryParam("Action", DescribeScalingGroupAction).
 		WithQueryParam("ScalingGroupId", ScalingGroupId).
+		WithResult(result).
+		Do()
+
+	return result, err
+}
+
+func (c *Client) AddScalingGroupNode(args *AddScalingGroupNodeReq) (*AddScalingGroupNodeResult, error) {
+	result := &AddScalingGroupNodeResult{}
+
+	err := cds.NewRequestBuilder(c).
+		WithURI(eksURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", AddScalingNodeAction).
+		WithBody(args).
 		WithResult(result).
 		Do()
 

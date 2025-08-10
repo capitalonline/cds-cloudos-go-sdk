@@ -23,7 +23,7 @@ import (
 
 // GetScalingGroupDetail 以下为示例代码，实际开发中请根据需要进行修改和补充
 func GetScalingGroupDetail() {
-	ak, sk := "ak", "sk"
+	ak, sk := "E101277-ak", "E101277-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
@@ -36,13 +36,33 @@ func GetScalingGroupDetail() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.Code)
-	fmt.Println(response.Message)
 	fmt.Println(response.RequestId)
 	fmt.Println(response.Data.ScalingGroupId)
 	fmt.Println(response.Data.StatusStr)
 }
 
+func AddScalingGroupNode() {
+	ak, sk := "E890861-ak", "E890861-sk"
+
+	eksClient, _ := eks.NewClient(ak, sk)
+
+	addNodeGroupArgs := &eks.AddScalingGroupNodeReq{
+		ScalingGroupId: "37b75503-4853-4783-8a73-6080a99c32be",
+		AddNum:         1,
+	}
+
+	response, err := eksClient.AddScalingGroupNode(addNodeGroupArgs)
+	if err != nil {
+		fmt.Println(err)
+
+	}
+	fmt.Printf(">>> response: %+v", response)
+
+	fmt.Println(response.RequestId)
+	fmt.Println(response.Data.TaskId)
+}
+
 func main() {
-	GetScalingGroupDetail()
+	//GetScalingGroupDetail()
+	AddScalingGroupNode()
 }
