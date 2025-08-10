@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package eks
+package main
 
 import (
 	"fmt"
@@ -27,13 +27,22 @@ func GetScalingGroupDetail() {
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
-	scaleGroupId := "0ba58440-728a-11f0-80e0-32e24a142a81"
+	scaleGroupId := "52427fe1-514f-4efe-8528-e4554342dea9"
 
 	response, err := eksClient.GetScalingGroupDetail(scaleGroupId)
 	if err != nil {
 		fmt.Println(err)
 
 	}
-	fmt.Println(response)
+	fmt.Printf(">>> response: %+v", response)
 
+	fmt.Println(response.Code)
+	fmt.Println(response.Message)
+	fmt.Println(response.RequestId)
+	fmt.Println(response.Data.ScalingGroupId)
+	fmt.Println(response.Data.StatusStr)
+}
+
+func main() {
+	GetScalingGroupDetail()
 }

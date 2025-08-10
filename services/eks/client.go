@@ -19,7 +19,7 @@ package eks
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	DefaultEndpoint = "https://cdsapi.capitalonline.net"
+	DefaultEndpoint = "https://api.capitalonline.net"
 	eksURI          = "/eks/v1"
 )
 

@@ -122,5 +122,10 @@ func (r *CdsResponse) ParseResponse() {
 func (r *CdsResponse) ParseJsonBody(result interface{}) error {
 	defer r.Body().Close()
 	jsonDecoder := json.NewDecoder(r.Body())
+
+	// debug
+	//rawBody, _ := io.ReadAll(r.Body())
+	//fmt.Printf(">>> httpResponse: %s\n", string(rawBody))
+
 	return jsonDecoder.Decode(result)
 }

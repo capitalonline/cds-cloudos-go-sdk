@@ -30,6 +30,11 @@ type CommonOpenApiPage struct {
 }
 
 type GetScalingGroupDetailResult struct {
+	Data ScalingGroupDetail `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type ScalingGroupDetail struct {
 	Cpu              int    `json:"Cpu"`
 	Ram              int    `json:"Ram"`
 	Gpu              int    `json:"Gpu"`
@@ -38,7 +43,7 @@ type GetScalingGroupDetailResult struct {
 	MinSize          int    `json:"MinSize"`
 	ActivitySize     int    `json:"ActivitySize"`
 	PendingSize      int    `json:"PendingSize"`
-	RemovingSize     int    `json:"RemovingSize"`
+	RemovingSize     int    `json:"RovingSize"`
 	TotalScalingSize int    `json:"TotalScalingSize"`
 	ScalingGroupId   string `json:"ScalingGroupId"`
 	Status           string `json:"Status"`
