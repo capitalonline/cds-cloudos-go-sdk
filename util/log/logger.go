@@ -16,7 +16,7 @@ limitations under the License.
 
 // logger.go - defines the logger structure and methods
 
-// Package log implements the log facilities for BCE. It supports log to stderr, stdout as well as
+// Package log implements the log facilities for CDS. It supports log to stderr, stdout as well as
 // log to file with rotating. It is safe to be called by multiple goroutines.
 // By using the package level function to use the default logger:
 //

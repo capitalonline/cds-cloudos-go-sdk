@@ -19,8 +19,8 @@ package eks
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	Endpoint = "https://cdsapi.capitalonline.net"
-	eksURI   = "/eks/v1"
+	DefaultEndpoint = "https://cdsapi.capitalonline.net"
+	eksURI          = "/eks/v1"
 )
 
 // Client of EKS service is a kind of CdsClient, so derived from CdsClient
@@ -28,11 +28,9 @@ type Client struct {
 	*cds.CdsClient
 }
 
-func NewClient(ak, sk, endPoint string) (*Client, error) {
-	if endPoint == "" {
-		endPoint = Endpoint
-	}
-	client, err := cds.NewCdsClientWithAkSk(ak, sk, endPoint)
+func NewClient(ak, sk string) (*Client, error) {
+
+	client, err := cds.NewCdsClientWithAkSk(ak, sk, DefaultEndpoint)
 	if err != nil {
 		return nil, err
 	}

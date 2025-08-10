@@ -21,7 +21,7 @@ import (
 	"fmt"
 )
 
-// RequestBuilder holds config data for bce request.
+// RequestBuilder holds config data for cds request.
 // Some fields are required and the others are optional.
 // The builder pattern can simplify the execution of requests.
 type RequestBuilder struct {
@@ -109,7 +109,7 @@ func (b *RequestBuilder) WithResult(result interface{}) *RequestBuilder {
 	return b
 }
 
-// Do will send request to bce and get result with the builder's parameters.
+// Do will send request to cds and get result with the builder's parameters.
 func (b *RequestBuilder) Do() error {
 	if err := b.validate(); err != nil {
 		return err

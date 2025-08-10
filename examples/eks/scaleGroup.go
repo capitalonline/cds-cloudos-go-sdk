@@ -23,11 +23,11 @@ import (
 
 // GetScalingGroupDetail 以下为示例代码，实际开发中请根据需要进行修改和补充
 func GetScalingGroupDetail() {
-	ak, sk, endpoint := "Your AK", "Your SK", "Your endpoint"
+	ak, sk := "a16778b045e111f0854feed872efed50", "06d457e46893b1303d17d472e1e59b06"
 
-	eksClient, _ := eks.NewClient(ak, sk, endpoint)
+	eksClient, _ := eks.NewClient(ak, sk)
 
-	scaleGroupId := "52427fe1-514f-4efe-8528-e4554342dea9"
+	scaleGroupId := "0ba58440-728a-11f0-80e0-32e24a142a81"
 
 	response, err := eksClient.GetScalingGroupDetail(scaleGroupId)
 	if err != nil {
