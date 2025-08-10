@@ -21,20 +21,19 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
 )
 
-// DescribeScalingGroup 以下为示例代码，实际开发中请根据需要进行修改和补充
-func DescribeScalingGroup() {
+// GetScalingGroupDetail 以下为示例代码，实际开发中请根据需要进行修改和补充
+func GetScalingGroupDetail() {
 	ak, sk, endpoint := "Your AK", "Your SK", "Your endpoint"
 
 	eksClient, _ := eks.NewClient(ak, sk, endpoint)
 
 	scaleGroupId := "52427fe1-514f-4efe-8528-e4554342dea9"
 
-	args := &eks.DescribeScalingGroupReq{
-		ScalingGroupId: scaleGroupId,
-	}
+	response, err := eksClient.GetScalingGroupDetail(scaleGroupId)
+	if err != nil {
+		fmt.Println(err)
 
-	if err := eksClient.DescribeScalingGroup(eksClient, args); err != nil {
-		fmt.Println("unbind security group error: ", err)
-		return
 	}
+	fmt.Println(response)
+
 }
