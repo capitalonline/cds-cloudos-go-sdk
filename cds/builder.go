@@ -27,7 +27,7 @@ import (
 type RequestBuilder struct {
 	client Client
 
-	url         string            // required
+	uri         string            // required
 	method      string            // required
 	queryParams map[string]string // optional
 	headers     map[string]string // optional
@@ -42,8 +42,8 @@ func NewRequestBuilder(client Client) *RequestBuilder {
 	}
 }
 
-func (b *RequestBuilder) WithURL(url string) *RequestBuilder {
-	b.url = url
+func (b *RequestBuilder) WithURI(uri string) *RequestBuilder {
+	b.uri = uri
 	return b
 }
 
@@ -131,8 +131,8 @@ func (b *RequestBuilder) Do() error {
 
 // Validate if the required fields are provided.
 func (b *RequestBuilder) validate() error {
-	if len(b.url) == 0 {
-		return fmt.Errorf("The url can't be null.")
+	if len(b.uri) == 0 {
+		return fmt.Errorf("The uri can't be null.")
 	}
 	if len(b.method) == 0 {
 		return fmt.Errorf("The method can't be null.")
@@ -146,7 +146,7 @@ func (b *RequestBuilder) validate() error {
 func (b *RequestBuilder) buildCdsRequest() (*CdsRequest, error) {
 	// Build the cds http request
 	req := &CdsRequest{}
-	req.SetUri(b.url)
+	req.SetUri(b.uri)
 	req.SetMethod(b.method)
 
 	if b.headers != nil {

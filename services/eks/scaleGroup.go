@@ -36,7 +36,7 @@ func (c *Client) GetScalingGroupDetail(ScalingGroupId string) (*GetScalingGroupD
 	result := &GetScalingGroupDetailResult{}
 
 	err := cds.NewRequestBuilder(c).
-		WithURL(eksUri).
+		WithURI(eksURI).
 		WithMethod(http.GET).
 		WithQueryParam("Action", DescribeScalingGroupAction).
 		WithQueryParam("ScalingGroupId", ScalingGroupId).

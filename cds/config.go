@@ -26,7 +26,7 @@ import (
 
 // Constants and default values for the package cds
 const (
-	DEFAULT_DOMAIN                       = "cdsapi.capitalonline.net"
+	SDK_VERSION                          = "2.0"
 	DEFAULT_REGION                       = "bj"
 	DEFAULT_PROTOCOL                     = "https"
 	DEFAULT_CONTENT_TYPE                 = "application/json;charset=utf-8"
@@ -41,7 +41,7 @@ var (
 
 func init() {
 	DEFAULT_USER_AGENT = "cds-sdk-go"
-	DEFAULT_USER_AGENT += "/" + Version
+	DEFAULT_USER_AGENT += "/" + SDK_VERSION
 	DEFAULT_USER_AGENT += "/" + runtime.Version()
 	DEFAULT_USER_AGENT += "/" + runtime.GOOS
 	DEFAULT_USER_AGENT += "/" + runtime.GOARCH
