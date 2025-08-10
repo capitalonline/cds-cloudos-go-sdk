@@ -16,6 +16,31 @@ limitations under the License.
 
 package eks
 
-type DescribeScalingGroupReq struct {
-	ScalingGroupId string `json:"ScalingGroupId,omitempty"`
+type OpenApiCommonResp struct {
+	Code      interface{} `json:"Code"`
+	Message   interface{} `json:"Msg"`
+	RequestId interface{} `json:"RequestId"`
+	CommonOpenApiPage
+}
+
+type CommonOpenApiPage struct {
+	TotalCount int `json:"TotalCount,omitempty"`
+	PageIndex  int `json:"PageIndex,omitempty"`
+	PageSize   int `json:"PageSize,omitempty"`
+}
+
+type GetScalingGroupDetailResult struct {
+	Cpu              int    `json:"Cpu"`
+	Ram              int    `json:"Ram"`
+	Gpu              int    `json:"Gpu"`
+	GpuShowType      string `json:"GpuShowType"`
+	MaxSize          int    `json:"MaxSize"`
+	MinSize          int    `json:"MinSize"`
+	ActivitySize     int    `json:"ActivitySize"`
+	PendingSize      int    `json:"PendingSize"`
+	RemovingSize     int    `json:"RemovingSize"`
+	TotalScalingSize int    `json:"TotalScalingSize"`
+	ScalingGroupId   string `json:"ScalingGroupId"`
+	Status           string `json:"Status"`
+	StatusStr        string `json:"StatusStr"`
 }

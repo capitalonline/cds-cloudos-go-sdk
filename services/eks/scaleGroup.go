@@ -21,31 +21,22 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
 
-// DescribeScalingGroup - Describe Scale Group
+// GetScalingGroupDetail - Get Scale Group Detail
 //
 // PARAMS:
-//   - cli: the client agent which can perform sending request
-//   - reqBody: http request body
+//   - scaleGroupId: the Scale Group id
 //
 // RETURNS:
 //   - error: nil if success otherwise the specific error
-func (c *Client) DescribeScalingGroup(cli cds.Client, reqBody *cds.Body) error {
+func (c *Client) GetScalingGroupDetail(ScalingGroupId string) (*GetScalingGroupDetailResult, error) {
+	result := &GetScalingGroupDetailResult{}
 
-	// Build the request
-	req := &cds.CdsRequest{}
-	req.SetUri(UriPrefix)
-	req.SetMethod(http.POST)
-	req.SetBody(reqBody)
+	err := cds.NewRequestBuilder(c).
+		WithURL(eksUri).
+		WithMethod(http.GET).
+		WithQueryParam("ScalingGroupId", ScalingGroupId).
+		WithResult(result).
+		Do()
 
-	// Send request and get response
-	resp := &cds.CdsResponse{}
-	if err := cli.SendRequest(req, resp); err != nil {
-		return err
-	}
-	if resp.IsFail() {
-		return resp.ServiceError()
-	}
-
-	defer func() { resp.Body().Close() }()
-	return nil
+	return result, err
 }
