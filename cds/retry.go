@@ -18,6 +18,7 @@ package cds
 
 import (
 	"errors"
+	"github.com/capitalonline/cds-cloudos-go-sdk/util/log"
 	"net"
 	"net/http"
 	"strings"
@@ -80,29 +81,28 @@ func (b *BackOffRetryPolicy) ShouldRetry(err CdsError, attempts int) bool {
 	}
 
 	// Only retry on a service error
-	// todo implement log pkg
 	var realErr *CdsServiceError
 	if errors.As(err, &realErr) {
 		switch realErr.StatusCode {
 		case http.StatusInternalServerError:
-			// log.Warn("retry for internal server error(500)")
+			log.Warn("retry for internal server error(500)")
 			return true
 		case http.StatusBadGateway:
-			// log.Warn("retry for bad gateway(502)")
+			log.Warn("retry for bad gateway(502)")
 			return true
 		case http.StatusServiceUnavailable:
-			// log.Warn("retry for service unavailable(503)")
+			log.Warn("retry for service unavailable(503)")
 			return true
 		case http.StatusBadRequest:
 			if realErr.Code != "Http400" {
 				return false
 			}
-			// log.Warn("retry for bad request(400)")
+			log.Warn("retry for bad request(400)")
 			return true
 		}
 
 		if realErr.Code == EREQUEST_EXPIRED {
-			// log.Warn("retry for request expired")
+			log.Warn("retry for request expired")
 			return true
 		}
 	}

@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"github.com/capitalonline/cds-cloudos-go-sdk/auth"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
+	"github.com/capitalonline/cds-cloudos-go-sdk/util/log"
 	"io"
 	"io/ioutil"
 	"time"
@@ -89,7 +90,7 @@ func (c *CdsClient) SendRequest(req *CdsRequest, resp *CdsResponse) error {
 
 	// Build the http request and prepare to send
 	c.buildHttpRequest(req)
-	// log.Infof("send http request: %v", req)
+	log.Infof("send http request: %v", req)
 
 	// Send request with the given retry policy
 	retries := 0
@@ -116,8 +117,7 @@ func (c *CdsClient) SendRequest(req *CdsRequest, resp *CdsResponse) error {
 						retries, err)}
 			}
 			retries++
-			// todo unImplement log pkg
-			// log.Warnf("send request failed: %v, retry for %d time(s)", err, retries)
+			log.Warnf("send request failed: %v, retry for %d time(s)", err, retries)
 			if req.Body() != nil {
 				ioutil.ReadAll(teeReader)
 				req.Request.SetBody(ioutil.NopCloser(&retryBuf))
@@ -127,16 +127,16 @@ func (c *CdsClient) SendRequest(req *CdsRequest, resp *CdsResponse) error {
 		resp.SetHttpResponse(httpResp)
 		resp.ParseResponse()
 
-		//log.Infof("receive http response: status: %s, debugId: %s, requestId: %s, elapsed: %v",
-		//	resp.StatusText(), resp.DebugId(), resp.RequestId(), resp.ElapsedTime())
-		//
-		//if resp.ElapsedTime().Milliseconds() > DEFAULT_WARN_LOG_TIMEOUT_IN_MILLS {
-		//	log.Warnf("request time more than 5 second, debugId: %s, requestId: %s, elapsed: %v",
-		//		resp.DebugId(), resp.RequestId(), resp.ElapsedTime())
-		//}
-		//for k, v := range resp.Headers() {
-		//	log.Debugf("%s=%s", k, v)
-		//}
+		log.Infof("receive http response: status: %s, debugId: %s, requestId: %s, elapsed: %v",
+			resp.StatusText(), resp.DebugId(), resp.RequestId(), resp.ElapsedTime())
+
+		if resp.ElapsedTime().Milliseconds() > DEFAULT_WARN_LOG_TIMEOUT_IN_MILLS {
+			log.Warnf("request time more than 5 second, debugId: %s, requestId: %s, elapsed: %v",
+				resp.DebugId(), resp.RequestId(), resp.ElapsedTime())
+		}
+		for k, v := range resp.Headers() {
+			log.Debugf("%s=%s", k, v)
+		}
 
 		if resp.IsFail() {
 			err := resp.ServiceError()
@@ -147,7 +147,7 @@ func (c *CdsClient) SendRequest(req *CdsRequest, resp *CdsResponse) error {
 				return err
 			}
 			retries++
-			// log.Warnf("send request failed, retry for %d time(s)", retries)
+			log.Warnf("send request failed, retry for %d time(s)", retries)
 			if req.Body() != nil {
 				ioutil.ReadAll(teeReader)
 				req.Request.SetBody(ioutil.NopCloser(&retryBuf))
