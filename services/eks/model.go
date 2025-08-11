@@ -55,8 +55,8 @@ type ScalingGroupDetail struct {
 }
 
 type AddScalingGroupNodeReq struct {
-	ScalingGroupId string
-	AddNum         int
+	ScalingGroupId string `json:"ScalingGroupId"`
+	AddNum         int    `json:"AddNum"`
 }
 
 type AddScalingGroupNodeResult struct {
