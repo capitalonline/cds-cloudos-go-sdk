@@ -14,16 +14,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package sdk imports all sub packages to build all of them when calling `go install', `go build'
-// or `go get' commands.
+package eip
 
-package sdk
+import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
-import (
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/vpc"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/subnet"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/bandwidthpackage"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/natgateway"
+const (
+	DefaultEndpoint = "http://cdsapi.capitalonline.net"
+	EipURI          = "/vpc"
 )
+
+type Client struct {
+	*cds.CdsClient
+}
+
+func NewClient(ak, sk string) (*Client, error) { 
+	client, err := cds.NewCdsClientWithAkSk(ak, sk, DefaultEndpoint)
+	if err != nil {
+		return nil, err
+	}
+	client.Config.Retry = cds.NewNoRetryPolicy()
+	return &Client{client}, nil
+}

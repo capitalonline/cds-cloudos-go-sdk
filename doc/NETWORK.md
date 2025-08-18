@@ -28,13 +28,11 @@
         - [X] GetVpc
         - [X] ListVpcs
         - [X] DeleteVpc
-        - [X] ModifyVpcAttributes
     - [X] 子网管理
         - [X] CreateSubnet
         - [X] GetSubnet
         - [X] ListSubnets
         - [X] DeleteSubnet
-        - [X] ModifySubnetAttributes
 
 - [X] 弹性公网IP(EIP)
     - [X] 弹性公网IP(EIp)管理
@@ -42,9 +40,7 @@
         - [X] GetEip
         - [X] ListEips
         - [X] ReleaseEip
-        - [X] ModifyEipAttributes
-        - [X] EipBindResource
-        - [X] EipUnbindResource
+        - [X] UpdateEIP
 
         
 - [X] 共享带宽包
@@ -52,7 +48,7 @@
         - [X] CreateBandwidthPackage
         - [X] GetBandwidthPackage
         - [X] ListBandwidthPackages
-        - [X] ModifyBandwidthPackageAttributes
+        - [X] UpdateBandwidthPackage
         - [X] AddBandwidthPackageIp
         - [X] RemoveBandwidthPackageIp
         - [X] DeleteBandwidthPackage
@@ -65,20 +61,14 @@
         - [X] CreateNatGateway
         - [X] GetNatGateway
         - [X] ListNatGateways
-        - [X] ModifyNatGatewayAttributes
-        - [X] DeleteNatGateways
-    - [X] SANT规则管理
-        - [X] CreateSnat
-        - [X] GetSnat
-        - [X] ListSnats
-        - [X] ModifySnat
-        - [X] DeleteSnat
-    - [X] DNAT规则管理
-        - [X] CreateDnat
-        - [X] GetDnat
-        - [X] ListDnat
-        - [X] ModifyDnat
-        - [X] DeleteDnat
+        - [X] UpdateNatGateway
+        - [X] DeleteNatGateway
+    - [X] NAT规则管理
+        - [X] CreateNATRule
+        - [X] GetNATRule
+        - [X] ListNATRules
+        - [X] UpdateNATRule
+        - [X] DeleteNATRule
 
 
 - [X] 高性能负载均衡管理
