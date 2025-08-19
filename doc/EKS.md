@@ -32,20 +32,17 @@
         - [X] DeleteCluster
         - [X] GetClusterEvents
     - [X] 节点管理
-        - [X] CreateNode
-        - [X] GetNode
         - [X] ListNodes
         - [X] DeleteNode
-        - [X] OperateNode
-    - [X] 节点池管理(待开发)
+    - [X] 节点池管理
         - [X] CreateNodePool
-        - [X] GetNodePool
-        - [X] AttachNodeToNodePool
-        - [X] ScaleDownNodePool
-    - [X] 自动伸缩管理
-        - [X] CreateScale 
-        - [X] UpdateScale 
-        - [X] CreateScaleGroup 
-        - [X] GetScaleGroup 
-        - [X] ListScaleGroups 
-        - [X] DeleteScaleGroup 
+        - [X] CreateDefaultNodePool
+        - [X] UpdateNodePoolConfig
+        - [X] ListNodePools
+        - [X] DeleteNodePool
+    - [X] 弹性网卡ENI管理
+        - [X] CreateNetworkInterface 
+        - [X] DeleteNetworkInterface 
+        - [X] AttachNetworkInterface 
+        - [X] DetachNetworkInterface 
+        - [X] DescribeNetworkInterfaces 
