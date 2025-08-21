@@ -18,6 +18,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/vpc"
 )
 
@@ -100,8 +101,8 @@ func DeleteVPC() {
 }
 
 func main() {
-	// CreateVpc()
+	CreateVpc()
 	// Getvpc()
 	// ListVpcs()
-	DeleteVPC()
+	// DeleteVPC()
 }

@@ -83,7 +83,7 @@ type ListVpcsReq struct {
 
 
 type ListVpcsData struct {
-	Total   string `json:"Total"`
+	Total   int `json:"Total"`
 	VPCList []VPC  `json:VPCList`
 }
 type ListVpcsResult struct {
@@ -106,9 +106,12 @@ type DeleteVpcResult struct {
 type DescribeTaskReq struct {
 	TaskId string `json:"TaskId"`
 }
-
+type DescribeTaskData struct {
+	TaskStatus string `json:"TaskStatus,omitempty"`
+	ResourceId string `json:"ResourceId,omitempty"`
+}
 type DescribeTaskResult struct {
-	Data    map[string]interface{} `json:"Data"`
+	Data    DescribeTaskData `json:"data,omitempty"`
 	OpenApiCommonResp
 	CommonTask
 }
