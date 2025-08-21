@@ -102,3 +102,13 @@ type DeleteVpcResult struct {
 	CommonTask
 }
 
+
+type DescribeTaskReq struct {
+	TaskId string `json:"TaskId"`
+}
+
+type DescribeTaskResult struct {
+	Data    map[string]interface{} `json:"Data"`
+	OpenApiCommonResp
+	CommonTask
+}

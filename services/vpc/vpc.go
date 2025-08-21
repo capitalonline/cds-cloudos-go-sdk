@@ -26,6 +26,7 @@ const (
 	GetVpcAction    = "DescribeVPC"
 	ListVpcsAction  = "DescribeVPC"
 	DeleteVpcAction = "DeleteVPC"
+	DescribeTask    = "DescribeTask"
 )
 
 
@@ -82,4 +83,16 @@ func (c *Client) DeleteVpc(args *DeleteVpcReq) (*DeleteVpcResult,error) {
 		Do()
 	return result, err
 
+}
+
+func (c *Client) DescribeTask(args map[string]string) (*DescribeTaskResult, error){
+	result := &DescribeTaskResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", DescribeTask).
+		WithQueryParams(args).
+		WithResult(result).
+		Do()
+	return result, err
 }

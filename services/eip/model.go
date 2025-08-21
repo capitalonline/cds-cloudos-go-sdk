@@ -36,7 +36,7 @@ type CreateEIPReq struct {
     Qos               int    `json:"Qos"`
 	Size              int    `json:"Size"`
     Description       string `json:"Description"`
-	ProjectId         string `json:"ProjectId"`
+	SubjectId         string `json:"ProjectId"`
 }
 
 type CreateEipResData struct {
