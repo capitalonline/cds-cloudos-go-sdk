@@ -23,11 +23,11 @@ import (
 
 
 func ListVpcSlb() {
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	listVpcSlbArgs := &slb.ListVpcSlbReq{
-		VpcId: "be4c8d00-7d8e-11f0-8290-2e07174785c2",
+		VpcId: "",
 	}
 	response, err := slbClient.ListVpcSlb(listVpcSlbArgs)
 	if err != nil {
@@ -38,11 +38,11 @@ func ListVpcSlb() {
 }
 
 func GetVpcSlb() {
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	getVpcSlbArgs := &slb.GetVpcSlbReq{
-		SlbId: "4c1a7638-7d8f-11f0-9ea8-2e07174785c2",
+		SlbId: "",
 		SlbName: "",
 	}
 	response, err := slbClient.GetVpcSlb(getVpcSlbArgs)
