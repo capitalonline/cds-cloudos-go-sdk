@@ -63,3 +63,60 @@ type AddScalingGroupNodeResult struct {
 	Data CommonScalingGroupTask `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
+
+type ListClustersReq struct {
+	Keyword string `json:"Keyword,omitempty"`
+	VpcId   string `json:"VpcId,omitempty"`
+	Status  string `json:"Status,omitempty"`
+	Version string `json:"Version,omitempty"`
+}
+
+type ListClustersResult struct {
+	Data []ListClustersDetail `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type ListClustersDetail struct {
+	ClusterId     string `json:"ClusterId"`
+	ClusterIp     string `json:"ClusterIp"`
+	ClusterName   string `json:"ClusterName"`
+	ClusterStatus string `json:"ClusterStatus"`
+	CreateTime    string `json:"CreateTime"`
+	K8SVersion    string `json:"K8sVersion"`
+	NodeSum       int    `json:"NodeSum"`
+	RegionId      string `json:"RegionId"`
+	RegionName    string `json:"RegionName"`
+	SlbId         string `json:"SlbId"`
+	SshPort       int    `json:"SshPort"`
+	StatusStr     string `json:"StatusStr"`
+	SubDomain     string `json:"SubDomain"`
+	UpdateTime    string `json:"UpdateTime"`
+	Vip           string `json:"Vip"`
+	VpcId         string `json:"VpcId"`
+	VpcName       string `json:"VpcName"`
+}
+
+type GetClusterEventsResult struct {
+	Data []GetClusterEventsDetail `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type GetClusterEventsDetail struct {
+	ErrorInfo          string `json:"ErrorInfo"`
+	Frontend           string `json:"Frontend"`
+	Status             string `json:"Status"`
+	SubtaskElapsedTime string `json:"SubtaskElapsedTime"`
+	SubtaskName        string `json:"SubtaskName"`
+	SubtaskStartTime   string `json:"SubtaskStartTime"`
+	SubtaskType        string `json:"SubtaskType"`
+}
+
+type DeleteClusterResult struct {
+	Data DeleteClusterData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type DeleteClusterData struct {
+	ClusterId string `json:"ClusterId"`
+	TaskId    string `json:"TaskId"`
+}
