@@ -120,3 +120,97 @@ type DeleteClusterData struct {
 	ClusterId string `json:"ClusterId"`
 	TaskId    string `json:"TaskId"`
 }
+
+type AttachNetworkInterfaceReq struct {
+	EcsId     string `json:"EcsId"`
+	SubnetId  string `json:"SubnetId"`
+	NetcardId string `json:"NetcardId"`
+	VlanId    string `json:"VlanId"`
+}
+
+type AttachNetworkInterfaceResult struct {
+	Data AttachNetworkInterfaceData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+type AttachNetworkInterfaceData struct {
+	EventId string `json:"EventId"`
+}
+
+type DetachNetworkInterfaceReq struct {
+	EcsId     string `json:"EcsId"`
+	NetcardId string `json:"NetcardId"`
+}
+
+type DetachNetworkInterfaceResult struct {
+	Data DetachNetworkInterfaceData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type DetachNetworkInterfaceData struct {
+	EventId string `json:"EventId"`
+}
+
+type DescribeNetworkInterfaceReq struct {
+	NetcardIds []string `json:"NetcardIds"`
+}
+
+type DescribeNetworkInterfaceResult struct {
+	Data DescribeNetworkInterfaceData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type DescribeNetworkInterfaceData struct {
+	NetcardList []DescribeNetworkInterfaceNetcardInfo `json:"NetcardList"`
+}
+
+type DescribeNetworkInterfaceNetcardInfo struct {
+	NetcardId  string `json:"NetcardId"`
+	MacAddress string `json:"MacAddress"`
+	SubnetId   string `json:"SubnetId"`
+	EcsId      string `json:"EcsId"`
+	IsValid    int    `json:"IsValid"`
+	IpAddress  string `json:"IpAddress"`
+	Mask       string `json:"Mask"`
+}
+
+type IsAttachedECSReq struct {
+	NetcardId string `json:"NetcardId"`
+}
+
+type IsAttachedECSResult struct {
+	Data IsAttachedECSData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type IsAttachedECSData struct {
+	Attached bool `json:"Attached"`
+}
+
+type QueryTaskStatusResult struct {
+	Data QueryTaskStatusData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type QueryTaskStatusData struct {
+	EventId            string                       `json:"EventId"`
+	EventStatus        string                       `json:"EventStatus"`
+	EventStatusDisplay string                       `json:"EventStatusDisplay"`
+	EventType          string                       `json:"EventType"`
+	EventTypeDisplay   string                       `json:"EventTypeDisplay"`
+	CreateTime         string                       `json:"CreateTime"`
+	TaskList           []QueryTaskStatusDataSubtask `json:"TaskList"`
+}
+
+type QueryTaskStatusDataSubtask struct {
+	TaskId          string `json:"TaskId"`
+	Status          string `json:"Status"`
+	StatusDisplay   string `json:"StatusDisplay"`
+	ResourceId      string `json:"ResourceId"`
+	CreateTime      string `json:"CreateTime"`
+	UpdateTime      string `json:"UpdateTime"`
+	EndTime         string `json:"EndTime"`
+	ResourceType    string `json:"ResourceType"`
+	ResourceDisplay string `json:"ResourceDisplay"`
+	TaskType        string `json:"TaskType"`
+	TaskTypeDisplay string `json:"TaskTypeDisplay"`
+}
