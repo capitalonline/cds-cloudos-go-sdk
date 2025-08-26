@@ -84,7 +84,7 @@ func QueryTaskStatus() {
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
-	response, err := eksClient.QueryTaskStatus("")
+	response, err := eksClient.QueryEventStatus("")
 	if err != nil {
 		fmt.Println(err)
 

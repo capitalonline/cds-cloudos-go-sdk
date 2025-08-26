@@ -76,7 +76,7 @@ func (c *Client) IsAttachedECS(netcardId string) (*DescribeNetworkInterfaceResul
 	return result, ConfirmResult(result.Code, result.Message)
 }
 
-func (c *Client) QueryTaskStatus(taskId string) (*QueryTaskStatusResult, error) {
+func (c *Client) QueryEventStatus(taskId string) (*QueryTaskStatusResult, error) {
 	result := &QueryTaskStatusResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
