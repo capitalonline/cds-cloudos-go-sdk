@@ -49,10 +49,8 @@ func DescribeNetworkInterface() {
 	ak, sk := "E101277-ak", "E101277-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
-	req := eks.DescribeNetworkInterfaceReq{
-		NetcardIds: []string{},
-	}
-	response, err := eksClient.DescribeNetworkInterface(&req)
+
+	response, err := eksClient.DescribeNetworkInterface("")
 	if err != nil {
 		fmt.Println(err)
 

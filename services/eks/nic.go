@@ -1,6 +1,7 @@
 package eks
 
 import (
+	"fmt"
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
@@ -13,6 +14,8 @@ const (
 	ActionQueryTaskStatus          = "QueryTaskStatus"
 )
 
+const Success = "Success"
+
 func (c *Client) AttachNetworkInterface(args *AttachNetworkInterfaceReq) (*AttachNetworkInterfaceResult, error) {
 	result := &AttachNetworkInterfaceResult{}
 	err := cds.NewRequestBuilder(c).
@@ -22,8 +25,10 @@ func (c *Client) AttachNetworkInterface(args *AttachNetworkInterfaceReq) (*Attac
 		WithBody(args).
 		WithResult(result).
 		Do()
-
-	return result, err
+	if err != nil {
+		return nil, err
+	}
+	return result, ConfirmResult(result.Code, result.Message)
 }
 
 func (c *Client) DetachNetworkInterface(args *DetachNetworkInterfaceReq) (*DetachNetworkInterfaceResult, error) {
@@ -35,21 +40,25 @@ func (c *Client) DetachNetworkInterface(args *DetachNetworkInterfaceReq) (*Detac
 		WithBody(args).
 		WithResult(result).
 		Do()
-
-	return result, err
+	if err != nil {
+		return nil, err
+	}
+	return result, ConfirmResult(result.Code, result.Message)
 }
 
-func (c *Client) DescribeNetworkInterface(args *DescribeNetworkInterfaceReq) (*DescribeNetworkInterfaceResult, error) {
+func (c *Client) DescribeNetworkInterface(netcardId string) (*DescribeNetworkInterfaceResult, error) {
 	result := &DescribeNetworkInterfaceResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
-		WithMethod(http.POST).
+		WithMethod(http.GET).
 		WithQueryParam("Action", ActionDescribeNetworkInterface).
-		WithBody(args).
+		WithQueryParam("NetcardId", netcardId).
 		WithResult(result).
 		Do()
-
-	return result, err
+	if err != nil {
+		return nil, err
+	}
+	return result, ConfirmResult(result.Code, result.Message)
 }
 
 func (c *Client) IsAttachedECS(netcardId string) (*DescribeNetworkInterfaceResult, error) {
@@ -61,8 +70,10 @@ func (c *Client) IsAttachedECS(netcardId string) (*DescribeNetworkInterfaceResul
 		WithQueryParam("NetcardId", netcardId).
 		WithResult(result).
 		Do()
-
-	return result, err
+	if err != nil {
+		return nil, err
+	}
+	return result, ConfirmResult(result.Code, result.Message)
 }
 
 func (c *Client) QueryTaskStatus(taskId string) (*QueryTaskStatusResult, error) {
@@ -74,6 +85,15 @@ func (c *Client) QueryTaskStatus(taskId string) (*QueryTaskStatusResult, error) 
 		WithQueryParam("TaskId", taskId).
 		WithResult(result).
 		Do()
+	if err != nil {
+		return nil, err
+	}
+	return result, ConfirmResult(result.Code, result.Message)
+}
 
-	return result, err
+func ConfirmResult(code string, message string) error {
+	if code != Success {
+		return fmt.Errorf("request not success,with code:%s,with message:%s", code, message)
+	}
+	return nil
 }

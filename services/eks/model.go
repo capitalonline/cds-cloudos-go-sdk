@@ -17,9 +17,9 @@ limitations under the License.
 package eks
 
 type OpenApiCommonResp struct {
-	Code      interface{} `json:"Code"`
-	Message   interface{} `json:"Msg"`
-	RequestId interface{} `json:"RequestId"`
+	Code      string `json:"Code"`
+	Message   string `json:"Msg"`
+	RequestId string `json:"RequestId"`
 	CommonOpenApiPage
 }
 
@@ -150,25 +150,17 @@ type DetachNetworkInterfaceData struct {
 	EventId string `json:"EventId"`
 }
 
-type DescribeNetworkInterfaceReq struct {
-	NetcardIds []string `json:"NetcardIds"`
-}
-
 type DescribeNetworkInterfaceResult struct {
 	Data DescribeNetworkInterfaceData `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
 
 type DescribeNetworkInterfaceData struct {
-	NetcardList []DescribeNetworkInterfaceNetcardInfo `json:"NetcardList"`
-}
-
-type DescribeNetworkInterfaceNetcardInfo struct {
 	NetcardId  string `json:"NetcardId"`
 	MacAddress string `json:"MacAddress"`
 	SubnetId   string `json:"SubnetId"`
 	EcsId      string `json:"EcsId"`
-	IsValid    int    `json:"IsValid"`
+	IsValid    bool   `json:"IsValid"`
 	IpAddress  string `json:"IpAddress"`
 	Mask       string `json:"Mask"`
 }
