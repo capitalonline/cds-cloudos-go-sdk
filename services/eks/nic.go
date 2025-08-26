@@ -14,7 +14,12 @@ const (
 	ActionQueryTaskStatus          = "QueryTaskStatus"
 )
 
-const Success = "Success"
+const (
+	Success      = "Success"
+	EventSuccess = "success"
+	EventFailed  = "failed"
+	EventError   = "error"
+)
 
 func (c *Client) AttachNetworkInterface(args *AttachNetworkInterfaceReq) (*AttachNetworkInterfaceResult, error) {
 	result := &AttachNetworkInterfaceResult{}
@@ -76,7 +81,7 @@ func (c *Client) IsAttachedECS(netcardId string) (*DescribeNetworkInterfaceResul
 	return result, ConfirmResult(result.Code, result.Message)
 }
 
-func (c *Client) QueryEventStatus(taskId string) (*QueryTaskStatusResult, error) {
+func (c *Client) QueryEventStatus(taskId string) (bool, error) {
 	result := &QueryTaskStatusResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
@@ -86,9 +91,16 @@ func (c *Client) QueryEventStatus(taskId string) (*QueryTaskStatusResult, error)
 		WithResult(result).
 		Do()
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return result, ConfirmResult(result.Code, result.Message)
+	eventStatus := result.Data.EventStatus
+	if err = ConfirmResult(result.Code, result.Message); err != nil {
+		return false, err
+	}
+	if eventStatus == EventFailed || eventStatus == EventError {
+		return false, fmt.Errorf("event %s not sucess, status:%s", taskId, eventStatus)
+	}
+	return eventStatus == EventSuccess, nil
 }
 
 func ConfirmResult(code string, message string) error {
