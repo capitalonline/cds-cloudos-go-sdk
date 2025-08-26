@@ -91,7 +91,5 @@ func QueryTaskStatus() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
-	bytes, _ := json.Marshal(response)
-	fmt.Println(string(bytes))
+	fmt.Println(response)
 }
