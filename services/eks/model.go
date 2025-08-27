@@ -156,13 +156,14 @@ type DescribeNetworkInterfaceResult struct {
 }
 
 type DescribeNetworkInterfaceData struct {
-	NetcardId  string `json:"NetcardId"`
-	MacAddress string `json:"MacAddress"`
-	SubnetId   string `json:"SubnetId"`
-	EcsId      string `json:"EcsId"`
-	IsValid    bool   `json:"IsValid"`
-	IpAddress  string `json:"IpAddress"`
-	Mask       int    `json:"Mask"`
+	NetcardId   string `json:"NetcardId"`
+	MacAddress  string `json:"MacAddress"`
+	SubnetId    string `json:"SubnetId"`
+	EcsId       string `json:"EcsId"`
+	IsValid     bool   `json:"IsValid"`
+	IpAddress   string `json:"IpAddress"`
+	Mask        int    `json:"Mask"`
+	NetcardName string `json:"NetcardName"`
 }
 
 type IsAttachedECSReq struct {
