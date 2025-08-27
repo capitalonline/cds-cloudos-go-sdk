@@ -11,7 +11,7 @@ const (
 	ActionDetachNetworkInterface   = "DetachNetworkInterface"
 	ActionDescribeNetworkInterface = "DescribeNetworkInterface"
 	ActionIsAttachedECS            = "IsAttachedECS"
-	ActionQueryTaskStatus          = "QueryTaskStatus"
+	ActionQueryEventStatus         = "QueryEventStatus"
 )
 
 const (
@@ -66,8 +66,8 @@ func (c *Client) DescribeNetworkInterface(netcardId string) (*DescribeNetworkInt
 	return result, ConfirmResult(result.Code, result.Message)
 }
 
-func (c *Client) IsAttachedECS(netcardId string) (*DescribeNetworkInterfaceResult, error) {
-	result := &DescribeNetworkInterfaceResult{}
+func (c *Client) IsAttachedECS(netcardId string) (bool, error) {
+	result := &IsAttachedECSResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
 		WithMethod(http.GET).
@@ -76,18 +76,18 @@ func (c *Client) IsAttachedECS(netcardId string) (*DescribeNetworkInterfaceResul
 		WithResult(result).
 		Do()
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return result, ConfirmResult(result.Code, result.Message)
+	return result.Data.Attached, ConfirmResult(result.Code, result.Message)
 }
 
-func (c *Client) QueryEventStatus(taskId string) (bool, error) {
+func (c *Client) QueryEventStatus(eventId string) (bool, error) {
 	result := &QueryTaskStatusResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
 		WithMethod(http.GET).
-		WithQueryParam("Action", ActionQueryTaskStatus).
-		WithQueryParam("TaskId", taskId).
+		WithQueryParam("Action", ActionQueryEventStatus).
+		WithQueryParam("EventId", eventId).
 		WithResult(result).
 		Do()
 	if err != nil {
@@ -98,7 +98,7 @@ func (c *Client) QueryEventStatus(taskId string) (bool, error) {
 		return false, err
 	}
 	if eventStatus == EventFailed || eventStatus == EventError {
-		return false, fmt.Errorf("event %s not sucess, status:%s", taskId, eventStatus)
+		return false, fmt.Errorf("event %s not sucess, status:%s", eventId, eventStatus)
 	}
 	return eventStatus == EventSuccess, nil
 }
