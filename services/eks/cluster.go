@@ -10,6 +10,7 @@ const (
 	ListClustersAction     = "ListClusters"
 	GetClusterEventsAction = "GetClusterEvents"
 	DeleteClusterAction    = "DeleteCluster"
+	GetClusterAction       = "GetCluster"
 )
 
 func (c *Client) ListClusters(args *ListClustersReq) (*ListClustersResult, error) {
@@ -53,6 +54,20 @@ func (c *Client) DeleteCluster(clusterId string) (*DeleteClusterResult, error) {
 		WithBody(map[string]string{
 			"ClusterId": clusterId,
 		}).
+		WithResult(result).
+		Do()
+
+	return result, err
+}
+
+func (c *Client) GetCluster(clusterId string) (*GetClusterResult, error) {
+	result := &GetClusterResult{}
+
+	err := cds.NewRequestBuilder(c).
+		WithURI(eksURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", GetClusterAction).
+		WithQueryParam("ClusterId", clusterId).
 		WithResult(result).
 		Do()
 

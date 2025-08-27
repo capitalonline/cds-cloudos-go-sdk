@@ -206,3 +206,70 @@ type QueryTaskStatusDataSubtask struct {
 	TaskType        string `json:"TaskType"`
 	TaskTypeDisplay string `json:"TaskTypeDisplay"`
 }
+
+type GetClusterResult struct {
+	Data []GetClusterDetail `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type GetClusterDetail struct {
+	ClusterId       string     `json:"ClusterId"`
+	Ak              string     `json:"Ak"`
+	ClusterIp       string     `json:"ClusterIp"`
+	VpcId           string     `json:"VpcId"`
+	ClusterName     string     `json:"ClusterName"`
+	ClusterStatus   string     `json:"ClusterStatus"`
+	CreateTime      string     `json:"CreateTime"`
+	CustomerId      string     `json:"CustomerId"`
+	DashboardAddr   string     `json:"DashboardAddr"`
+	K8sCaExpiryData int        `json:"K8sCaExpiryData"`
+	K8sVersion      string     `json:"K8sVersion"`
+	MasterSum       int        `json:"MasterSum"`
+	NatId           string     `json:"NatId"`
+	NatName         string     `json:"NatName"`
+	NodeSum         int        `json:"NodeSum"`
+	OsName          string     `json:"OsName"`
+	RegionId        string     `json:"RegionId"`
+	RegionName      string     `json:"RegionName"`
+	RuntimeType     string     `json:"RuntimeType"`
+	SlbId           string     `json:"SlbId"`
+	SshPort         int        `json:"SshPort"`
+	StatusStr       string     `json:"StatusStr"`
+	SubDomain       string     `json:"SubDomain"`
+	UpdateTime      string     `json:"UpdateTime"`
+	UserId          string     `json:"UserId"`
+	Vip             string     `json:"Vip"`
+	VipId           string     `json:"VipId"`
+	VpcName         string     `json:"VpcName"`
+	WorkerSum       int        `json:"WorkerSum"`
+	CniInfo         CniInfo    `json:"CniInfo"`
+	DestinationEip  EipInfo    `json:"DestinationEip"`
+	SourceEip       EipInfo    `json:"SourceEip"`
+	MasterSubnet    SubnetInfo `json:"MasterSubnet"`
+	WorkerSubnet    SubnetInfo `json:"WorkerSubnet"`
+}
+
+type CniInfo struct {
+	CniConfig   CniConfig `json:"CniConfig"`
+	CniType     string    `json:"CniType"`
+	ProxyConfig string    `json:"ProxyConfig"`
+	ServiceCidr string    `json:"ServiceCidr"`
+}
+
+type CniConfig struct {
+	FlannelBackendType string `json:"FlannelBackendType"`
+	NodePodsNum        int    `json:"NodePodsNum"`
+	PodCidr            string `json:"PodCidr"`
+}
+
+type EipInfo struct {
+	EipId string `json:"EipId"`
+	Ip    string `json:"Ip"`
+}
+
+type SubnetInfo struct {
+	AvailableZoneId string `json:"AvailableZoneId"`
+	SubnetId        string `json:"SubnetId"`
+	Segment         string `json:"Segment"`
+	SelectSegment   string `json:"SelectSegment"`
+}
