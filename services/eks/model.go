@@ -257,9 +257,11 @@ type CniInfo struct {
 }
 
 type CniConfig struct {
-	FlannelBackendType string `json:"FlannelBackendType"`
-	NodePodsNum        int    `json:"NodePodsNum"`
-	PodCidr            string `json:"PodCidr"`
+	FlannelBackendType  string `json:"FlannelBackendType"`
+	CalicoBlockSize     int    `json:"CalicoBlockSize"`
+	CalicoEncapsulation string `json:"CalicoEncapsulation"`
+	NodePodsNum         int    `json:"NodePodsNum"`
+	PodCidr             string `json:"PodCidr"`
 }
 
 type EipInfo struct {
