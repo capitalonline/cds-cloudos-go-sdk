@@ -162,7 +162,7 @@ type DescribeNetworkInterfaceData struct {
 	EcsId      string `json:"EcsId"`
 	IsValid    bool   `json:"IsValid"`
 	IpAddress  string `json:"IpAddress"`
-	Mask       string `json:"Mask"`
+	Mask       int    `json:"Mask"`
 }
 
 type IsAttachedECSReq struct {
