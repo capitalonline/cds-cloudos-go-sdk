@@ -60,3 +60,20 @@ func DeleteCluster() {
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
+
+func GetCluster() {
+	ak, sk := "your-ak", "your-sk"
+
+	eksClient, _ := eks.NewClient(ak, sk)
+
+	response, err := eksClient.GetCluster("your-cluster-id")
+	if err != nil {
+		fmt.Println(err)
+
+	}
+	fmt.Printf(">>> response: %+v", response)
+
+	fmt.Println(response.RequestId)
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))
+}
