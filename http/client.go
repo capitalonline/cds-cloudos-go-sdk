@@ -18,7 +18,6 @@ package http
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"net/http"
 	"net/url"
@@ -316,7 +315,6 @@ func Execute(request *Request) (*Response, error) {
 
 	httpRequest.URL = internalUrl
 
-	fmt.Printf(">>> httpRequest: %+v\n", httpRequest)
 	// Set the request headers
 	internalHeader := make(http.Header)
 	for k, v := range request.Headers() {
