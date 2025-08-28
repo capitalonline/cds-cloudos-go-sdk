@@ -276,3 +276,80 @@ type SubnetInfo struct {
 	Segment         string `json:"Segment"`
 	SelectSegment   string `json:"SelectSegment"`
 }
+
+type ListNodesReq struct {
+	ClusterId      string `json:"ClusterId"`
+	NodeStatus     string `json:"NodeStatus"`
+	NodeType       string `json:"NodeType"`
+	SchedulableStr string `json:"SchedulableStr"`
+	Status         string `json:"Status"`
+	PageSize       int    `json:"PageSize"`
+	PageIndex      int    `json:"PageIndex"`
+	Keyword        int    `json:"Keyword"`
+}
+
+type ListNodesResult struct {
+	Data []ListNodesData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type ListNodesData struct {
+	NodeId            string `json:"NodeId"`
+	NodeName          string `json:"NodeName"`
+	NodeResourceId    string `json:"NodeResourceId"`
+	StorageResourceId string `json:"StorageResourceId"`
+	NodeNumber        int    `json:"NodeNumber"`
+	NodeStatus        string `json:"NodeStatus"`
+	StatusStr         string `json:"StatusStr"`
+	EcsStatus         string `json:"EcsStatus"`
+	IsValid           int    `json:"IsValid"`
+	NodeType          string `json:"NodeType"`
+	ClusterId         string `json:"ClusterId"`
+	ClusterName       string `json:"ClusterName"`
+	CustomerId        string `json:"CustomerId"`
+	UserId            string `json:"UserId"`
+	Hostname          string `json:"Hostname"`
+	VpcId             string `json:"VpcId"`
+	SubnetId          string `json:"SubnetId"`
+	PrivateIp         string `json:"PrivateIp"`
+	CpuSize           int    `json:"CpuSize"`
+	RamSize           int    `json:"RamSize"`
+	GpuSum            int    `json:"GpuSum"`
+	GpuShowType       string `json:"GpuShowType"`
+	BmsHostId         string `json:"BmsHostId"`
+	OsImageId         string `json:"OsImageId"`
+	FamilyId          string `json:"FamilyId"`
+	FamilyName        string `json:"FamilyName"`
+	Schedulable       int    `json:"Schedulable"`
+	K8sStatus         string `json:"K8SStatus"`
+	RegionName        string `json:"RegionName"`
+	RegionId          string `json:"RegionId"`
+	AzName            string `json:"AzName"`
+	AzId              string `json:"AzId"`
+	SystemDisk        string `json:"SystemDisk"`
+	DataDisk          string `json:"DataDisk"`
+	SuborderId        string `json:"SuborderId"`
+	SourceType        string `json:"SourceType"`
+	ScalingGroupId    string `json:"ScalingGroupId"`
+	Labels            string `json:"Labels"`
+	Annotations       string `json:"Annotations"`
+	BillingMethod     string `json:"BillingMethod"`
+	Duration          int    `json:"Duration"`
+	IsToMonth         int    `json:"IsToMonth"`
+	AutoRenew         int    `json:"AutoRenew"`
+	CreateTime        string `json:"CreateTime"`
+}
+
+type DeleteNodesReq struct {
+	ClusterId string   `json:"ClusterId"`
+	NodeIds   []string `json:"NodeIds"`
+}
+
+type DeleteNodesResult struct {
+	Data DeleteNodesData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type DeleteNodesData struct {
+	TaskId string `json:"TaskId"`
+}
