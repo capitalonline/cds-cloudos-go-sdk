@@ -36,7 +36,6 @@
         - [X] DeleteNode
     - [X] 节点池管理
         - [X] CreateNodePool
-        - [X] CreateDefaultNodePool
         - [X] UpdateNodePoolConfig
         - [X] ListNodePools
         - [X] DeleteNodePool
