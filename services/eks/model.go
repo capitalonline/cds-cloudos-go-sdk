@@ -123,7 +123,6 @@ type DeleteClusterData struct {
 
 type AttachNetworkInterfaceReq struct {
 	EcsId     string `json:"EcsId"`
-	SubnetId  string `json:"SubnetId"`
 	NetcardId string `json:"NetcardId"`
 	VlanId    string `json:"VlanId"`
 }
@@ -285,7 +284,7 @@ type ListNodesReq struct {
 	Status         string `json:"Status"`
 	PageSize       int    `json:"PageSize"`
 	PageIndex      int    `json:"PageIndex"`
-	Keyword        int    `json:"Keyword"`
+	Keyword        string `json:"Keyword"`
 }
 
 type ListNodesResult struct {
