@@ -37,6 +37,7 @@
     - [X] 节点池管理
         - [X] CreateNodePool
         - [X] UpdateNodePoolConfig
+        - [X] ScalingNodePoolNum
         - [X] ListNodePools
         - [X] DeleteNodePool
     - [X] 弹性网卡ENI管理
