@@ -67,8 +67,8 @@ type AddScalingGroupNodeResult struct {
 type ListClustersReq struct {
 	Keyword string `json:"Keyword,omitempty"`
 	VpcId   string `json:"VpcId,omitempty"`
-	Status  string `json:"Status,omitempty"`
-	Version string `json:"Version,omitempty"`
+	//Status  string `json:"Status,omitempty"`
+	//Version string `json:"Version,omitempty"`
 }
 
 type ListClustersResult struct {
