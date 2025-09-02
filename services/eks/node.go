@@ -1,6 +1,8 @@
 package eks
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
@@ -12,11 +14,18 @@ const (
 
 func (c *Client) ListNodes(args *ListNodesReq) (*ListNodesResult, error) {
 	result := &ListNodesResult{}
-	err := cds.NewRequestBuilder(c).
+	bytes, _ := json.Marshal(args)
+	tmp := make(map[string]interface{})
+	_ = json.Unmarshal(bytes, &tmp)
+	builder := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
 		WithMethod(http.GET).
-		WithQueryParam("Action", ActionListNodes).
-		WithBody(args).
+		WithQueryParam("Action", ActionListNodes)
+	params := make(map[string]string)
+	for key, value := range tmp {
+		params[key] = fmt.Sprintf("%v", value)
+	}
+	err := builder.WithQueryParams(params).
 		WithResult(result).
 		Do()
 	if err != nil {
