@@ -18,10 +18,11 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/subnet"
 )
 
-func ListSubnet() {
+func DescribeSubnet() {
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
@@ -29,21 +30,6 @@ func ListSubnet() {
 		RegionCode: "CN_Qingyang",
 	}
 	response, err := subnetClient.ListSubnets(ListSubnetArgs)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-}
-
-func GetSubnet() {
-	ak, sk :=  "ak", "sk"
-	subnetClient, _ := subnet.NewClient(ak, sk)
-	GetSubnetArgs := &subnet.GetSubnetReq{
-		Keyword: "919a5290-799e-11f0-adfa-6e18e986f14e",
-	}
-	response, err := subnetClient.GetSubnet(GetSubnetArgs)
 	if err != nil {
 		fmt.Println(err)
 
@@ -95,7 +81,6 @@ func DeleteSubnet() {
 
 func main(){
 	// ListSubnet()
-	// GetSubnet()
 //    CreateSubnet()
     DeleteSubnet()
 }

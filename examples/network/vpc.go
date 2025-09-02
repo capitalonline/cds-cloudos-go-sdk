@@ -23,7 +23,7 @@ import (
 )
 
 
-func Getvpc() {
+func DescribeVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -40,7 +40,7 @@ func Getvpc() {
 	fmt.Println(response.Data.VPCList)
 }
 
-func CreateVpc() {
+func CreateVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -68,23 +68,6 @@ func CreateVpc() {
 	fmt.Println(response.Data)
 }
 
-func ListVpcs() {
-	ak, sk := "ak", "sk"
-
-	vpcClient, _ := vpc.NewClient(ak, sk)
-	ListVpcArgs := &vpc.ListVpcsReq{
-		RegionCode:"CN_Qingyang",
-	}
-	response, err := vpcClient.ListVpcs(ListVpcArgs)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-	fmt.Println(response.Data.VPCList)
-}
-
 func DeleteVPC() {
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -101,7 +84,7 @@ func DeleteVPC() {
 }
 
 func main() {
-	CreateVpc()
+	CreateVPC()
 	// Getvpc()
 	// ListVpcs()
 	// DeleteVPC()

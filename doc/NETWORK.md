@@ -36,24 +36,21 @@
 
 - [X] 弹性公网IP(EIP)
     - [X] 弹性公网IP(EIp)管理
-        - [X] CreateEip
-        - [X] GetEip
-        - [X] ListEips
-        - [X] ReleaseEip
+        - [X] CreateEIP
+        - [X] DeleteEIP
         - [X] UpdateEIP
 
         
 - [X] 共享带宽包
     - [X] 共享带宽包管理
-        - [X] CreateBandwidthPackage
-        - [X] GetBandwidthPackage
-        - [X] ListBandwidthPackages
-        - [X] UpdateBandwidthPackage
-        - [X] AddBandwidthPackageIp
-        - [X] RemoveBandwidthPackageIp
-        - [X] DeleteBandwidthPackage
-        - [X] BandwidthPackageBindResource
-        - [X] BandwidthPackageUnbindResource
+        - [X] CreateBandwidth
+        - [X] DescribeBandwidth
+        - [X] UpdateBandwidth
+        - [X] BandwidthAddEIP
+        - [X] BandwidthRemoveEIP
+        - [X] DeleteBandwidth
+        - [X] BandwidthBindResource
+        - [X] BandwidthUnbindResource
 
 
 - [X] NAT网关
