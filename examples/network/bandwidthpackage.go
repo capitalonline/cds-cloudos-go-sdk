@@ -18,12 +18,11 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/bandwidthpackage"
 )
 
 
-func DescribeBandwidth() {
+func ListBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -40,8 +39,24 @@ func DescribeBandwidth() {
 	fmt.Println(response.Data.Total)
 }
 
+func GetBandwidthPackage() {
+	ak, sk := "ak", "sk"
 
-func CreateBandwidth() {
+	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
+	GetBandwidthPackageArgs := &bandwidthpackage.GetBandwidthPackageReq{
+		Keyword: "868bb384-79a4-11f0-adfa-6e18e986f14e",
+	}
+	response, err := BandwidthPackageClient.GetBandwidthPackage(GetBandwidthPackageArgs)
+	if err != nil {
+		fmt.Println(err)
+
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+
+
+func CreateBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -64,7 +79,7 @@ func CreateBandwidth() {
 }
 
 
-func UpdateBandwidth() {
+func UpdateBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -81,7 +96,7 @@ func UpdateBandwidth() {
 }
 
 
-func DeleteBandwidth() {
+func DeleteBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -97,7 +112,7 @@ func DeleteBandwidth() {
 }
 
 
-func BandwidthAddEIP() {
+func AddBandwidthPackageIp() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -115,7 +130,7 @@ func BandwidthAddEIP() {
 }
 
 
-func BandwidthRemoveEIP() {
+func RemoveBandwidthPackageIp() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -146,7 +161,7 @@ func BandwidthRemoveEIP() {
 }
 
 
-func BandwidthBindResource() {
+func BandwidthPackageBindResource() {
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -165,7 +180,7 @@ func BandwidthBindResource() {
 
 }
 
-func BandwidthUnbindResource() {
+func BandwidthPackageUnbindResource() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -182,6 +197,13 @@ func BandwidthUnbindResource() {
 }
 
 func main(){
-	DescribeBandwidth() 
-
+	// ListBandwidthPackage()
+	// GetBandwidthPackage()
+	// CreateBandwidthPackage()
+	// UpdateBandwidthPackage()
+	// DeleteBandwidthPackage()
+	// AddBandwidthPackageIp()
+	// RemoveBandwidthPackageIp()
+	// BandwidthPackageBindResource()
+	// BandwidthPackageUnbindResource()
 }

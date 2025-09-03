@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
 )
 
-func DescribeEIP() {
+func ListEips() {
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	ListEipArgs := &eip.ListEipsReq{
@@ -22,8 +21,24 @@ func DescribeEIP() {
 	fmt.Println(response.Data.Total)
 }
 
+func GetEip() {
+	ak, sk := "ak", "sk"
 
-func CreateEIP(){
+	EipClient, _ := eip.NewClient(ak, sk)
+	GetEipArgs := &eip.GetEipReq{
+		Keyword: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",
+	}
+	response, err := EipClient.GetEip(GetEipArgs)
+	if err != nil {
+		fmt.Println(err)
+
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+	fmt.Println(response.Data.Total)
+}
+
+func CreateEip(){
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
@@ -43,7 +58,7 @@ func CreateEIP(){
 	fmt.Println(response.Data)
 }
 
-func UpdateEIP(){
+func UpdateEip(){
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -63,7 +78,7 @@ func UpdateEIP(){
 }
 
 
-func DeleteEIP(){
+func ReleaseEip(){
 	ak, sk := "ak", "sk"
 
 
@@ -83,5 +98,9 @@ func DeleteEIP(){
 }
 
 func main() {
-	DeleteEIP()
+	// ListEips()
+	// GetEip()
+	// CreateEip()
+	// UpdateEip()
+	ReleaseEip()
 }

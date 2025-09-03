@@ -24,35 +24,40 @@
 # SDK接口列表
 - [X] 私有网络（VPC）
     - [X] 私有网络管理
-        - [X] CreateVPC
-        - [X] DescribeVPC
-        - [X] DeleteVPC
+        - [X] CreateVpc
+        - [X] GetVpc
+        - [X] ListVpcs
+        - [X] DeleteVpc
     - [X] 子网管理
         - [X] CreateSubnet
-        - [X] DescribeSubnet
+        - [X] GetSubnet
+        - [X] ListSubnets
         - [X] DeleteSubnet
 
 - [X] 弹性公网IP(EIP)
     - [X] 弹性公网IP(EIp)管理
-        - [X] CreateEIP
-        - [X] DeleteEIP
+        - [X] CreateEip
+        - [X] GetEip
+        - [X] ListEips
+        - [X] ReleaseEip
         - [X] UpdateEIP
-        - [X] DescribeEIP
 
         
 - [X] 共享带宽包
     - [X] 共享带宽包管理
-        - [X] CreateBandwidth
-        - [X] DescribeBandwidth
-        - [X] UpdateBandwidth
-        - [X] BandwidthAddEIP
-        - [X] BandwidthRemoveEIP
-        - [X] DeleteBandwidth
+        - [X] CreateBandwidthPackage
+        - [X] GetBandwidthPackage
+        - [X] ListBandwidthPackages
+        - [X] UpdateBandwidthPackage
+        - [X] AddBandwidthPackageIp
+        - [X] RemoveBandwidthPackageIp
+        - [X] DeleteBandwidthPackage
 
 
 - [X] NAT网关
     - [X] NAT网关管理
-        - [X] DescribeNAT
+        - [X] GetNatGateway
+        - [X] ListNatGateways
 
 - [X] 高性能负载均衡管理
     - [X] SLB实例管理
