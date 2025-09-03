@@ -105,7 +105,7 @@ func (c *Client) QueryEventStatus(eventId string) (bool, error) {
 
 func ConfirmResult(code string, message string) error {
 	if code != Success {
-		return fmt.Errorf("request not success,with code:%s,with message:%s", code, message)
+		return fmt.Errorf("code： %s， message： %s", code, message)
 	}
 	return nil
 }
