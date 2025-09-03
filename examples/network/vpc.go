@@ -85,7 +85,4 @@ func DeleteVPC() {
 
 func main() {
 	CreateVPC()
-	// Getvpc()
-	// ListVpcs()
-	// DeleteVPC()
 }

@@ -182,4 +182,6 @@ func BandwidthUnbindResource() {
 }
 
 func main(){
+	DescribeBandwidth() 
+
 }

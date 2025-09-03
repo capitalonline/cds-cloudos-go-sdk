@@ -80,7 +80,5 @@ func DeleteSubnet() {
 
 
 func main(){
-	// ListSubnet()
-//    CreateSubnet()
     DeleteSubnet()
 }
