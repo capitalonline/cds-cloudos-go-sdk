@@ -18,6 +18,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/bandwidthpackage"
 )
 
@@ -160,42 +161,6 @@ func RemoveBandwidthPackageIp() {
 	fmt.Println(response.Data)
 }
 
-
-func BandwidthPackageBindResource() {
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
-
-	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
-	BandwidthPackageBindResourceArgs := &bandwidthpackage.BandwidthBindResourceReq{
-		BandwidthId:"868bb384-79a4-11f0-adfa-6e18e986f14e",
-		BindType: "NAT",
-		ResourceId: "c3e95ed4-79a9-11f0-a8a0-7a973848a269",
-	}
-	response, err := BandwidthPackageClient.BandwidthBindResource(BandwidthPackageBindResourceArgs)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-
-}
-
-func BandwidthPackageUnbindResource() {
-	ak, sk := "ak", "sk"
-
-	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
-	BandwidthPackageUnbindResourceArgs := &bandwidthpackage.BandwidthUnbindResourceReq{
-		BandwidthId:"868bb384-79a4-11f0-adfa-6e18e986f14e",
-	}
-	response, err := BandwidthPackageClient.BandwidthUnbindResource(BandwidthPackageUnbindResourceArgs)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-}
-
 func main(){
 	// ListBandwidthPackage()
 	// GetBandwidthPackage()
@@ -204,6 +169,4 @@ func main(){
 	// DeleteBandwidthPackage()
 	// AddBandwidthPackageIp()
 	// RemoveBandwidthPackageIp()
-	// BandwidthPackageBindResource()
-	// BandwidthPackageUnbindResource()
 }
