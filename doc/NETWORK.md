@@ -52,8 +52,6 @@
         - [X] AddBandwidthPackageIp
         - [X] RemoveBandwidthPackageIp
         - [X] DeleteBandwidthPackage
-        - [X] BandwidthPackageBindResource
-        - [X] BandwidthPackageUnbindResource
 
 
 - [X] NAT网关

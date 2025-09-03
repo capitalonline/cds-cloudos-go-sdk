@@ -12,7 +12,6 @@ func AttachNetworkInterface() {
 	eksClient, _ := eks.NewClient(ak, sk)
 	req := eks.AttachNetworkInterfaceReq{
 		EcsId:     "",
-		SubnetId:  "",
 		NetcardId: "",
 		VlanId:    "",
 	}
