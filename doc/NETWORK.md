@@ -37,6 +37,7 @@
         - [X] CreateEIP
         - [X] DeleteEIP
         - [X] UpdateEIP
+        - [X] DescribeEIP
 
         
 - [X] 共享带宽包
@@ -47,8 +48,6 @@
         - [X] BandwidthAddEIP
         - [X] BandwidthRemoveEIP
         - [X] DeleteBandwidth
-        - [X] BandwidthBindResource
-        - [X] BandwidthUnbindResource
 
 
 - [X] NAT网关
