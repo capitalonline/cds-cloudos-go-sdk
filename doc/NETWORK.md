@@ -24,14 +24,12 @@
 # SDK接口列表
 - [X] 私有网络（VPC）
     - [X] 私有网络管理
-        - [X] CreateVpc
-        - [X] GetVpc
-        - [X] ListVpcs
-        - [X] DeleteVpc
+        - [X] CreateVPC
+        - [X] DescribeVPC
+        - [X] DeleteVPC
     - [X] 子网管理
         - [X] CreateSubnet
-        - [X] GetSubnet
-        - [X] ListSubnets
+        - [X] DescribeSubnet
         - [X] DeleteSubnet
 
 - [X] 弹性公网IP(EIP)
@@ -55,8 +53,7 @@
 
 - [X] NAT网关
     - [X] NAT网关管理
-        - [X] GetNatGateway
-        - [X] ListNatGateways
+        - [X] DescribeNAT
 
 - [X] 高性能负载均衡管理
     - [X] SLB实例管理
