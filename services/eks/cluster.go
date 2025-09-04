@@ -17,14 +17,11 @@ const (
 func (c *Client) CreateCluster(args *CreateClusterReq) (*CreateClusterResult, error) {
 	result := &CreateClusterResult{}
 
-	bytes, _ := json.Marshal(args)
-	params := make(map[string]string)
-	_ = json.Unmarshal(bytes, &params)
 	err := cds.NewRequestBuilder(c).
 		WithURI(eksURI).
 		WithMethod(http.POST).
 		WithQueryParam("Action", CreateClusterAction).
-		WithBody(params).
+		WithBody(args).
 		WithResult(result).
 		Do()
 
