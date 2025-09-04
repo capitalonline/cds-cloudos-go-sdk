@@ -205,8 +205,19 @@ type QueryTaskStatusDataSubtask struct {
 }
 
 type GetClusterResult struct {
-	Data []GetClusterDetail `json:"Data,omitempty"`
+	Data GetClusterDetail `json:"Data,omitempty"`
 	OpenApiCommonResp
+}
+
+type TaskStatusResult struct {
+	Data TaskStatusDetail `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type TaskStatusDetail struct {
+	TaskId     string `json:"TaskId"`
+	TaskMsg    string `json:"TaskMsg"`
+	TaskStatus string `json:"TaskStatus"`
 }
 
 type GetClusterDetail struct {

@@ -122,6 +122,22 @@ func CreateCluster() {
 	fmt.Println(string(bytes))
 }
 
+func TaskStatus() {
+	ak, sk := "E101277-ak", "E101277-sk"
+
+	eksClient, _ := eks.NewClient(ak, sk)
+
+	response, err := eksClient.GetTaskStatus("task_id")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+
+	fmt.Println(response.RequestId)
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))
+}
+
 func ListClusters() {
 	ak, sk := "E101277-ak", "E101277-sk"
 
