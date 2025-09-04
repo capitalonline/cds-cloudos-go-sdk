@@ -88,7 +88,6 @@ type ListClustersDetail struct {
 	RegionName    string `json:"RegionName"`
 	SlbId         string `json:"SlbId"`
 	SshPort       int    `json:"SshPort"`
-	StatusStr     string `json:"StatusStr"`
 	SubDomain     string `json:"SubDomain"`
 	UpdateTime    string `json:"UpdateTime"`
 	Vip           string `json:"Vip"`
@@ -102,8 +101,6 @@ type GetClusterEventsResult struct {
 }
 
 type GetClusterEventsDetail struct {
-	ErrorInfo          string `json:"ErrorInfo"`
-	Frontend           string `json:"Frontend"`
 	Status             string `json:"Status"`
 	SubtaskElapsedTime string `json:"SubtaskElapsedTime"`
 	SubtaskName        string `json:"SubtaskName"`
@@ -294,50 +291,34 @@ type ListNodesResult struct {
 }
 
 type ListNodesData struct {
-	NodeId            string `json:"NodeId"`
-	NodeName          string `json:"NodeName"`
-	NodeResourceId    string `json:"NodeResourceId"`
-	StorageResourceId string `json:"StorageResourceId"`
-	NodeNumber        int    `json:"NodeNumber"`
-	NodeStatus        string `json:"NodeStatus"`
-	StatusStr         string `json:"StatusStr"`
-	EcsStatus         string `json:"EcsStatus"`
-	IsValid           int    `json:"IsValid"`
-	NodeType          string `json:"NodeType"`
-	ClusterId         string `json:"ClusterId"`
-	ClusterName       string `json:"ClusterName"`
-	CustomerId        string `json:"CustomerId"`
-	UserId            string `json:"UserId"`
-	Hostname          string `json:"Hostname"`
-	VpcId             string `json:"VpcId"`
-	SubnetId          string `json:"SubnetId"`
-	PrivateIp         string `json:"PrivateIp"`
-	CpuSize           int    `json:"CpuSize"`
-	RamSize           int    `json:"RamSize"`
-	GpuSum            int    `json:"GpuSum"`
-	GpuShowType       string `json:"GpuShowType"`
-	BmsHostId         string `json:"BmsHostId"`
-	OsImageId         string `json:"OsImageId"`
-	FamilyId          string `json:"FamilyId"`
-	FamilyName        string `json:"FamilyName"`
-	Schedulable       int    `json:"Schedulable"`
-	K8sStatus         string `json:"K8SStatus"`
-	RegionName        string `json:"RegionName"`
-	RegionId          string `json:"RegionId"`
-	AzName            string `json:"AzName"`
-	AzId              string `json:"AzId"`
-	SystemDisk        string `json:"SystemDisk"`
-	DataDisk          string `json:"DataDisk"`
-	SuborderId        string `json:"SuborderId"`
-	SourceType        string `json:"SourceType"`
-	ScalingGroupId    string `json:"ScalingGroupId"`
-	Labels            string `json:"Labels"`
-	Annotations       string `json:"Annotations"`
-	BillingMethod     string `json:"BillingMethod"`
-	Duration          int    `json:"Duration"`
-	IsToMonth         int    `json:"IsToMonth"`
-	AutoRenew         int    `json:"AutoRenew"`
-	CreateTime        string `json:"CreateTime"`
+	NodeId        string `json:"NodeId"`
+	NodeName      string `json:"NodeName"`
+	NodeStatus    string `json:"NodeStatus"`
+	NodeType      string `json:"NodeType"`
+	ClusterId     string `json:"ClusterId"`
+	ClusterName   string `json:"ClusterName"`
+	CustomerId    string `json:"CustomerId"`
+	UserId        string `json:"UserId"`
+	VpcId         string `json:"VpcId"`
+	SubnetId      string `json:"SubnetId"`
+	PrivateIp     string `json:"PrivateIp"`
+	Cpu           int    `json:"Cpu"`
+	Ram           int    `json:"Ram"`
+	Gpu           int    `json:"Gpu"`
+	GpuType       string `json:"GpuType"`
+	FamilyName    string `json:"FamilyName"`
+	Schedulable   int    `json:"Schedulable"`
+	K8SStatus     string `json:"K8SStatus"`
+	RegionName    string `json:"RegionName"`
+	RegionId      string `json:"RegionId"`
+	AzName        string `json:"AzName"`
+	AzId          string `json:"AzId"`
+	SourceType    string `json:"SourceType"`
+	BillingMethod string `json:"BillingMethod"`
+	Duration      int    `json:"Duration"`
+	IsToMonth     int    `json:"IsToMonth"`
+	AutoRenew     int    `json:"AutoRenew"`
+	CreateTime    string `json:"CreateTime"`
 }
 
 type DeleteNodesReq struct {
