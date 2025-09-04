@@ -208,7 +208,7 @@ type QueryTaskStatusDataSubtask struct {
 }
 
 type GetClusterResult struct {
-	Data []GetClusterDetail `json:"Data,omitempty"`
+	Data GetClusterDetail `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
 
