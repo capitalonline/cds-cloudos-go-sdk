@@ -7,11 +7,29 @@ import (
 )
 
 const (
+	CreateClusterAction    = "CreateCluster"
 	ListClustersAction     = "ListClusters"
 	GetClusterEventsAction = "GetClusterEvents"
 	DeleteClusterAction    = "DeleteCluster"
 	GetClusterAction       = "GetCluster"
 )
+
+func (c *Client) CreateCluster(args *CreateClusterReq) (*CreateClusterResult, error) {
+	result := &CreateClusterResult{}
+
+	bytes, _ := json.Marshal(args)
+	params := make(map[string]string)
+	_ = json.Unmarshal(bytes, &params)
+	err := cds.NewRequestBuilder(c).
+		WithURI(eksURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", CreateClusterAction).
+		WithQueryParams(params).
+		WithResult(result).
+		Do()
+
+	return result, err
+}
 
 func (c *Client) ListClusters(args *ListClustersReq) (*ListClustersResult, error) {
 	result := &ListClustersResult{}
