@@ -24,7 +24,7 @@ func (c *Client) CreateCluster(args *CreateClusterReq) (*CreateClusterResult, er
 		WithURI(eksURI).
 		WithMethod(http.POST).
 		WithQueryParam("Action", CreateClusterAction).
-		WithQueryParams(params).
+		WithBody(params).
 		WithResult(result).
 		Do()
 
