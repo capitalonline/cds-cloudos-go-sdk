@@ -45,3 +45,15 @@ func NewClient(ak, sk string) (*Client, error) {
 	client.Config.Retry = cds.NewNoRetryPolicy()
 	return &Client{client}, nil
 }
+
+func NewClientWidthEndpoint(ak, sk string, endpoint string) (*Client, error) {
+	if endpoint == "" {
+		endpoint = eksEndpoint
+	}
+	client, err := cds.NewCdsClientWithAkSk(ak, sk, endpoint)
+	if err != nil {
+		return nil, err
+	}
+	client.Config.Retry = cds.NewNoRetryPolicy()
+	return &Client{client}, nil
+}
