@@ -218,9 +218,9 @@ type TaskStatusResult struct {
 }
 
 type TaskStatusDetail struct {
-	TaskId     string `json:"ClusterId"`
-	TaskMsg    string `json:"ClusterIp"`
-	TaskStatus string `json:"VpcId"`
+	TaskId     string `json:"TaskId"`
+	TaskMsg    string `json:"TaskMsg"`
+	TaskStatus string `json:"TaskStatus"`
 }
 
 type GetClusterDetail struct {
