@@ -23,9 +23,10 @@ import (
 
 const (
 	// 不同产品线 endpoint可能会不一致
-	eksEndpoint    = "https://api.capitalonline.net"
-	eksURI         = "/eks/v1"
-	EnvEksEndpoint = "EKS_ENDPOINT"
+	eksEndpoint     = "https://api.capitalonline.net"
+	eksURI          = "/eks/v1"
+	EnvEKSAPIHost   = "EKS_API_HOST"
+	EnvEKSAPISchema = "EKS_API_SCHEMA"
 )
 
 // Client of EKS service is a kind of CdsClient, so derived from CdsClient
@@ -34,10 +35,17 @@ type Client struct {
 }
 
 func NewClient(ak, sk string) (*Client, error) {
-	endpoint := os.Getenv(EnvEksEndpoint)
-	if endpoint == "" {
+	var endpoint string
+
+	host := os.Getenv(EnvEKSAPIHost)
+	schema := os.Getenv(EnvEKSAPISchema)
+
+	if host == "" || schema == "" {
 		endpoint = eksEndpoint
+	} else {
+		endpoint = schema + "://" + host
 	}
+
 	client, err := cds.NewCdsClientWithAkSk(ak, sk, endpoint)
 	if err != nil {
 		return nil, err
