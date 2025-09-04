@@ -16,12 +16,16 @@ limitations under the License.
 
 package eks
 
-import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
+import (
+	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
+	"os"
+)
 
 const (
 	// 不同产品线 endpoint可能会不一致
-	eksEndpoint = "http://gateway.gic.test"
-	eksURI      = "/eks/v1"
+	eksEndpoint    = "https://api.capitalonline.net"
+	eksURI         = "/eks/v1"
+	EnvEksEndpoint = "EKS_ENDPOINT"
 )
 
 // Client of EKS service is a kind of CdsClient, so derived from CdsClient
@@ -30,8 +34,11 @@ type Client struct {
 }
 
 func NewClient(ak, sk string) (*Client, error) {
-
-	client, err := cds.NewCdsClientWithAkSk(ak, sk, eksEndpoint)
+	endpoint := os.Getenv(EnvEksEndpoint)
+	if endpoint == "" {
+		endpoint = eksEndpoint
+	}
+	client, err := cds.NewCdsClientWithAkSk(ak, sk, endpoint)
 	if err != nil {
 		return nil, err
 	}
