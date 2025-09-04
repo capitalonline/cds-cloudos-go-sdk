@@ -12,6 +12,7 @@ const (
 	GetClusterEventsAction = "GetClusterEvents"
 	DeleteClusterAction    = "DeleteCluster"
 	GetClusterAction       = "GetCluster"
+	GetTaskStatusAction    = "TaskStatus"
 )
 
 func (c *Client) CreateCluster(args *CreateClusterReq) (*CreateClusterResult, error) {
@@ -83,6 +84,20 @@ func (c *Client) GetCluster(clusterId string) (*GetClusterResult, error) {
 		WithMethod(http.GET).
 		WithQueryParam("Action", GetClusterAction).
 		WithQueryParam("ClusterId", clusterId).
+		WithResult(result).
+		Do()
+
+	return result, err
+}
+
+func (c *Client) GetTaskStatus(taskId string) (*TaskStatusResult, error) {
+	result := &TaskStatusResult{}
+
+	err := cds.NewRequestBuilder(c).
+		WithURI(eksURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", GetTaskStatusAction).
+		WithQueryParam("TaskId", taskId).
 		WithResult(result).
 		Do()
 

@@ -212,6 +212,17 @@ type GetClusterResult struct {
 	OpenApiCommonResp
 }
 
+type TaskStatusResult struct {
+	Data TaskStatusDetail `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type TaskStatusDetail struct {
+	TaskId     string `json:"ClusterId"`
+	TaskMsg    string `json:"ClusterIp"`
+	TaskStatus string `json:"VpcId"`
+}
+
 type GetClusterDetail struct {
 	ClusterId       string     `json:"ClusterId"`
 	Ak              string     `json:"Ak"`
