@@ -426,6 +426,21 @@ type CreateClusterResult struct {
 	OpenApiCommonResp
 }
 
+type AddClusterSubnetReq struct {
+	ClusterId  string          `json:"ClusterId"`
+	SubnetList []ClusterSubnet `json:"SubnetList"`
+}
+
+type ClusterSubnet struct {
+	SubnetId  string `json:"SubnetId"`
+	Segment   string `json:"Segment"`
+	UsedIpNum int    `json:"UsedIpNum"`
+}
+
+type AddClusterSubnetResult struct {
+	OpenApiCommonResp
+}
+
 type CniType string
 
 // cni类型

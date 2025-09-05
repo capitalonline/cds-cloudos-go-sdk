@@ -13,6 +13,7 @@ const (
 	DeleteClusterAction    = "DeleteCluster"
 	GetClusterAction       = "GetCluster"
 	GetTaskStatusAction    = "TaskStatus"
+	AddClusterSubnetAction = "AddClusterSubnet"
 )
 
 func (c *Client) CreateCluster(args *CreateClusterReq) (*CreateClusterResult, error) {
@@ -98,6 +99,20 @@ func (c *Client) GetTaskStatus(taskId string) (*TaskStatusResult, error) {
 		WithMethod(http.GET).
 		WithQueryParam("Action", GetTaskStatusAction).
 		WithQueryParam("TaskId", taskId).
+		WithResult(result).
+		Do()
+
+	return result, err
+}
+
+func (c *Client) AddClusterSubnet(args *AddClusterSubnetReq) (*AddClusterSubnetResult, error) {
+	result := &AddClusterSubnetResult{}
+
+	err := cds.NewRequestBuilder(c).
+		WithURI(eksURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", AddClusterSubnetAction).
+		WithBody(args).
 		WithResult(result).
 		Do()
 
