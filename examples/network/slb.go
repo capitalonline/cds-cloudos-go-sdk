@@ -26,10 +26,10 @@ func ListVpcSlb() {
 	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	listVpcSlbArgs := &slb.ListVpcSlbReq{
+	args := &slb.ListVpcSlbReq{
 		VpcId: "",
 	}
-	response, err := slbClient.ListVpcSlb(listVpcSlbArgs)
+	response, err := slbClient.ListVpcSlb(args)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -37,15 +37,15 @@ func ListVpcSlb() {
 	fmt.Println(response.Data)
 }
 
-func GetVpcSlb() {
+func GetVpcSlbDetail() {
 	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	getVpcSlbArgs := &slb.GetVpcSlbReq{
+	args := &slb.GetVpcSlbDetailReq{
 		SlbId: "",
 		SlbName: "",
 	}
-	response, err := slbClient.GetVpcSlb(getVpcSlbArgs)
+	response, err := slbClient.GetVpcSlbDetail(args)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -56,5 +56,5 @@ func GetVpcSlb() {
 
 func main() {
 	ListVpcSlb()
-// 	GetVpcSlb()
+	// GetVpcSlbDetail()
 }
