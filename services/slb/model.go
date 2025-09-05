@@ -32,7 +32,7 @@ type ListVpcSlbResult struct {
 	CommonTask
 }
 
-type GetVpcSlbReq struct {
+type GetVpcSlbDetailReq struct {
 	SlbId string `json:"SlbId"`
 	SlbName string `json:"SlbName"`
 }

@@ -70,8 +70,50 @@
         - [X] UpdateNATRule
         - [X] DeleteNATRule
 
+## 高性能负载均衡管理
 
-- [X] 高性能负载均衡管理
-    - [X] DescribeVpcSlbList
-    - [X] DescribeVpcSlb
+### 查询VPC下的SLB列表
+查询指定VPC下的SLB列表信息
+```go
+// import github.com/capitalonline/cds-cloudos-go-sdk/services/slb
+ak, sk := "", ""
 
+slbClient, _ := slb.NewClient(ak, sk)
+args := &slb.ListVpcSlbReq{
+    // 需要查询的VPC ID
+    VpcId: "",
+}
+response, err := slbClient.ListVpcSlb(args)
+if err != nil {
+    fmt.Println(err)
+}
+// 获取返回的完整信息
+fmt.Printf(">>> response: %+v", response)
+// 获取VPC下SLB列表信息
+fmt.Println(response.Data)
+```
+
+### 查询指定SLB
+```go
+// import github.com/capitalonline/cds-cloudos-go-sdk/services/slb
+ak, sk := "", ""
+
+slbClient, _ := slb.NewClient(ak, sk)
+args := &slb.GetVpcSlbDetailReq{
+    // 需要查询的SLB的ID
+    SlbId: "",
+    // 需要查询的SLB的名称
+    SlbName: "",
+}
+response, err := slbClient.GetVpcSlbDetail(args)
+if err != nil {
+    fmt.Println(err)
+}
+// 获取返回的完整信息
+fmt.Printf(">>> response: %+v", response)
+// 获取SLB详细信息
+fmt.Println(response.Data)
+```
+> 注意: 对请求参数的内容解释如下
+> - SlbId: 此参数允许为空字符串，当此参数为空时会使用SlbName进行实例详情查询，当此参数不为空时将高优先级使用此参数进行实例详情查询，当SlbId和SlbName同时传参时将使用SlbId进行实例详情查询
+> - SlbName: 此参数允许为空字符串，仅当SlbId为空时会使用此参数进行实例详情查询，当SlbId不为空时不会使用此参数进行实例匹配查询

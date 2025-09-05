@@ -41,7 +41,7 @@ func (c *Client) ListVpcSlb(args *ListVpcSlbReq) (*ListVpcSlbResult, error) {
 
 }
 
-func (c *Client) GetVpcSlb(args *GetVpcSlbReq) (*GetVpcSlbResult, error) {
+func (c *Client) GetVpcSlbDetail(args *GetVpcSlbDetailReq) (*GetVpcSlbResult, error) {
 	result := &GetVpcSlbResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
