@@ -24,9 +24,8 @@
         - [X] DeleteNode
     - [X] 节点池管理
         - [X] CreateNodePool
-        - [X] CreateDefaultNodePool
-        - [X] UpdateNodePoolConfig
-        - [X] ListNodePools
+        - [X] ListNodePool
+        - [X] ScalingNodePool
         - [X] DeleteNodePool
     - [X] 弹性网卡ENI管理
         - [X] CreateNetworkInterface
