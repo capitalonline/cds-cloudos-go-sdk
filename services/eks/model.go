@@ -398,24 +398,6 @@ type Specifics struct {
 	ProductName ProductName `json:"ProductName"`
 }
 
-type NodePoolConfig struct {
-	PoolName    string      `json:"PoolName"`
-	NodeType    NodeType    `json:"NodeType"`
-	SubjectId   int         `json:"SubjectId"`
-	NodeConfig  NodeConfig  `json:"NodeConfig"`
-	AutoScaling AutoScaling `json:"AutoScaling,omitempty"`
-	Replicas    int         `json:"Replicas"`
-}
-
-type AutoScaling struct {
-	Enable         bool   `json:"Enable"`
-	MaxReplicas    int    `json:"MaxReplicas"`
-	MinReplicas    int    `json:"MinReplicas"`
-	Priority       int    `json:"Priority"`
-	SubnetPolicy   string `json:"SubnetPolicy"`
-	ScalingGroupId string `json:"ScalingGroupId"`
-}
-
 type CreateClusterData struct {
 	ClusterId string `json:"ClusterId"`
 	TaskId    string `json:"TaskId"`
@@ -492,6 +474,7 @@ const (
 type ProductName string
 
 // 产品名称及CPU个数,内存大小，GPU数量
+// 已废弃的规格，保留用于向后兼容
 const (
 	ProductName1 ProductName = "Optimized M6,2,4,0"
 	ProductName2 ProductName = "Optimized M6,4,8,0"
@@ -587,3 +570,23 @@ const (
 	Duration13 Duration = 24
 	Duration14 Duration = 36
 )
+
+// NodePoolConfig 节点池配置 (用于集群创建)
+type NodePoolConfig struct {
+	PoolName    string      `json:"PoolName"`
+	NodeType    NodeType    `json:"NodeType"`
+	SubjectId   int         `json:"SubjectId"`
+	NodeConfig  NodeConfig  `json:"NodeConfig"`
+	AutoScaling AutoScaling `json:"AutoScaling,omitempty"`
+	Replicas    int         `json:"Replicas"`
+}
+
+// AutoScaling 自动伸缩配置
+type AutoScaling struct {
+	Enable         bool   `json:"Enable"`
+	MaxReplicas    int    `json:"MaxReplicas"`
+	MinReplicas    int    `json:"MinReplicas"`
+	Priority       int    `json:"Priority"`
+	SubnetPolicy   string `json:"SubnetPolicy"`
+	ScalingGroupId string `json:"ScalingGroupId"`
+}
