@@ -1,138 +1,248 @@
 # EKS NodePool SDK 使用指南
 
-本文档介绍如何使用EKS NodePool相关的4个SDK方法：CreateNodePool、ListNodePool、DeleteNodePool、ScalingNodePool。
+本文档详细介绍如何使用 EKS NodePool 相关的 SDK 方法，包括节点池的创建、查询、扩缩容和删除操作。
 
 ## 功能概述
 
-这些SDK方法提供了完整的节点池管理功能：
+EKS NodePool SDK 提供了完整的 Kubernetes 节点池管理功能：
 
-- **CreateNodePool**: 创建新的节点池
-- **ListNodePool**: 查询集群中的节点池列表
-- **DeleteNodePool**: 删除指定的节点池
-- **ScalingNodePool**: 伸缩节点池中的节点数量
+- **CreateNodePool**: 创建新的节点池，支持 ECS 云主机和 BMS 裸金属两种节点类型
+- **ListNodePool**: 查询指定集群中的所有节点池信息
+- **ScalingNodePool**: 弹性伸缩节点池中的节点数量
+- **DeleteNodePool**: 安全删除指定的节点池
+
+支持多种场景：
+- 🖥️ **ECS-CPU** 节点池：适用于通用计算工作负载
+- 🚀 **ECS-GPU** 节点池：适用于AI/ML推理任务
+- ⚡ **BMS-GPU** 节点池：适用于高性能计算场景
+- 💰 **按需付费/包年包月**：灵活的计费方式
 
 ## 快速开始
 
-### 1. 初始化客户端
+### 初始化客户端
 
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
 
+// 替换为您的实际访问密钥
 ak := "your_access_key"
 sk := "your_secret_key"
 
+// 创建 EKS 客户端实例
 client, err := eks.NewClient(ak, sk)
 if err != nil {
-    log.Fatalf("Failed to create client: %v", err)
+    log.Fatalf("初始化 EKS 客户端失败: %v", err)
 }
 ```
 
-### 2. 创建节点池
+## 节点池管理示例
 
-#### ECS GPU节点池示例
+### 1. 创建 ECS-CPU 节点池（按需付费）
 
 ```go
-createReq := &eks.CreateNodePoolReq{
-    ClusterId: "cluster-xxxxx",
-    VpcId:     "vpc-xxxxx",
-    Config: eks.NodePoolConfiguration{
-        PoolName:  "gpu-nodepool",
-        NodeType:  eks.NodePoolNodeTypeECS,
-        SubjectId: 1,
-        NodeConfig: eks.NodePoolNodeConfig{
-            BillingSpec: eks.NodePoolBillingSpec{
-                BillingMethod: eks.NodePoolBillingMethodPostPaid, // 按需付费
-                Duration:      1,
-                IsToMonth:     0,
-                AutoRenew:     0,
-            },
-            SystemDisk: eks.NodePoolDiskInfo{
-                DiskType: eks.NodePoolDiskTypeSSD,
-                DiskSize: 40,
-            },
-            DataDisk: []eks.NodePoolDiskInfo{
-                {
-                    DiskType: eks.NodePoolDiskTypeSSD,
-                    DiskSize: 80,
+func CreateECSNodePool() {
+    ak, sk := "your-ak", "your-sk"  // 替换为您的实际密钥
+    eksClient, _ := eks.NewClient(ak, sk)
+    
+    req := &eks.CreateNodePoolReq{
+        ClusterId: "cluster-01",  // 集群ID，必须是已存在的集群
+        VpcId:     "vpc-01",      // VPC ID，必须与集群在同一VPC
+        Config: eks.NodePoolConfiguration{
+            PoolName: "ecs-cpu-node-pool",  // 节点池名称，1-26个字符
+            NodeType: eks.NodePoolNodeTypeECS,  // 节点类型：ECS 云主机
+            SubjectId: 0,  // 测试金项目ID; 如果没有申请默认不传或传0
+            NodeConfig: eks.NodePoolNodeConfig{
+                BillingSpec: eks.NodePoolBillingSpec{
+                    BillingMethod: eks.NodePoolBillingMethodPostPaid,  // 按需付费
+                },
+                SystemDisk: eks.NodePoolDiskInfo{
+                    DiskType: eks.NodePoolDiskTypeSSD,  // 系统盘类型：SSD
+                    DiskSize: 40,  // 系统盘为固定值40GB
+                },
+                DataDisk: []eks.NodePoolDiskInfo{
+                    {
+                        DiskType: eks.NodePoolDiskTypeSSD,  // 数据盘类型：SSD
+                        DiskSize: 80,  // 数据盘大小：最小值80，步长80
+                    },
+                },
+                OsImageName: eks.EcsUbuntu2204K8s13014Cpu,  // 实例镜像名称
+                SubnetIds: []string{"subnet-01", "subnet-02"},  // VPC子网ID
+                InstanceTypeIds: []string{
+                    eks.EcsCpuC11Compute2XLarge,  // CPU计算型C11 8C16G
+                },
+                Password: "YourPassword123!",  // eks用户登录密码
+                Shell: "#!/bin/bash\necho 'ECS CPU Node initialization complete'",
+                Labels: map[string]string{
+                    "node-type": "ecs-cpu",
+                    "team":      "backend",
                 },
             },
-            OsImageName: eks.NodePoolOsImageUbuntu2204K8s1_30_14,
-            SubnetIds:   []string{"subnet-xxxxx"},
-            // 使用单个CPU规格（每个节点池只能选择一种实例类型）
-            InstanceTypeIds: []string{
-                eks.NodePoolInstanceTypeECSGPU, // 推理型智算云主机
-            },
-            Password: "YourPassword123!",
-            Shell:    "#!/bin/bash\\necho 'GPU Node initialization complete'",
-            Labels: map[string]string{
-                "env":       "production",
-                "node-type": "gpu",
-                "team":      "ai",
-            },
+            Replicas: 3,  // 期望节点数量
         },
-        Replicas: 1,
-    },
-}
-
-result, err := client.CreateNodePool(createReq)
-if err != nil {
-    log.Printf("Failed to create node pool: %v", err)
-} else {
-    fmt.Printf("NodePool created: ID=%s, TaskId=%s\\n", 
-        result.Data.NodePoolId, result.Data.TaskId)
+    }
+    
+    response, err := eksClient.CreateNodePool(req)
+    if err != nil {
+        fmt.Printf("创建节点池失败: %v\n", err)
+        return
+    }
+    fmt.Printf("节点池创建成功: ID=%s, TaskId=%s\n", 
+        response.Data.NodePoolId, response.Data.TaskId)
 }
 ```
 
-#### ECS CPU节点池示例
+### 2. 创建 ECS-GPU 节点池（按需付费）
 
 ```go
-createReq := &eks.CreateNodePoolReq{
-    ClusterId: "cluster-xxxxx",
-    VpcId:     "vpc-xxxxx",
-    Config: eks.NodePoolConfiguration{
-        PoolName:  "cpu-nodepool",
-        NodeType:  eks.NodePoolNodeTypeECS,
-        SubjectId: 1,
-        NodeConfig: eks.NodePoolNodeConfig{
-            // ... 其他配置相同 ...
-            // 使用单个CPU规格（每个节点池只能选择一种实例类型）
-            InstanceTypeIds: []string{
-                eks.NodePoolInstanceTypeECSCPUC11Small, // CPU计算型C11.2c4g
+func CreateECSGPUNodePool() {
+    ak, sk := "your-ak", "your-sk"
+    eksClient, _ := eks.NewClient(ak, sk)
+    
+    req := &eks.CreateNodePoolReq{
+        ClusterId: "cluster-02",
+        VpcId:     "vpc-02",
+        Config: eks.NodePoolConfiguration{
+            PoolName: "ecs-gpu-node-pool",  // GPU 节点池名称
+            NodeType: eks.NodePoolNodeTypeECS,
+            NodeConfig: eks.NodePoolNodeConfig{
+                BillingSpec: eks.NodePoolBillingSpec{
+                    BillingMethod: eks.NodePoolBillingMethodPostPaid,
+                },
+                SystemDisk: eks.NodePoolDiskInfo{
+                    DiskType: eks.NodePoolDiskTypeSSD,
+                    DiskSize: 40,
+                },
+                DataDisk: []eks.NodePoolDiskInfo{
+                    {
+                        DiskType: eks.NodePoolDiskTypeSSD,
+                        DiskSize: 80,   // 第一块数据盘
+                    },
+                    {
+                        DiskType: eks.NodePoolDiskTypeSSD,
+                        DiskSize: 160,  // 第二块数据盘，可按需添加多块
+                    },
+                },
+                OsImageName: eks.EcsUbuntu2204K8s13014Cpu,
+                SubnetIds:   []string{"subnet-01"},
+                InstanceTypeIds: []string{
+                    eks.EcsGpuGch4XLarge,  // GPU推理型实例
+                },
+                Password: "YourPassword123!",
+                Shell:    "#!/bin/bash\necho 'ECS GPU Node initialization complete'",
+                Labels: map[string]string{
+                    "env":       "production",
+                    "node-type": "ecs-gpu",
+                    "team":      "ai",
+                },
             },
-            // ... 其他配置 ...
+            Replicas: 2,
         },
-        Replicas: 3,
-    },
+    }
+    
+    response, err := eksClient.CreateNodePool(req)
+    if err != nil {
+        fmt.Printf("创建 GPU 节点池失败: %v\n", err)
+        return
+    }
+    fmt.Printf("GPU 节点池创建成功: ID=%s, TaskId=%s\n", 
+        response.Data.NodePoolId, response.Data.TaskId)
 }
 ```
 
-#### BMS GPU节点池示例
+### 3. 创建 BMS-GPU 节点池（按需付费）
 
 ```go
-createReq := &eks.CreateNodePoolReq{
-    ClusterId: "cluster-xxxxx",
-    VpcId:     "vpc-xxxxx",
-    Config: eks.NodePoolConfiguration{
-        PoolName:  "bms-gpu-nodepool",
-        NodeType:  eks.NodePoolNodeTypeBMS,
-        SubjectId: 1,
-        NodeConfig: eks.NodePoolNodeConfig{
-            BillingSpec: eks.NodePoolBillingSpec{
-                BillingMethod: eks.NodePoolBillingMethodPrePaid, // 裸金属通常用包月
-                Duration:      1,
-                IsToMonth:     0,
-                AutoRenew:     0,
+func CreateBMSNodePoolPostPaid() {
+    ak, sk := "your-ak", "your-sk"
+    eksClient, _ := eks.NewClient(ak, sk)
+    
+    req := &eks.CreateNodePoolReq{
+        ClusterId: "cluster-03",
+        VpcId:     "vpc-03",
+        Config: eks.NodePoolConfiguration{
+            PoolName:  "bms-gpu-postpaid-node-pool",
+            NodeType:  eks.NodePoolNodeTypeBMS,  // 裸金属节点类型
+            SubjectId: 0,
+            NodeConfig: eks.NodePoolNodeConfig{
+                BillingSpec: eks.NodePoolBillingSpec{
+                    BillingMethod: eks.NodePoolBillingMethodPostPaid,
+                },
+                // 首云裸金属暂不支持挂载云盘，使用裸金属本地盘
+                SystemDisk: eks.NodePoolDiskInfo{},
+                DataDisk:   []eks.NodePoolDiskInfo{},
+                OsImageName: eks.BmsUbuntu2204K8s13014GpuRtx4090,  // 裸金属实例镜像
+                SubnetIds: []string{"subnet-03", "subnet-04"},
+                InstanceTypeIds: []string{
+                    eks.BmsGpuGbm32XLarge,  // 推理型智算云主机igch.c8.nr4 16C64G
+                },
+                Password: "YourPassword123!",
+                Shell:    "#!/bin/bash\necho 'BMS GPU PostPaid Node initialization complete'",
+                Labels: map[string]string{
+                    "node-type":    "bms-gpu-rtx-4090",
+                    "billing-type": "postpaid",
+                },
             },
-            // ... 其他配置 ...
-            // BMS只支持GPU规格
-			// 使用单个GPU规格(每个节点池只能选择一种实例类型)
-            InstanceTypeIds: []string{
-                eks.NodePoolInstanceTypeBMSGPU, // 推理型GPU裸金属
-            },
-            // ... 其他配置 ...
+            Replicas: 1,  // 裸金属通常数量较少且昂贵
         },
-        Replicas: 1,
-    },
+    }
+    
+    response, err := eksClient.CreateNodePool(req)
+    if err != nil {
+        fmt.Printf("创建裸金属节点池失败: %v\n", err)
+        return
+    }
+    fmt.Printf("裸金属节点池创建成功: ID=%s, TaskId=%s\n", 
+        response.Data.NodePoolId, response.Data.TaskId)
+}
+```
+
+### 4. 创建 BMS-GPU 节点池（包年包月）
+
+```go
+func CreateBMSNodePoolPrePaid() {
+    ak, sk := "your-ak", "your-sk"
+    eksClient, _ := eks.NewClient(ak, sk)
+    
+    req := &eks.CreateNodePoolReq{
+        ClusterId: "cluster-04",
+        VpcId:     "vpc-04",
+        Config: eks.NodePoolConfiguration{
+            PoolName:  "bms-gpu-prepaid-node-pool",
+            NodeType:  eks.NodePoolNodeTypeBMS,
+            SubjectId: 0,
+            NodeConfig: eks.NodePoolNodeConfig{
+                BillingSpec: eks.NodePoolBillingSpec{
+                    BillingMethod: eks.NodePoolBillingMethodPrePaid,  // 包年包月
+                    Duration:      3,   // 购买时长3个月
+                    IsToMonth:     1,   // 是否购买至当月底
+                    AutoRenew:     1,   // 到期开启自动续费
+                },
+                SystemDisk:  eks.NodePoolDiskInfo{},
+                DataDisk:    []eks.NodePoolDiskInfo{},
+                OsImageName: eks.BmsUbuntu2204K8s13014GpuRtx4090,
+                SubnetIds:   []string{"subnet-01"},
+                InstanceTypeIds: []string{
+                    eks.BmsGpuGbm32XLarge,
+                },
+                Password: "YourPassword123!",
+                Shell:    "#!/bin/bash\necho 'BMS GPU PrePaid Node initialization complete'",
+                Labels: map[string]string{
+                    "env":          "production",
+                    "node-type":    "bms-gpu",
+                    "billing-type": "prepaid",
+                },
+            },
+            Replicas: 1,
+        },
+    }
+    
+    response, err := eksClient.CreateNodePool(req)
+    if err != nil {
+        fmt.Printf("创建包月裸金属节点池失败: %v\n", err)
+        return
+    }
+    fmt.Printf("包月裸金属节点池创建成功: ID=%s, TaskId=%s\n", 
+        response.Data.NodePoolId, response.Data.TaskId)
 }
 ```
 
@@ -234,22 +344,8 @@ if err != nil {
 
 - `eks.NodePoolInstanceTypeBMSGPU`: "推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu" - 128核1024G 8GPU
 
-### 实例类型辅助方法
 
-```go
-// 获取所有支持的实例类型
-supportedTypes := eks.GetNodePoolSupportedInstanceTypes()
 
-// 根据节点类型获取支持的实例类型
-ecsTypes := eks.GetNodePoolSupportedInstanceTypesForNodeType(eks.NodePoolNodeTypeECS)
-bmsTypes := eks.GetNodePoolSupportedInstanceTypesForNodeType(eks.NodePoolNodeTypeBMS)
-
-// 检查实例类型是否支持
-isSupported := eks.IsNodePoolInstanceTypeSupported("推理型智算云主机igch.c8.nr4.16c64g1gpu")
-
-// 验证实例类型是否适用于指定节点类型
-isValid := eks.ValidateNodePoolInstanceTypeForNodeType("推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu", eks.NodePoolNodeTypeBMS)
-```
 
 ### 其他常用常量
 
@@ -267,27 +363,6 @@ isValid := eks.ValidateNodePoolInstanceTypeForNodeType("推理型GPU裸金属igb
 #### 操作系统镜像
 - `eks.NodePoolOsImageUbuntu2204K8s1_30_14`: "eks-Ubuntu22.04-cpu-k8s1.30.14-v1"
 
-## 重要变更说明
-
-### 🔄 全新的NodePool SDK
-
-本SDK采用了全新的数据结构设计，完全按照eks-service中的openapi_body.CreateNodePoolReq结构体生成：
-
-- 使用 `InstanceTypeIds` 字段指定实例类型，支持最新的实例规格
-- 计费配置中字段名与OpenAPI项目完全一致（如 `InstanceChargeType`、`Period` 等）
-- 磁盘配置使用 `SystemVolume` 和 `DataVolumes` 字段名
-- 所有结构体都有 `NodePool` 前缀以避免与原有集群创建API的命名冲突
-
-### 与集群创建API的区别
-
-NodePool专用API与集群创建时的NodePool配置在以下方面有所不同：
-
-| 特性 | 集群创建API | NodePool专用API |
-|------|------------|----------------|
-| 结构体前缀 | 无前缀（如 `NodeConfig`） | `NodePool` 前缀（如 `NodePoolNodeConfig`） |
-| 实例类型指定 | `Specifics` 字段（已废弃） | `InstanceTypeIds` 字段 |
-| 字段命名风格 | 驼峰命名 | 与OpenAPI项目一致 |
-| 自动伸缩 | 包含 `AutoScaling` 配置 | 不包含，通过独立API管理 |
 
 ## 错误处理
 
@@ -333,7 +408,7 @@ fmt.Printf("NodePool created successfully: %+v\\n", result.Data)
 
 ## 相关文档
 
-- [EKS 总体文档](./EKS.md)
+- [EKS容器服务 总体文档](./EKS.md)
 
 ---
 
