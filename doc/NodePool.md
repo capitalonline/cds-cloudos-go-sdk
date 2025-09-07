@@ -210,17 +210,17 @@ if err != nil {
 
 ### NodePoolNodeConfig
 
-| 字段 | 类型 | 必填 | 描述 |
-|------|------|------|------|
-| BillingSpec | NodePoolBillingSpec | 是 | 计费配置 |
-| SystemDisk | NodePoolDiskInfo | 是 | 系统卷配置 |
-| DataDisk | []NodePoolDiskInfo | 否 | 数据卷配置 |
-| OsImageName | string | 是 | 操作系统镜像 |
-| SubnetIds | []string | 是 | 子网ID列表 |
+| 字段              | 类型 | 必填 | 描述 |
+|-----------------|------|------|------|
+| BillingSpec     | NodePoolBillingSpec | 是 | 计费配置 |
+| SystemVolume    | NodePoolDiskInfo | 是 | 系统卷配置 |
+| DataDiskVolumes | []NodePoolDiskInfo | 否 | 数据卷配置 |
+| OsImageName     | string | 是 | 操作系统镜像 |
+| SubnetIds       | []string | 是 | 子网ID列表 |
 | InstanceTypeIds | []string | 是 | 实例类型ID列表（只能指定一种实例类型） |
-| Password | string | 是 | 节点密码 |
-| Shell | string | 否 | 初始化脚本 |
-| Labels | map[string]string | 否 | 节点标签 |
+| Password        | string | 是 | 节点密码 |
+| Shell           | string | 否 | 初始化脚本 |
+| Labels          | map[string]string | 否 | 节点标签 |
 
 ## 实例类型常量
 
