@@ -179,68 +179,73 @@ func main() {
 package main
 
 import (
-    "fmt"
-    "os"
-    
-    "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
+  "fmt"
+  "os"
+
+  "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
 )
 
 func main() {
-    // 创建客户端
-    client, err := eks.NewClient(os.Getenv("CDS_SECRET_ID"), os.Getenv("CDS_SECRET_KEY"))
-    if err != nil {
-        panic(err)
-    }
-    
-    // 创建GPU节点池
-    createReq := &eks.CreateNodePoolReq{
-        ClusterId: "cluster-xxxxx",
-        VpcId:     "vpc-xxxxx", 
-        Config: eks.NodePoolConfiguration{
-            PoolName:  "gpu-nodepool",
-            NodeType:  eks.NodePoolNodeTypeECS,
-            SubjectId: 1,
-            NodeConfig: eks.NodePoolNodeConfig{
-                BillingSpec: eks.NodePoolBillingSpec{
-                    BillingMethod: eks.NodePoolBillingMethodPostPaid,
-                    Duration:      1,
-                    IsToMonth:     0,
-                    AutoRenew:     0,
-                },
-                SystemDisk: eks.NodePoolDiskInfo{
-                    DiskType: eks.NodePoolDiskTypeSSD,
-                    DiskSize: 40,
-                },
-                DataDisk: []eks.NodePoolDiskInfo{
-                    {
-                        DiskType: eks.NodePoolDiskTypeSSD,
-                        DiskSize: 80,
-                    },
-                },
-                OsImageName: eks.NodePoolOsImageUbuntu2204K8s1_30_14,
-                SubnetIds:   []string{"subnet-xxxxx"},
-                InstanceTypeIds: []string{
-                    eks.NodePoolInstanceTypeECSGPU, // GPU实例
-                },
-                Password: "YourPassword123!",
-                Labels: map[string]string{
-                    "env": "production",
-                    "team": "ai",
-                },
-            },
-            Replicas: 1,
+  // 创建客户端
+  client, err := eks.NewClient(os.Getenv("CDS_SECRET_ID"), os.Getenv("CDS_SECRET_KEY"))
+  if err != nil {
+    panic(err)
+  }
+
+  // 创建GPU裸金属节点池
+  req := &eks.CreateNodePoolReq{
+    ClusterId: "cluster-03",
+    VpcId:     "vpc-03",
+    Config: eks.NodePoolConfiguration{
+      PoolName:  "bms-gpu-postpaid-node-pool",
+      NodeType:  eks.NodePoolNodeTypeBMS,
+      SubjectId: 0,
+      NodeConfig: eks.NodePoolNodeConfig{
+        BillingSpec: eks.NodePoolBillingSpec{
+          BillingMethod: eks.NodePoolBillingMethodPostPaid, // 按需付费
         },
-    }
-    
-    result, err := client.CreateNodePool(createReq)
-    if err != nil {
-        fmt.Printf("创建节点池失败: %v\\n", err)
-        return  
-    }
-    
-    fmt.Printf("节点池创建成功: ID=%s, TaskId=%s\\n", 
-        result.Data.NodePoolId, result.Data.TaskId)
+        // 首云裸金属暂不支持挂载云盘，使用裸金属本地盘
+        SystemDisk: eks.NodePoolDiskInfo{},
+        DataDisk:   []eks.NodePoolDiskInfo{},
+
+        // OsImageName 裸金属实例镜像
+        OsImageName: eks.BmsUbuntu2204K8s13014GpuRtx4090,
+
+        // SubnetIds VPC子网ID,支持多选，必须是同一可用区
+        SubnetIds: []string{"subnet-03", "subnet-04"},
+
+        // InstanceTypeIds 裸金属实例类型，目前首云仅支持一个，后续开放多实例规格
+        InstanceTypeIds: []string{
+          // 推理型智算云主机igch.c8.nr4 16C64G
+          eks.BmsGpuGbm32XLarge,
+        },
+
+        // Password eks用户登录密码，节点初始化完毕后自动创建eks用户
+        Password: "YourPassword123!",
+
+        // Shell 节点初始化完成后执行脚本命令
+        Shell: "#!/bin/bash\necho 'BMS GPU PostPaid Node initialization complete'",
+
+        // Labels 节点k8s标签
+        Labels: map[string]string{
+          "node-type":    "bms-gpu-rtx-4090",
+          "billing-type": "postpaid",
+        },
+      },
+      Replicas: 1, // 裸金属通常数量较少且昂贵
+    },
+  }
+
+  result, err := client.CreateNodePool(createReq)
+  if err != nil {
+    fmt.Printf("创建节点池失败: %v\\n", err)
+    return
+  }
+
+  fmt.Printf("节点池创建成功: ID=%s, TaskId=%s\\n",
+    result.Data.NodePoolId, result.Data.TaskId)
 }
+
 ```
 
 # 配置
@@ -271,14 +276,12 @@ client, err := eks.NewClient(ak, sk)
 
 // 自定义HTTP客户端配置
 client.Config.ConnectionTimeoutInMillis = 30 * 1000  // 30秒超时
-client.Config.Region = "beijing"                     // 指定区域
 ```
 
 ### 配置选项说明
 
 | 配置项名称 | 类型 | 默认值 | 说明 |
 |-----------|------|--------|------|
-| Region | string | beijing | 请求资源的区域 |
 | ConnectionTimeoutInMillis | int | 120000 | 连接超时时间（毫秒） |
 | UserAgent | string | cds-go-sdk | HTTP请求的User-Agent |
 | MaxRetries | int | 3 | 最大重试次数 |
@@ -387,17 +390,10 @@ VPC为您提供了一个在云上的私有网络环境。
 
 - ✅ VPC查询和管理
 - ✅ 子网管理
-- ✅ 路由表配置
-- ✅ 安全组管理
+- ✅ SLB负载均衡
 
-## 其他服务
 
-- **EIP弹性公网IP**: 灵活的公网IP资源管理
-- **SLB负载均衡**: 高可用的流量分发服务
-- **NAT网关**: 网络地址转换服务
-- **带宽包**: 网络带宽资源统一管理
-
-详细API文档请参考各服务的说明文档。
+详细SDK文档请参考doc目录各服务的说明文档。
 
 # 最佳实践
 
@@ -465,20 +461,16 @@ for _, task := range tasks {
 
 # 版本历史
 
-## v1.2.0 (最新)
+## v0.0.24 (最新)
 - ✨ 新增NodePool节点池管理功能
 - ✨ 支持GPU裸金属实例类型
 - 🐛 修复网络超时问题
 - 📚 完善文档和示例
 
-## v1.1.0
-- ✨ 新增EKS容器服务支持
-- ✨ 新增弹性网卡管理
-- 🔧 优化错误处理机制
 
-## v1.0.0
+## v0.0.1
 - 🎉 首次发布
-- ✨ 支持VPC、EIP、SLB等基础服务
+- ✨ 支持VPC、EKS、SLB等基础服务
 
 # 社区支持
 
@@ -488,15 +480,6 @@ for _, task := range tasks {
 - 🐛 [问题反馈](https://github.com/capitalonline/cds-cloudos-go-sdk/issues)
 - 💬 [讨论区](https://github.com/capitalonline/cds-cloudos-go-sdk/discussions)
 
-## 贡献代码
-
-我们欢迎社区贡献！请遵循以下步骤：
-
-1. Fork 本仓库
-2. 创建功能分支: `git checkout -b feature/amazing-feature`
-3. 提交变更: `git commit -m 'Add amazing feature'`
-4. 推送到分支: `git push origin feature/amazing-feature`
-5. 创建Pull Request
 
 ## 开发规范
 
