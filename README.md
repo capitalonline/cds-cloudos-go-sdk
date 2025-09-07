@@ -265,7 +265,6 @@ CDS Go SDK默认使用HTTPS协议确保数据传输安全。所有API调用都�
 ```bash
 export CDS_SECRET_ID="your-access-key-id"
 export CDS_SECRET_KEY="your-secret-access-key"
-export CDS_REGION="beijing"  # 可选，默认区域
 ```
 
 ### 代码配置示例
