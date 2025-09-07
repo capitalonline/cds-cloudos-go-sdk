@@ -58,6 +58,7 @@ createReq := &eks.CreateNodePoolReq{
             },
             OsImageName: eks.NodePoolOsImageUbuntu2204K8s1_30_14,
             SubnetIds:   []string{"subnet-xxxxx"},
+            // 使用单个CPU规格（每个节点池只能选择一种实例类型）
             InstanceTypeIds: []string{
                 eks.NodePoolInstanceTypeECSGPU, // 推理型智算云主机
             },
@@ -94,10 +95,9 @@ createReq := &eks.CreateNodePoolReq{
         SubjectId: 1,
         NodeConfig: eks.NodePoolNodeConfig{
             // ... 其他配置相同 ...
-            // 使用CPU规格
+            // 使用单个CPU规格（每个节点池只能选择一种实例类型）
             InstanceTypeIds: []string{
                 eks.NodePoolInstanceTypeECSCPUC11Small, // CPU计算型C11.2c4g
-                eks.NodePoolInstanceTypeECSCPUC11Large, // CPU计算型C11.8c16g
             },
             // ... 其他配置 ...
         },
@@ -125,6 +125,7 @@ createReq := &eks.CreateNodePoolReq{
             },
             // ... 其他配置 ...
             // BMS只支持GPU规格
+			// 使用单个GPU规格(每个节点池只能选择一种实例类型)
             InstanceTypeIds: []string{
                 eks.NodePoolInstanceTypeBMSGPU, // 推理型GPU裸金属
             },
@@ -216,7 +217,7 @@ if err != nil {
 | DataDisk | []NodePoolDiskInfo | 否 | 数据卷配置 |
 | OsImageName | string | 是 | 操作系统镜像 |
 | SubnetIds | []string | 是 | 子网ID列表 |
-| InstanceTypeIds | []string | 是 | 实例类型ID列表 |
+| InstanceTypeIds | []string | 是 | 实例类型ID列表（只能指定一种实例类型） |
 | Password | string | 是 | 节点密码 |
 | Shell | string | 否 | 初始化脚本 |
 | Labels | map[string]string | 否 | 节点标签 |
