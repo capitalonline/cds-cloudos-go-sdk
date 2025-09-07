@@ -16,8 +16,6 @@ limitations under the License.
 
 package eks
 
-// ======= NodePool专用数据结构定义 =======
-
 // NodePoolBillingSpec 节点池计费配置
 type NodePoolBillingSpec struct {
 	BillingMethod string `json:"InstanceChargeType"` // 实例计费类型：PostPaid(按需付费) / PrePaid(包年包月)
@@ -55,45 +53,36 @@ type NodePoolConfiguration struct {
 	Replicas   int                `json:"Replicas"`     // 节点数量
 }
 
-// ======= NodePool API请求和响应结构体 =======
-
-// CreateNodePoolReq 创建节点池请求
 type CreateNodePoolReq struct {
 	ClusterId string                `json:"ClusterId"` // 集群ID
 	VpcId     string                `json:"VpcId"`     // VPC ID
 	Config    NodePoolConfiguration `json:"Config"`    // 节点池配置
 }
 
-// CreateNodePoolResult 创建节点池响应
 type CreateNodePoolResult struct {
 	Data CreateNodePoolData `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
 
-// CreateNodePoolData 创建节点池返回数据
 type CreateNodePoolData struct {
 	NodePoolId string `json:"NodePoolId"` // 节点池ID
 	TaskId     string `json:"TaskId"`     // 任务ID
 }
 
-// ListNodePoolReq 查询节点池列表请求
 type ListNodePoolReq struct {
 	ClusterId string `json:"ClusterId"` // 集群ID
 }
 
-// ListNodePoolResult 查询节点池列表响应
 type ListNodePoolResult struct {
 	Data ListNodePoolData `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
 
-// ListNodePoolData 节点池列表数据
 type ListNodePoolData struct {
 	Total    int64              `json:"Total"`    // 总数
 	NodePool []NodePoolInfoData `json:"NodePool"` // 节点池列表
 }
 
-// NodePoolInfoData 节点池详细信息
 type NodePoolInfoData struct {
 	AvailableNodeCount int                `json:"AvailableNodeCount"` // 可用节点数
 	TotalNodeCount     int                `json:"TotalNodeCount"`     // 总节点数
@@ -112,125 +101,73 @@ type NodePoolInfoData struct {
 	UpdateTime         string             `json:"UpdateTime"`         // 更新时间
 }
 
-// DeleteNodePoolReq 删除节点池请求
 type DeleteNodePoolReq struct {
 	ClusterId  string `json:"ClusterId"`  // 集群ID
 	NodePoolId string `json:"NodePoolId"` // 节点池ID
 }
 
-// DeleteNodePoolResult 删除节点池响应
 type DeleteNodePoolResult struct {
 	Data DeleteNodePoolData `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
 
-// DeleteNodePoolData 删除节点池返回数据
 type DeleteNodePoolData struct {
 	TaskId string `json:"TaskId"` // 任务ID
 }
 
-// ScalingNodePoolReq 伸缩节点池请求
 type ScalingNodePoolReq struct {
 	ClusterId  string `json:"ClusterId"`  // 集群ID
 	NodePoolId string `json:"NodePoolId"` // 节点池ID
 	Replicas   int    `json:"Replicas"`   // 目标节点数量
 }
 
-// ScalingNodePoolResult 伸缩节点池响应
 type ScalingNodePoolResult struct {
 	Data ScalingNodePoolData `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
 
-// ScalingNodePoolData 伸缩节点池返回数据
 type ScalingNodePoolData struct {
 	TaskId string `json:"TaskId"` // 任务ID
 }
 
-// ======= 实例类型和常量定义 =======
-
-// 计费方式常量
+// 节点池计费方式
 const (
 	NodePoolBillingMethodPostPaid = "PostPaid" // 按需付费
 	NodePoolBillingMethodPrePaid  = "PrePaid"  // 包年包月
 )
 
-// NodePoolDiskTypeSSD 磁盘类型常量
+// NodePoolDiskTypeSSD 节点池支持磁盘类型
 const (
 	NodePoolDiskTypeSSD = "SSD" // SSD磁盘
 )
 
-// 节点类型常量
+// 节点可选类型
 const (
 	NodePoolNodeTypeECS = "ecs" // 云主机
 	NodePoolNodeTypeBMS = "bms" // 裸金属
 )
 
-// 支持的实例类型常量
+// 节点池ECS、BMS实例类型 (持续更新中)
 const (
-	// NodePoolInstanceTypeECSGPU ECS 云主机实例类型
-	NodePoolInstanceTypeECSGPU         = "推理型智算云主机igch.c8.nr4.16c64g1gpu"
-	NodePoolInstanceTypeECSCPUC11Small = "CPU计算型C11.2c4g"
-	NodePoolInstanceTypeECSCPUC11Large = "CPU计算型C11.8c16g"
+	EcsGpuGch4XLarge        = "Inference gch c8 nr4.16c64g1gpu"
+	EcsCpuC11ComputeLarge   = "CPU Compute C11.2c4g"
+	EcsCpuC11Compute2XLarge = "CPU Compute C11.8c16g"
+	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
+	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
 
-	// NodePoolInstanceTypeBMSGPU BMS 裸金属实例类型
-	NodePoolInstanceTypeBMSGPU = "推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu"
+	// BmsGpuGbm32XLarge 20250907 改英文
+	BmsGpuGbm32XLarge = "推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu"
 )
 
-// NodePoolOsImageUbuntu2204K8s1_30_14 操作系统镜像常量
+// ECS、BMS支持的操作系统镜像
 const (
-	NodePoolOsImageUbuntu2204K8s1_30_14 = "eks-Ubuntu22.04-cpu-k8s1.30.14-v1"
+	EcsUbuntu2204K8s13014Cpu         = "Ubuntu22.04-CPU-1.30.14"
+	EcsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26"
+	EcsUbuntu2204K8s12615GpuRtxA5000 = "Ubuntu22.04-GPU-Datacenter-1.26"
+
+	BmsUbuntu2004K8s12615Cpu         = "Ubuntu20.04-CPU-1.26-bms"
+	BmsUbuntu2004K8s12615GpuRtx4090  = "Ubuntu20.04-GPU_CUDA12.8-bms"
+	BmsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26-bms"
+	BmsUbuntu2004K8s12615GpuRtxA5000 = "Ubuntu20.04-GPU-1.26-bms"
+	BmsUbuntu2204K8s13014GpuRtx4090  = "Ubuntu22.04-GPU-1.30.14-bms"
 )
-
-// ======= 实例类型辅助函数 =======
-
-// GetNodePoolSupportedInstanceTypes 获取所有支持的实例类型
-func GetNodePoolSupportedInstanceTypes() []string {
-	return []string{
-		NodePoolInstanceTypeBMSGPU,
-		NodePoolInstanceTypeECSGPU,
-		NodePoolInstanceTypeECSCPUC11Small,
-		NodePoolInstanceTypeECSCPUC11Large,
-	}
-}
-
-// GetNodePoolSupportedInstanceTypesForNodeType 根据节点类型获取支持的实例类型
-func GetNodePoolSupportedInstanceTypesForNodeType(nodeType string) []string {
-	switch nodeType {
-	case NodePoolNodeTypeBMS:
-		return []string{NodePoolInstanceTypeBMSGPU}
-	case NodePoolNodeTypeECS:
-		return []string{
-			NodePoolInstanceTypeECSGPU,
-			NodePoolInstanceTypeECSCPUC11Small,
-			NodePoolInstanceTypeECSCPUC11Large,
-		}
-	default:
-		return GetNodePoolSupportedInstanceTypes()
-	}
-}
-
-// IsNodePoolInstanceTypeSupported 检查实例类型是否支持
-func IsNodePoolInstanceTypeSupported(instanceType string) bool {
-	supportedTypes := map[string]bool{
-		NodePoolInstanceTypeBMSGPU:         true,
-		NodePoolInstanceTypeECSGPU:         true,
-		NodePoolInstanceTypeECSCPUC11Small: true,
-		NodePoolInstanceTypeECSCPUC11Large: true,
-	}
-	return supportedTypes[instanceType]
-}
-
-// ValidateNodePoolInstanceTypeForNodeType 验证实例类型是否适用于指定的节点类型
-func ValidateNodePoolInstanceTypeForNodeType(instanceType string, nodeType string) bool {
-	switch nodeType {
-	case NodePoolNodeTypeBMS:
-		return instanceType == NodePoolInstanceTypeBMSGPU
-	case NodePoolNodeTypeECS:
-		return instanceType == NodePoolInstanceTypeECSGPU ||
-			instanceType == NodePoolInstanceTypeECSCPUC11Small ||
-			instanceType == NodePoolInstanceTypeECSCPUC11Large
-	default:
-		return IsNodePoolInstanceTypeSupported(instanceType)
-	}
-}
