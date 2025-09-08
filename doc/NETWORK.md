@@ -552,18 +552,113 @@ func ListNatGateways() {
 }
 ```
 # 数据结构说明
-
+## 创建vpc请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |
 | ----------------- | ------ | -------- | ----------------------- | ----------------------------------- |
-| RegionCode        | string | 是       | CN_Hongkong             | VPC区域code, 见附件五               |
+| RegionCode        | string | 是       | CN_Hongkong             | VPC区域code               |
 | VPCName           | string | 是       | name                    | VPC名称                             |
-| VPCSegment        | string | 是       | 10.15.0.0/16            | VPC网段   推荐网段，见附件六                          |
+| VPCSegment        | string | 是       | 10.15.0.0/16            | VPC网段   推荐网段          |
 | VPCSegmentType    | string | 是       | auto/manual             | 使用推荐网段或手动分配，              |
-| BandwidthType     | string | 否       | Bandwidth_China_Telecom | VPC带宽类型，边缘节点必传，见附件六 |
+| BandwidthType     | string | 否       | Bandwidth_China_Telecom | VPC带宽类型，边缘节点必传 |
 | SubnetList        | list   | 是       | []                      | 创建VPC必须创建一个子网             |
-| AvailableZoneCode | string | 是       | CN_Hongkong_B           | VPC可用区code, 见附件五             |
+| AvailableZoneCode | string | 是       | CN_Hongkong_B           | VPC可用区code           |
 | SubnetName        | string | 是       | 子网1                   | 子网名称                            |
 | SubnetSegment     | string | 是       | 10.15.1.0/24            | 子网网段                            |
+
+## 查询VPC信息响应数据
+| 名称       | 类型     | 示例值                               | 描述        |
+| :--------- | -------- | :----------------------------------- | :---------- |
+| VPCList    | list     | []                                   | VPC信息列表 |
+| VPCId      | string   | 9304b130-e25b-11ec-a12c-823092f7a5bd | VPC ID      |
+| VPCNmae    | string   | test                                 | VPC名称     |
+| VPCSegment | string   | 10.15.0.0/16                         | VPC网段     |
+| Status     | string   | ok                                   | VPC状态     |
+| RegionCode | string   | CN_Hongkong                          | VPC区域code |
+| CreateTime | datetime | 2022-06-02 18:05:47                  | 创建时间    |
+
+## 创建子网请求参数
+| 名称              | 类型   | 是否必选 | 示例值                               | 描述                    |
+| ----------------- | ------ | -------- | ------------------------------------ | ----------------------- |
+| VPCId             | string | 是       | 0266c864-e573-11ec-a09a-cabfed3cc5e1 | VPC ID                  |
+| SubnetList        | list   | 是       | []                                   | 创建VPC必须创建一个子网 |
+| AvailableZoneCode | string | 是       | CN_Hongkong_B                        | VPC可用区code           |
+| SubnetName        | string | 是       | 子网1                                | 子网名称                |
+| SubnetSegment     | string | 是       | 10.15.1.0/24                         | 子网网段                |
+
+## 查询子网信息响应数据
+| 名称              | 类型   | 示例值                               | 描述       |
+| :---------------- | ------ | :----------------------------------- | :--------- |
+| SubnetList        | list   | []                                   | 子网列表   |
+| SubnetId          | string | 026f4386-e573-11ec-a09a-cabfed3cc5e1 | 子网ID     |
+| SubnetName        | string | 子网1                                | 子网名称   |
+| SubnetSegment     | string | 026f4386-e573-11ec-a09a-cabfed3cc5e1 | 子网网段   |
+| UsedIPNum         | int    | 026f4386-e573-11ec-a09a-cabfed3cc5e1 | 已用IP数量 |
+| VPCId             | string | 026f4386-e573-11ec-a09a-cabfed3cc5e1 | VPC ID     |
+| VPCName           | string | 026f4386-e573-11ec-a09a-cabfed3cc5e1 | VPC名称    |
+| AvailableZoneCode | string | 026f4386-e573-11ec-a09a-cabfed3cc5e1 | 可用区code |
+
+## 创建弹性EIP请求参数
+| 名称              | 类型   | 是否必选                      | 示例值                  | 描述                                                         |
+| ----------------- | ------ | ----------------------------- | ----------------------- | --------------------- |
+| RegionCode        | string | 是                            | CN_Hongkong             | VPC区域code           |
+| AvailableZoneCode | string | 边缘节点：是 / 云平台节点: 否     |                         | VPC可用区code|
+| BandwidthType     | string | 是                            | Bandwidth_China_Telecom | 带宽类型                  |
+| BillScheme        | string | 是                            | BandwIdth               | EIP计费方案 |
+| Qos               | int    | 是                            | 5                       | 带宽大小    |
+| Size              | int    | 是                            | 1                       | 创建个数        |
+| Description       | string | 否                            | test                    | EIP描述             |
+| SubjectId      | int | 否       | 123                                                  | 测试金Id     |
+
+## 获取EIP信息响应结果参数
+| 名称              | 类型     | 示例值                               | 描述                                                    |
+| :---------------- | -------- | :----------------------------------- | :---------------------------------- |
+| EIPList           | list     | []                                   | EIP信息列表             |
+| Id                | string   | 22597c56-e646-11ec-97e2-7687d6f44ced | EIP ID                   |
+| IP                | string   | 118.186.70.138                       | EIP 地址                      |
+| RegionCode        | string   | CN_Hongkong                          | VPC区域code                |
+| AvailableZoneCode | string   | ""                                   | VPC可用区code |
+| Status            | string   | ok                                   | EIP 状态       |
+| Description       | string   | test                                 | EIP 描述信息                     |
+| IsBind            | bool     | True                                 | EIP是否绑定了子网ip               |
+| CreateTime        | datetime | 2022-06-02 18:05:47                  | 创建时间                  |
+| BandwidthInfo     | dict     | {}                                   | EIP带宽信息               |
+| Id                | string   | 2232dede-e646-11ec-97e2-7687d6f44ced | 带宽ID                 |
+| Name              | string   | ""                                   | 共享带宽名称 |
+| Qos               | int      | 10                                   | 带宽大小（Mbps）               |
+| AvailableZoneCode | string   | ""                                   | VPC可用区code |
+| BandwidthType     | string ｜Bandwidth_China_Telecom      |         |
+| BillScheme        | string   | BandwIdth        |                                                         |
+| Status            | string   | ok                                   | 带宽状态             |
+| CreateTime        | string   | 2022-06-02 18:05:47                  | 带宽创建时间                     |
+| BindResourceInfo  | dict     | {}                                   | EIP绑定的子网ip信息               |
+| SubnetId          | string   | d9b88a1e-aa54-11ec-a512-06d5ff412043 | 子网ID（边缘节点，此处为虚拟出网网关ID）      |
+| SubnetIP          | string   | 10.3.2.4                             | 子网IP（边缘节点，此处为虚拟出网网关IP）       |
+## 创建共享带宽包请求参数
+| 名称              | 类型   | 是否必选 | 示例值                               | 描述                     |
+| ----------------- | ------ | -------- | ----------------------- | -------------------------- |
+| RegionCode        | string | 是       | CN_Hongkong                          | VPC区域code               |
+| AvailableZoneCode | string | 是       | CN_Hongkong_B                        | VPC可用区code     |
+| Name              | string | 是       | 香港共享带宽                         | 共享带宽名称                 |
+| BandwidthType     | string | 是       | Bandwidth_China_Telecom| 带宽类型              |
+| BillScheme        | string | 是       | BandwIdth                            | 共享带宽计费方案 |
+| Qos               | int    | 是       | 5                                    | 带宽大小              |
+| NETID             | string | 否       | ce11eb1e-e6fa-11ec-8b50-bafaaf87d540 | 子网ID，边缘节点必传          |
+| SubjectId         | int | 否       | 123                                                  | 测试金Id |
+## 获取共享带宽响应结果参数
+| 名称              | 类型   | 示例值                        | 描述                      |
+| :---------------- | ------ | :--------------------------- | :------------------------ |
+| BandwidthList     | list   | []                                   | 共享带宽信息列表                  |
+| BandwidthInfo     | dict   | {}                                   | EIP带宽信息          |
+| Id                | string | 2232dede-e646-11ec-97e2-7687d6f44ced | 带宽ID                 |
+| Name              | string | ""                                   | 共享带宽名称       |
+| Qos               | int    | 10                                   | 带宽大小（Mbps）          |
+| RegionCode        | string | “”                                   | VPC区域code       |
+| AvailableZoneCode | string | ""                                   | VPC可用区code |
+| BandwidthType     | string | Bandwidth_China_Telecom            | 带宽类型           |
+| BillScheme        | string | BandwIdth                            | 计费方案          |
+| Status            | string | ok                                   | 带宽状态                |
+| CreateTime        | string | 2022-06-02 18:05:47                  | 带宽创建时间                  |
+
 
 # 常用常量说明
 ## 私有网络区域名称
