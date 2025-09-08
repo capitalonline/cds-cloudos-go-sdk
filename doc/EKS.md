@@ -31,6 +31,7 @@
         - [X] ListClusters
         - [X] DeleteCluster
         - [X] GetClusterEvents
+        - [X] [GetTaskStatus](#GetTaskStatus)
     - [X] 节点管理
         - [X] ListNodes
         - [X] DeleteNode
@@ -49,6 +50,7 @@
 ## CreateCluster
 使用以下代码可以创建一个EKS Cluster。
 ```
+// import "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
 req := eks.CreateClusterReq{
         // 集群名称
         ClusterName: "zbh-sdk-test",
@@ -106,7 +108,7 @@ req := eks.CreateClusterReq{
 					ProductName: eks.ProductName1,
 				},
 			},
-			Password:    "Zzz1qaz2wsx",
+			Password:    "***********",
 			Labels:      map[string]string{},
 			Annotations: map[string]string{},
 		},
@@ -144,7 +146,7 @@ req := eks.CreateClusterReq{
 					},
 				},
 				Shell:       "",
-				Password:    "Zzz1qaz2wsx",
+				Password:    "***********",
 				Labels:      map[string]string{},
 				Annotations: map[string]string{},
 			},
@@ -260,12 +262,47 @@ req := eks.CreateClusterReq{
 | RequestId | string                     |唯一请求ID，每次请求都会返回。定位问题时需要提供该次请求ID。|
 | Code      | string                     |集群ID|
 |Msg| string                     |返回信息|
-|Data| [map[string]string](#data) |返回数据|
-## data
+|Data| [map[string]string](#Data) |返回数据|
+## Data
 |参数名称|类型|描述|
 |------|--------|----|
 |ClusterId|string|集群ID|
 |TaskId|string|任务ID|
+
+## GetTaskStatus
+使用以下代码可以获取任务状态
+```
+ak, sk := "ak", "sk"
+endpoint := "http://gateway.gic.test"
+eksClient, _ := eks.NewClientWidthEndpoint(ak, sk, endpoint)
+
+response, err := eksClient.GetTaskStatus("cf8a2f1e-8941-11f0-8366-9ea42c0f2d3c")
+if err != nil {
+	fmt.Println(err)
+}
+fmt.Printf(">>> response: %+v\n", response)
+
+fmt.Println(response.RequestId)
+bytes, _ := json.Marshal(response)
+fmt.Println(string(bytes))
+```
+## GetTaskStatus参数说明
+|参数名称|类型|描述|
+|------|--------|----|
+|TaskId|string|任务ID|
+## GetTaskStatus返回参数
+|参数名称|类型|描述|
+|------|--------|----|
+|RequestId|string|唯一请求ID，每次请求都会返回。定位问题时需要提供该次请求ID。|
+|Code|string|返回码|
+|Msg|string|返回信息|
+|Data|[map[string]string](#Data)|返回数据|
+## Data
+|参数名称|类型|描述|
+|------|--------|----|
+|TaskId|string|任务ID|
+|TaskStatus|string|任务状态|
+|TaskMsg|string|任务信息|
 
 
 
