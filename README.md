@@ -56,15 +56,15 @@ cds-cloudos-go-sdk
 |--services               //CDS相关服务目录
 |  |--eks                 //EKS容器服务
 |  |  |--client.go        //EKS客户端入口
-|  |  |--cluster.go       //集群管理API
-|  |  |--node.go          //节点管理API  
-|  |  |--nodepool.go      //节点池管理API
+|  |  |--cluster.go       //集群管理
+|  |  |--node.go          //节点管理
+|  |  |--nodepool.go      //节点池管理
 |  |  |--nodepool_model.go//节点池数据模型
 |  |  |--model.go         //EKS数据模型
-|  |  |--network_interface.go //弹性网卡API
+|  |  |--network_interface.go //弹性网卡
 |  |--vpc                 //私有网络服务
 |  |  |--client.go        //VPC客户端入口
-|  |  |--api.go           //VPC相关API实现
+|  |  |--api.go           //VPC相关
 |  |  |--model.go         //VPC数据模型
 |  |--eip                 //弹性公网IP服务
 |  |--slb                 //负载均衡服务
