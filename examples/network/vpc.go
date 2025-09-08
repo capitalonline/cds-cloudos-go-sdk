@@ -1,19 +1,3 @@
-/*
-Copyright 2024.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 package main
 
 import (
@@ -22,13 +6,13 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/vpc"
 )
 
-
+// Getvpc 获取VPC详情
 func Getvpc() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	GetVpcArgs := &vpc.GetVpcReq{
-		Keyword: "9197340c-799e-11f0-adfa-6e18e986f14e",
+		Keyword: "9197340c-799e-11f0-adfa-6e18e986f14e",  // vpc id
 	}
 	response, err := vpcClient.GetVpc(GetVpcArgs)
 	if err != nil {
@@ -39,22 +23,22 @@ func Getvpc() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.VPCList)
 }
-
+// CreateVpc 创建VPC
 func CreateVpc() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	CreateVpcArgs := &vpc.CreateVpcReq{
-        RegionCode:     "CN_Qingyang",
-        VPCName:        "go_create_bandtype",
-        VPCSegment:     "10.21.0.0/16",
-        VPCSegmentType: "auto",
-		BandwidthType: "Bandwidth_Multi_ISP_BGP",
+        RegionCode:     "CN_Qingyang",  // 区域code
+        VPCName:        "go_create_bandtype",  // vpc名称
+        VPCSegment:     "10.21.0.0/16", // vpc网段
+        VPCSegmentType: "auto", // 网段类型
+		BandwidthType: "Bandwidth_Multi_ISP_BGP",  // 线路类型
         SubnetList: []vpc.Subnet{
             {
-                AvailableZoneCode: "CN_Qingyang_A",
+                AvailableZoneCode: "CN_Qingyang_A",  // 可用区 code
                 SubnetName:        "gocreate子网1",
-                SubnetSegment:     "10.21.1.0/24",
+                SubnetSegment:     "10.21.1.0/24", // 子网网段
             },
         },
     }
@@ -68,12 +52,13 @@ func CreateVpc() {
 	fmt.Println(response.Data)
 }
 
+// ListVpcs 查询VPC数据
 func ListVpcs() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	ListVpcArgs := &vpc.ListVpcsReq{
-		RegionCode:"CN_Qingyang",
+		RegionCode:"CN_Qingyang",  // 区域code
 	}
 	response, err := vpcClient.ListVpcs(ListVpcArgs)
 	if err != nil {
@@ -85,11 +70,13 @@ func ListVpcs() {
 	fmt.Println(response.Data.VPCList)
 }
 
+
+// DeleteVPC 删除vpc数据
 func DeleteVPC() {
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
-		VPCId: "9197340c-799e-11f0-adfa-6e18e986f14e",
+		VPCId: "9197340c-799e-11f0-adfa-6e18e986f14e",  // 删除私有网络VPC
 	}
 	response, err := vpcClient.DeleteVpc(DeleteVpcArgs)
 	if err != nil {
