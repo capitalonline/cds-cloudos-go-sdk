@@ -48,13 +48,10 @@ func CreateECSNodePool() {
 					// CPU计算型C11 8C16G
 					eks.EcsCpuC11Compute2XLarge,
 				},
-
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
 				Password: "YourPassword123!",
-
 				// Shell 节点初始化完成后执行脚本命令
 				Shell: "#!/bin/bash\necho 'ECS CPU Node initialization complete'",
-
 				// Labels 节点k8s标签
 				Labels: map[string]string{
 					"node-type": "ecs-cpu",
@@ -137,17 +134,16 @@ func CreateECSGPUNodePool() {
 
 // CreateBMSNodePoolPostPaid 创建 BMS-GPU裸金属 节点池（按需付费）
 func CreateBMSNodePoolPostPaid() {
-	ak, sk := "your-ak", "your-sk"
+	ak, sk := "xxx", "xxx"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.CreateNodePoolReq{
-		ClusterId: "cluster-03",
-		VpcId:     "vpc-03",
+		ClusterId: "d83c9968-5950-478f-b657-bd63ce869206",
+		VpcId:     "29b1a746-874a-11f0-a3b8-ce9cb1dc408c",
 		Config: eks.NodePoolConfiguration{
-			PoolName:  "bms-gpu-postpaid-node-pool",
-			NodeType:  eks.NodePoolNodeTypeBMS,
-			SubjectId: 0,
+			PoolName: "bms-gpu-postpaid-node-pool",
+			NodeType: eks.NodePoolNodeTypeBMS,
 			NodeConfig: eks.NodePoolNodeConfig{
 				BillingSpec: eks.NodePoolBillingSpec{
 					BillingMethod: eks.NodePoolBillingMethodPostPaid, // 按需付费
@@ -157,10 +153,10 @@ func CreateBMSNodePoolPostPaid() {
 				DataDisk:   []eks.NodePoolDiskInfo{},
 
 				// OsImageName 裸金属实例镜像
-				OsImageName: eks.BmsUbuntu2204K8s13014GpuRtx4090,
+				OsImageName: eks.BmsUbuntu2204K8s12615GpuRtx4090,
 
 				// SubnetIds VPC子网ID,支持多选，必须是同一可用区
-				SubnetIds: []string{"subnet-03", "subnet-04"},
+				SubnetIds: []string{"gg29b72338-874a-11f0-a3b8-ce9cb1dc408c", "zz29b9db3c-874a-11f0-a3b8-ce9cb1dc408c"},
 
 				// InstanceTypeIds 裸金属实例类型，目前首云仅支持一个，后续开放多实例规格
 				InstanceTypeIds: []string{
@@ -309,4 +305,8 @@ func DeleteNodePool() {
 	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
+}
+
+func main() {
+	CreateBMSNodePoolPostPaid()
 }
