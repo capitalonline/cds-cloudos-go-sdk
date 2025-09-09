@@ -48,7 +48,8 @@ func DeleteNodes() {
 	params := eks.DeleteNodesReq{
 		// eks集群的ID
 		ClusterId: "5ff38515-e942-437d-8e16-60f12c382e08",
-		NodeIds:   []string{"eks-4vdp8eu5nq3zppfg"},
+		// 需要删除的节点的列表
+		NodeIds: []string{"eks-4vdp8eu5nq3zppfg"},
 	}
 	response, err := eksClient.DeleteNodes(&params)
 	if err != nil {
