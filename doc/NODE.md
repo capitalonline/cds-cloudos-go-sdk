@@ -6,7 +6,7 @@
 params := eks.ListNodesReq{
   // eks集群的ID
   ClusterId:      "17463875-10d7-4e6b-b5e6-bfb29b79477f",
-  // 机器状态:running(运行中)/error(错误)
+  // 机器状态:running(运行中)/error(错误)/shutdown(关机)/deleting(删除中)
   NodeStatus:     "Ready",
   // 需要查询的节点类型，分为:worker(工作节点)、master(控制平面节点)
   NodeType:       "worker",
@@ -31,7 +31,7 @@ for _, node := range response.Data {
   fmt.Println(node.NodeId)
   // 节点的名称
   fmt.Println(node.NodeName)
-  // 机器的状态
+  // 机器状态:running(运行中)/error(错误)/shutdown(关机)/deleting(删除中)
   fmt.Println(node.NodeStatus)
   // 节点的类型，分为:worker(工作节点)、master(控制平面节点)
   fmt.Println(node.NodeType)
