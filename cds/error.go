@@ -48,19 +48,31 @@ func NewCdsClientError(msg string) *CdsClientError { return &CdsClientError{msg}
 
 // CdsServiceError defines the error struct for the CDS service when receiving response
 type CdsServiceError struct {
-	Code       string
-	Message    string
-	RequestId  string
-	StatusCode int
+	Code       string `json:"Code"`
+	Message    string `json:"Message"`
+	Msg        string `json:"Msg"` // EKS service uses "Msg" instead of "Message"
+	RequestId  string `json:"RequestId"`
+	StatusCode int    `json:"-"`
 }
 
 func (b *CdsServiceError) Error() string {
 	ret := "[Code: " + b.Code
-	ret += "; Message: " + b.Message
+	// Prefer Msg over Message for EKS service compatibility
+	if b.Msg != "" {
+		ret += "; Message: " + b.Msg
+	} else {
+		ret += "; Message: " + b.Message
+	}
 	ret += "; RequestId: " + b.RequestId + "]"
 	return ret
 }
 
 func NewCdsServiceError(code, msg, reqId string, status int) *CdsServiceError {
-	return &CdsServiceError{code, msg, reqId, status}
+	return &CdsServiceError{
+		Code:       code,
+		Message:    msg, // For backward compatibility
+		Msg:        "",  // Will be populated when parsing JSON
+		RequestId:  reqId,
+		StatusCode: status,
+	}
 }

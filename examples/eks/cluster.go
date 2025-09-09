@@ -19,12 +19,8 @@ func CreateCluster() {
 			CniConfig: eks.CniConfig{
 				PodCidr:            "10.244.0.0/16",
 				FlannelBackendType: eks.FlannelBackendTypeVxlan,
-				NodePodsNum:        eks.NodePodsNum64,
-				SubnetList: []eks.SubnetInfo{
-					{
-						SubnetId: "SubnetId",
-					},
-				},
+				NodePodsNum:        64,
+				SubnetIds:          []string{"subnet-01", "subnet-02"},
 			},
 			ProxyConfig: eks.ProxyConfigIptables,
 			ServiceCidr: eks.ServiceCidr192_16,
@@ -37,77 +33,59 @@ func CreateCluster() {
 		Ak:               "Ak",
 		Sk:               "Sk",
 		MasterNumber:     eks.MasterNumber3,
-		MasterConfig: eks.NodeConfig{
-			BillingSpec: eks.BillingSpec{
-				AutoRenew:     eks.AutoRenew0,
-				BillingMethod: eks.BillingMethod0,
-				Duration:      eks.Duration1,
-				IsToMonth:     eks.IsToMonth0,
+		MasterConfig: eks.NodePoolNodeConfig{
+			InstanceTypeIds: []string{eks.EcsCpuC11Compute2XLarge},
+			BillingSpec: eks.NodePoolBillingSpec{
+				AutoRenew:     0,
+				BillingMethod: eks.NodePoolBillingMethodPostPaid,
+				Duration:      0,
+				IsToMonth:     0,
 			},
-			SystemDisk: eks.DiskInfo{
-				DiskFeature: eks.DiskFeatureSsd,
-				DiskSize:    40,
+			SystemDisk: eks.NodePoolDiskInfo{
+				DiskType: eks.NodePoolDiskTypeSSD,
+				DiskSize: 40,
 			},
-			DataDisk: []eks.DiskInfo{
+			DataDisk: []eks.NodePoolDiskInfo{
 				{
-					DiskFeature: eks.DiskFeatureSsd,
-					DiskSize:    40,
-					Number:      1,
+					DiskType: eks.NodePoolDiskTypeSSD,
+					DiskSize: 80,
 				},
 			},
-			OsImageName: eks.OsImageNameUbuntu2204_1_30_14,
-			SubnetList: []eks.SubnetInfo{
-				{
-					SubnetId: "SubnetId",
-				},
-			},
-			Shell: "",
-			Specifics: []eks.Specifics{
-				{
-					ProductName: eks.ProductName1,
-				},
-			},
+			OsImageName: eks.EcsUbuntu2204K8s13014Cpu,
+			SubnetIds:   []string{"subnet-01", "subnet-02"},
+			Shell:       "",
 			Password:    "password",
 			Labels:      map[string]string{},
-			Annotations: map[string]string{},
 		},
-		NodePoolConfig: eks.NodePoolConfig{
+		NodePoolConfig: eks.NodePoolConfiguration{
+
 			PoolName:  "node-pool-1",
-			NodeType:  eks.NodeTypeEcs,
+			NodeType:  eks.NodePoolNodeTypeECS,
 			SubjectId: 0,
-			NodeConfig: eks.NodeConfig{
-				BillingSpec: eks.BillingSpec{
-					AutoRenew:     eks.AutoRenew0,
-					BillingMethod: eks.BillingMethod0,
-					Duration:      1,
-					IsToMonth:     eks.IsToMonth1,
+			NodeConfig: eks.NodePoolNodeConfig{
+				InstanceTypeIds: []string{eks.EcsCpuC11Compute2XLarge},
+				BillingSpec: eks.NodePoolBillingSpec{
+					AutoRenew:     0,
+					BillingMethod: eks.NodePoolBillingMethodPostPaid,
+					Duration:      0,
+					IsToMonth:     0,
 				},
-				SystemDisk: eks.DiskInfo{
-					DiskFeature: eks.DiskFeatureSsd,
-					DiskSize:    40,
+				SystemDisk: eks.NodePoolDiskInfo{
+					DiskType: eks.NodePoolDiskTypeSSD,
+					DiskSize: 40,
 				},
-				DataDisk: []eks.DiskInfo{
+				DataDisk: []eks.NodePoolDiskInfo{
 					{
-						DiskFeature: eks.DiskFeatureSsd,
-						DiskSize:    80,
-						Number:      1,
+						DiskType: eks.NodePoolDiskTypeSSD,
+						DiskSize: 80,
 					},
 				},
-				OsImageName: eks.OsImageNameUbuntu2204_1_30_14,
-				SubnetList: []eks.SubnetInfo{
-					{
-						SubnetId: "SubnetId",
-					},
-				},
-				Specifics: []eks.Specifics{
-					{
-						ProductName: eks.ProductName1,
-					},
-				},
-				Shell:       "",
-				Password:    "password",
-				Labels:      map[string]string{},
-				Annotations: map[string]string{},
+				OsImageName: eks.EcsUbuntu2204K8s13014Cpu,
+				SubnetIds:   []string{"subnet-01", "subnet-02"},
+
+				Shell:    "",
+				Password: "password",
+				Labels:   map[string]string{},
 			},
 		},
 	}

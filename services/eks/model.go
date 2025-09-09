@@ -128,6 +128,7 @@ type AttachNetworkInterfaceResult struct {
 	Data AttachNetworkInterfaceData `json:"Data,omitempty"`
 	OpenApiCommonResp
 }
+
 type AttachNetworkInterfaceData struct {
 	EventId string `json:"EventId"`
 }
@@ -221,56 +222,57 @@ type TaskStatusDetail struct {
 }
 
 type GetClusterDetail struct {
-	ClusterId       string     `json:"ClusterId"`
-	Ak              string     `json:"Ak"`
-	ClusterIp       string     `json:"ClusterIp"`
-	VpcId           string     `json:"VpcId"`
-	ClusterName     string     `json:"ClusterName"`
-	ClusterStatus   string     `json:"ClusterStatus"`
-	CreateTime      string     `json:"CreateTime"`
-	CustomerId      string     `json:"CustomerId"`
-	DashboardAddr   string     `json:"DashboardAddr"`
-	K8sCaExpiryData int        `json:"K8sCaExpiryData"`
-	K8sVersion      string     `json:"K8sVersion"`
-	MasterSum       int        `json:"MasterSum"`
-	NatId           string     `json:"NatId"`
-	NatName         string     `json:"NatName"`
-	NodeSum         int        `json:"NodeSum"`
-	OsName          string     `json:"OsName"`
-	RegionId        string     `json:"RegionId"`
-	RegionName      string     `json:"RegionName"`
-	RuntimeType     string     `json:"RuntimeType"`
-	SlbId           string     `json:"SlbId"`
-	SshPort         int        `json:"SshPort"`
-	StatusStr       string     `json:"StatusStr"`
-	SubDomain       string     `json:"SubDomain"`
-	UpdateTime      string     `json:"UpdateTime"`
-	UserId          string     `json:"UserId"`
-	Vip             string     `json:"Vip"`
-	VipId           string     `json:"VipId"`
-	VpcName         string     `json:"VpcName"`
-	WorkerSum       int        `json:"WorkerSum"`
-	CniInfo         CniInfo    `json:"CniInfo"`
-	DestinationEip  EipInfo    `json:"DestinationEip"`
-	SourceEip       EipInfo    `json:"SourceEip"`
-	MasterSubnet    SubnetInfo `json:"MasterSubnet"`
-	WorkerSubnet    SubnetInfo `json:"WorkerSubnet"`
+	ClusterId       string       `json:"ClusterId"`
+	Ak              string       `json:"Ak"`
+	ClusterIp       string       `json:"ClusterIp"`
+	VpcId           string       `json:"VpcId"`
+	ClusterName     string       `json:"ClusterName"`
+	ClusterStatus   string       `json:"ClusterStatus"`
+	CreateTime      string       `json:"CreateTime"`
+	CustomerId      string       `json:"CustomerId"`
+	DashboardAddr   string       `json:"DashboardAddr"`
+	K8sCaExpiryData int          `json:"K8sCaExpiryData"`
+	K8sVersion      string       `json:"K8sVersion"`
+	MasterSum       int          `json:"MasterSum"`
+	NatId           string       `json:"NatId"`
+	NatName         string       `json:"NatName"`
+	NodeSum         int          `json:"NodeSum"`
+	OsName          string       `json:"OsName"`
+	RegionId        string       `json:"RegionId"`
+	RegionName      string       `json:"RegionName"`
+	RuntimeType     string       `json:"RuntimeType"`
+	SlbId           string       `json:"SlbId"`
+	SshPort         int          `json:"SshPort"`
+	StatusStr       string       `json:"StatusStr"`
+	SubDomain       string       `json:"SubDomain"`
+	UpdateTime      string       `json:"UpdateTime"`
+	UserId          string       `json:"UserId"`
+	Vip             string       `json:"Vip"`
+	VipId           string       `json:"VipId"`
+	VpcName         string       `json:"VpcName"`
+	WorkerSum       int          `json:"WorkerSum"`
+	CniInfo         CniInfo      `json:"CniInfo"`
+	DestinationEip  EipInfo      `json:"DestinationEip"`
+	SourceEip       EipInfo      `json:"SourceEip"`
+	MasterSubnet    []SubnetInfo `json:"MasterSubnet"`
+	WorkerSubnet    []SubnetInfo `json:"WorkerSubnet"`
+	SubnetList      []SubnetInfo `json:"SubnetList"`
 }
 
 type CniInfo struct {
-	CniConfig   CniConfig   `json:"CniConfig"`
-	CniType     CniType     `json:"CniType"`
-	ProxyConfig ProxyConfig `json:"ProxyConfig"`
-	ServiceCidr ServiceCidr `json:"ServiceCidr"`
+	CniConfig   CniConfig `json:"CniConfig"`
+	CniType     string    `json:"CniType"`
+	ProxyConfig string    `json:"ProxyConfig"`
+	ServiceCidr string    `json:"ServiceCidr"`
 }
 
 type CniConfig struct {
-	FlannelBackendType  FlannelBackendType  `json:"FlannelBackendType"`
-	CalicoBlockSize     int                 `json:"CalicoBlockSize"`
-	CalicoEncapsulation CalicoEncapsulation `json:"CalicoEncapsulation"`
-	NodePodsNum         NodePodsNum         `json:"NodePodsNum"`
-	PodCidr             string              `json:"PodCidr"`
-	SubnetList          []SubnetInfo        `json:"SubnetList"`
+	FlannelBackendType  string   `json:"FlannelBackendType"`
+	CalicoBlockSize     int      `json:"CalicoBlockSize"`
+	CalicoEncapsulation string   `json:"CalicoEncapsulation"`
+	NodePodsNum         int      `json:"NodePodsNum"`
+	PodCidr             string   `json:"PodCidr"`
+	SubnetIds           []string `json:"SubnetIds"`
 }
 
 type EipInfo struct {
@@ -347,55 +349,32 @@ type DeleteNodesData struct {
 }
 
 type CreateClusterReq struct {
-	ClusterName      string         `json:"ClusterName"`
-	VpcId            string         `json:"VpcId"`
-	Cni              CniInfo        `json:"Cni"`
-	K8sVersion       K8sVersion     `json:"K8SVersion"`
-	RuntimeType      string         `json:"RuntimeType"`
-	NatId            string         `json:"NatId"`
-	SourceEipId      string         `json:"SourceEipId"`
-	DestinationEipId string         `json:"DestinationEipId"`
-	SlbId            string         `json:"SlbId"`
-	Ak               string         `json:"Ak"`
-	Sk               string         `json:"Sk"`
-	MasterNumber     MasterNumber   `json:"MasterNumber"`
-	MasterConfig     NodeConfig     `json:"MasterConfig"`
-	NodePoolConfig   NodePoolConfig `json:"NodePoolConfig"`
+	ClusterName      string                `json:"ClusterName"`
+	VpcId            string                `json:"VpcId"`
+	Cni              CniInfo               `json:"Cni"`
+	K8sVersion       string                `json:"K8SVersion"`
+	RuntimeType      string                `json:"RuntimeType"`
+	NatId            string                `json:"NatId"`
+	SourceEipId      string                `json:"SourceEipId"`
+	DestinationEipId string                `json:"DestinationEipId"`
+	SlbId            string                `json:"SlbId"`
+	Ak               string                `json:"Ak"`
+	Sk               string                `json:"Sk"`
+	MasterNumber     int                   `json:"MasterNumber"`
+	MasterConfig     NodePoolNodeConfig    `json:"MasterConfig"`
+	NodePoolConfig   NodePoolConfiguration `json:"NodePoolConfig"`
 }
 
-type NodeConfig struct {
-	BillingSpec BillingSpec       `json:"BillingSpec"`
-	SystemDisk  DiskInfo          `json:"SystemDisk"`
-	DataDisk    []DiskInfo        `json:"DataDisk"`
-	OsImageName OsImageName       `json:"OsImageName"`
-	SubnetList  []SubnetInfo      `json:"SubnetList"`
-	Specifics   []Specifics       `json:"Specifics"`
-	Password    string            `json:"Password"`
-	Shell       string            `json:"Shell"`
-	Labels      map[string]string `json:"Labels"`
-	Annotations map[string]string `json:"Annotations"`
-}
+//type BillingSpec struct {
+//	BillingMethod BillingMethod `json:"BillingMethod"`
+//	Duration      Duration      `json:"Duration"`
+//	IsToMonth     IsToMonth     `json:"IsToMonth"`
+//	AutoRenew     AutoRenew     `json:"AutoRenew"`
+//}
 
-type BillingSpec struct {
-	BillingMethod BillingMethod `json:"BillingMethod"`
-	Duration      Duration      `json:"Duration"`
-	IsToMonth     IsToMonth     `json:"IsToMonth"`
-	AutoRenew     AutoRenew     `json:"AutoRenew"`
-}
-
-type DiskInfo struct {
-	DiskName     string      `json:"DiskName,omitempty"`
-	DiskId       string      `json:"DiskId,omitempty"`
-	DeviceScsiId string      `json:"DeviceScsiId,omitempty"`
-	DiskFeature  DiskFeature `json:"DiskFeature"`
-	Snapshot     string      `json:"Snapshot,omitempty"`
-	DiskSize     int         `json:"DiskSize"`
-	DiskStorage  []string    `json:"DiskStorage,omitempty"`
-	Number       int         `json:"Number"`
-}
-
-type Specifics struct {
-	ProductName ProductName `json:"ProductName"`
+type NodePoolDiskInfo struct {
+	DiskType string `json:"Type"` // 磁盘类型：SSD
+	DiskSize int    `json:"Size"` // 磁盘大小，单位：GB
 }
 
 type CreateClusterData struct {
@@ -423,170 +402,198 @@ type AddClusterSubnetResult struct {
 	OpenApiCommonResp
 }
 
-type CniType string
-
 // cni类型
 const (
-	CniTypeFlannel CniType = "flannel"
-	CniTypeCalico  CniType = "calico"
-	CniTypeVpcCni  CniType = "vpc-cni"
+	CniTypeFlannel = "flannel"
+	CniTypeCalico  = "calico"
+	CniTypeVpcCni  = "vpc-cni"
 )
-
-type K8sVersion string
 
 // k8s版本
 const (
-	K8sVersion1_30_14 K8sVersion = "v1.30.14"
-	K8sVersion1_26_5  K8sVersion = "v1.26.5"
+	K8sVersion1_30_14 = "v1.30.14"
+	K8sVersion1_26_5  = "v1.26.5"
 )
-
-type FlannelBackendType string
 
 // flannel后端类型
 const (
-	FlannelBackendTypeVxlan FlannelBackendType = "vxlan"
+	FlannelBackendTypeVxlan = "vxlan"
 )
-
-type ProxyConfig string
 
 // 服务转发模式
 const (
-	ProxyConfigIptables ProxyConfig = "iptables"
-	ProxyConfigIPVS     ProxyConfig = "ipvs"
+	ProxyConfigIptables = "iptables"
+	ProxyConfigIPVS     = "ipvs"
 )
-
-type MasterNumber int
 
 // master节点数
 const (
-	MasterNumber3 MasterNumber = 3
-	MasterNumber5 MasterNumber = 5
-	MasterNumber7 MasterNumber = 7
+	MasterNumber3 = 3
+	MasterNumber5 = 5
+	MasterNumber7 = 7
 )
-
-type DiskFeature string
-
-// 云盘类型，ecs适用
-const (
-	DiskFeatureSsd DiskFeature = "ssd"
-)
-
-type ProductName string
-
-// 产品名称及CPU个数,内存大小，GPU数量
-// 已废弃的规格，保留用于向后兼容
-const (
-	ProductName1 ProductName = "Optimized M6,2,4,0"
-	ProductName2 ProductName = "Optimized M6,4,8,0"
-	ProductName3 ProductName = "Optimized M6,8,16,0"
-	ProductName4 ProductName = "Optimized M6,16,32,0"
-)
-
-type OsImageName string
-
-// 镜像名称
-const (
-	OsImageNameUbuntu2204_1_30_14 OsImageName = "eks-Ubuntu22.04-cpu-k8s1.30.14-v1"
-)
-
-type AutoRenew int
-
-// 自动续费,0:关闭自动续费,1:开启自动续费,包年包月适用
-const (
-	AutoRenew1 AutoRenew = 1 // 开启自动续费,包年包月适用
-	AutoRenew0 AutoRenew = 0 // 关闭自动续费,包年包月适用
-)
-
-type BillingMethod string
-
-// 计费方式,0:按需付费,1:包年包月
-const (
-	BillingMethod0 BillingMethod = "0" // 按需付费
-	BillingMethod1 BillingMethod = "1" // 包年包月
-)
-
-type NodeType string
-
-// 节点类型,ecs:云主机，bms:裸金属
-const (
-	NodeTypeEcs NodeType = "ecs"
-	NodeTypeBms NodeType = "bms"
-)
-
-type NodePodsNum int
-
-// 节点的Pods数量
-const (
-	NodePodsNum16  NodePodsNum = 16
-	NodePodsNum32  NodePodsNum = 32
-	NodePodsNum64  NodePodsNum = 64
-	NodePodsNum128 NodePodsNum = 128
-	NodePodsNum256 NodePodsNum = 256
-)
-
-type CalicoEncapsulation string
 
 // calico使用的网络封装模式
 const (
-	CalicoEncapsulationIPIP CalicoEncapsulation = "IPIP"
+	CalicoEncapsulationIPIP = "IPIP"
 )
-
-type ServiceCidr string
 
 // 集群服务CIDR ip地址段
 const (
-	ServiceCidr10_16  ServiceCidr = "10.0.0.0/16"
-	ServiceCidr10_24  ServiceCidr = "10.0.0.0/24"
-	ServiceCidr192_16 ServiceCidr = "192.168.0.0/16"
-	ServiceCidr192_24 ServiceCidr = "192.168.0.0/24"
-	ServiceCidr172_16 ServiceCidr = "172.16.0.0/16"
-	ServiceCidr172_24 ServiceCidr = "172.16.0.0/24"
+	ServiceCidr10_16  = "10.0.0.0/16"
+	ServiceCidr10_24  = "10.0.0.0/24"
+	ServiceCidr192_16 = "192.168.0.0/16"
+	ServiceCidr192_24 = "192.168.0.0/24"
+	ServiceCidr172_16 = "172.16.0.0/16"
+	ServiceCidr172_24 = "172.16.0.0/24"
 )
 
-type IsToMonth int
-
-// 是否购买至月底
-const (
-	IsToMonth1 IsToMonth = 1 // 购买至月底,包年包月适用
-	IsToMonth0 IsToMonth = 0 // 购买整月,包年包月适用
-)
-
-type Duration int
-
-// 购买的月份数，购买前请确保账户余额充足，包年包月适用
-const (
-	Duration1  Duration = 1
-	Duration2  Duration = 2
-	Duration3  Duration = 3
-	Duration4  Duration = 4
-	Duration5  Duration = 5
-	Duration6  Duration = 6
-	Duration7  Duration = 7
-	Duration8  Duration = 8
-	Duration9  Duration = 9
-	Duration10 Duration = 10
-	Duration11 Duration = 11
-	Duration12 Duration = 12
-	Duration13 Duration = 24
-	Duration14 Duration = 36
-)
-
-// NodePoolConfig 节点池配置 (用于集群创建)
-type NodePoolConfig struct {
-	PoolName    string      `json:"PoolName"`
-	NodeType    NodeType    `json:"NodeType"`
-	SubjectId   int         `json:"SubjectId"`
-	NodeConfig  NodeConfig  `json:"NodeConfig"`
-	AutoScaling AutoScaling `json:"AutoScaling,omitempty"`
-	Replicas    int         `json:"Replicas"`
+// NodePoolBillingSpec 节点池计费配置
+type NodePoolBillingSpec struct {
+	BillingMethod string `json:"InstanceChargeType"` // 实例计费类型：PostPaid(按需付费) / PrePaid(包年包月)
+	Duration      int    `json:"Period"`             // 实例购买时长，单位：月
+	IsToMonth     int    `json:"IsToMonth"`          // 是否购买至当前月底：0(购买整月) / 1(购买至月底)
+	AutoRenew     int    `json:"AutoRenew"`          // 是否自动续费：0(不自动续费) / 1(自动续费)
 }
 
-// AutoScaling 自动伸缩配置
-type AutoScaling struct {
-	Enable         bool   `json:"Enable"`
-	MaxReplicas    int    `json:"MaxReplicas"`
-	MinReplicas    int    `json:"MinReplicas"`
-	Priority       int    `json:"Priority"`
-	SubnetPolicy   string `json:"SubnetPolicy"`
-	ScalingGroupId string `json:"ScalingGroupId"`
+// NodePoolNodeConfig 节点池节点配置
+type NodePoolNodeConfig struct {
+	BillingSpec     NodePoolBillingSpec `json:"BillingSpec"`     // 计费配置
+	SystemDisk      NodePoolDiskInfo    `json:"SystemVolume"`    // 系统卷配置
+	DataDisk        []NodePoolDiskInfo  `json:"DataVolumes"`     // 数据卷配置
+	OsImageName     string              `json:"OsImageName"`     // 操作系统镜像名称
+	SubnetIds       []string            `json:"SubnetIds"`       // 子网ID列表
+	InstanceTypeIds []string            `json:"InstanceTypeIds"` // 实例类型ID列表
+	Password        string              `json:"Password"`        // 节点密码
+	Shell           string              `json:"ExecCommand"`     // 节点初始化脚本
+	Labels          map[string]string   `json:"Labels"`          // 节点标签
 }
+
+// NodePoolConfiguration 节点池配置
+type NodePoolConfiguration struct {
+	Id         string             `json:"Id,omitempty"` // 节点池ID（更新时使用）
+	PoolName   string             `json:"Name"`         // 节点池名称
+	NodeType   string             `json:"NodeType"`     // 节点类型：ecs / bms
+	SubjectId  int                `json:"SubjectId"`    // 主体ID
+	NodeConfig NodePoolNodeConfig `json:"NodeConfig"`   // 节点配置
+	Replicas   int                `json:"Replicas"`     // 节点数量
+}
+
+type CreateNodePoolReq struct {
+	ClusterId string                `json:"ClusterId"` // 集群ID
+	VpcId     string                `json:"VpcId"`     // VPC ID
+	Config    NodePoolConfiguration `json:"Config"`    // 节点池配置
+}
+
+type CreateNodePoolResult struct {
+	Data CreateNodePoolData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type CreateNodePoolData struct {
+	NodePoolId string `json:"NodePoolId"` // 节点池ID
+	TaskId     string `json:"TaskId"`     // 任务ID
+}
+
+type ListNodePoolReq struct {
+	ClusterId string `json:"ClusterId"` // 集群ID
+}
+
+type ListNodePoolResult struct {
+	Data ListNodePoolData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type ListNodePoolData struct {
+	Total    int64              `json:"Total"`    // 总数
+	NodePool []NodePoolInfoData `json:"NodePool"` // 节点池列表
+}
+
+type NodePoolInfoData struct {
+	AvailableNodeCount int                `json:"AvailableNodeCount"` // 可用节点数
+	TotalNodeCount     int                `json:"TotalNodeCount"`     // 总节点数
+	Replicas           int                `json:"Replicas"`           // 期望节点数
+	Id                 string             `json:"Id"`                 // 节点池ID
+	Name               string             `json:"Name"`               // 节点池名称
+	NodeType           string             `json:"NodeType"`           // 节点类型
+	NodeConfig         NodePoolNodeConfig `json:"NodeConfig"`         // 节点配置
+	Status             string             `json:"Status"`             // 状态
+	ClusterId          string             `json:"ClusterId"`          // 集群ID
+	CustomerId         string             `json:"CustomerId"`         // 客户ID
+	UserId             string             `json:"UserId"`             // 用户ID
+	AzId               string             `json:"AvailableZoneId"`    // 可用区ID
+	AzName             string             `json:"AvailableZoneName"`  // 可用区名称
+	CreateTime         string             `json:"CreateTime"`         // 创建时间
+	UpdateTime         string             `json:"UpdateTime"`         // 更新时间
+}
+
+type DeleteNodePoolReq struct {
+	ClusterId  string `json:"ClusterId"`  // 集群ID
+	NodePoolId string `json:"NodePoolId"` // 节点池ID
+}
+
+type DeleteNodePoolResult struct {
+	Data DeleteNodePoolData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type DeleteNodePoolData struct {
+	TaskId string `json:"TaskId"` // 任务ID
+}
+
+type ScalingNodePoolReq struct {
+	ClusterId  string `json:"ClusterId"`  // 集群ID
+	NodePoolId string `json:"NodePoolId"` // 节点池ID
+	Replicas   int    `json:"Replicas"`   // 目标节点数量
+}
+
+type ScalingNodePoolResult struct {
+	Data ScalingNodePoolData `json:"Data,omitempty"`
+	OpenApiCommonResp
+}
+
+type ScalingNodePoolData struct {
+	TaskId string `json:"TaskId"` // 任务ID
+}
+
+// 节点池计费方式
+const (
+	NodePoolBillingMethodPostPaid = "PostPaid" // 按需付费
+	NodePoolBillingMethodPrePaid  = "PrePaid"  // 包年包月
+)
+
+// NodePoolDiskTypeSSD 节点池支持磁盘类型
+const (
+	NodePoolDiskTypeSSD = "SSD" // SSD磁盘
+)
+
+// 节点可选类型
+const (
+	NodePoolNodeTypeECS = "ecs" // 云主机
+	NodePoolNodeTypeBMS = "bms" // 裸金属
+)
+
+// 节点池ECS、BMS实例类型 (持续更新中)
+const (
+	EcsGpuGch4XLarge        = "Inference gch c8 nr4.16c64g1gpu"
+	EcsCpuC11ComputeLarge   = "CPU Compute C11.2c4g"
+	EcsCpuC11Compute2XLarge = "CPU Compute C11.8c16g"
+	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
+	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
+
+	// BmsGpuGbm32XLarge 20250907 改英文
+	BmsGpuGbm32XLarge = "推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu"
+)
+
+// ECS、BMS支持的操作系统镜像
+const (
+	EcsUbuntu2204K8s13014Cpu         = "Ubuntu22.04-CPU-1.30.14"
+	EcsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26"
+	EcsUbuntu2204K8s12615GpuRtxA5000 = "Ubuntu22.04-GPU-Datacenter-1.26"
+
+	BmsUbuntu2004K8s12615Cpu         = "Ubuntu20.04-CPU-1.26-bms"
+	BmsUbuntu2004K8s12615GpuRtx4090  = "Ubuntu20.04-GPU_CUDA12.8-bms"
+	BmsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26-bms"
+	BmsUbuntu2004K8s12615GpuRtxA5000 = "Ubuntu20.04-GPU-1.26-bms"
+	BmsUbuntu2204K8s13014GpuRtx4090  = "Ubuntu22.04-GPU-1.30.14-bms"
+)
