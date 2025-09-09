@@ -19,7 +19,7 @@ func CreateCluster() {
 			CniConfig: eks.CniConfig{
 				PodCidr:            "10.244.0.0/16",
 				FlannelBackendType: eks.FlannelBackendTypeVxlan,
-				NodePodsNum:        eks.NodePodsNum64,
+				NodePodsNum:        64,
 				SubnetIds:          []string{"subnet-01", "subnet-02"},
 			},
 			ProxyConfig: eks.ProxyConfigIptables,

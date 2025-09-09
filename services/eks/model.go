@@ -260,19 +260,19 @@ type GetClusterDetail struct {
 }
 
 type CniInfo struct {
-	CniConfig   CniConfig   `json:"CniConfig"`
-	CniType     CniType     `json:"CniType"`
-	ProxyConfig ProxyConfig `json:"ProxyConfig"`
-	ServiceCidr ServiceCidr `json:"ServiceCidr"`
+	CniConfig   CniConfig `json:"CniConfig"`
+	CniType     string    `json:"CniType"`
+	ProxyConfig string    `json:"ProxyConfig"`
+	ServiceCidr string    `json:"ServiceCidr"`
 }
 
 type CniConfig struct {
-	FlannelBackendType  FlannelBackendType  `json:"FlannelBackendType"`
-	CalicoBlockSize     int                 `json:"CalicoBlockSize"`
-	CalicoEncapsulation CalicoEncapsulation `json:"CalicoEncapsulation"`
-	NodePodsNum         NodePodsNum         `json:"NodePodsNum"`
-	PodCidr             string              `json:"PodCidr"`
-	SubnetIds           []string            `json:"SubnetIds"`
+	FlannelBackendType  string   `json:"FlannelBackendType"`
+	CalicoBlockSize     int      `json:"CalicoBlockSize"`
+	CalicoEncapsulation string   `json:"CalicoEncapsulation"`
+	NodePodsNum         int      `json:"NodePodsNum"`
+	PodCidr             string   `json:"PodCidr"`
+	SubnetIds           []string `json:"SubnetIds"`
 }
 
 type EipInfo struct {
@@ -352,7 +352,7 @@ type CreateClusterReq struct {
 	ClusterName      string                `json:"ClusterName"`
 	VpcId            string                `json:"VpcId"`
 	Cni              CniInfo               `json:"Cni"`
-	K8sVersion       K8sVersion            `json:"K8SVersion"`
+	K8sVersion       string                `json:"K8SVersion"`
 	RuntimeType      string                `json:"RuntimeType"`
 	NatId            string                `json:"NatId"`
 	SourceEipId      string                `json:"SourceEipId"`
@@ -360,7 +360,7 @@ type CreateClusterReq struct {
 	SlbId            string                `json:"SlbId"`
 	Ak               string                `json:"Ak"`
 	Sk               string                `json:"Sk"`
-	MasterNumber     MasterNumber          `json:"MasterNumber"`
+	MasterNumber     int                   `json:"MasterNumber"`
 	MasterConfig     NodePoolNodeConfig    `json:"MasterConfig"`
 	NodePoolConfig   NodePoolConfiguration `json:"NodePoolConfig"`
 }
@@ -375,10 +375,6 @@ type CreateClusterReq struct {
 type NodePoolDiskInfo struct {
 	DiskType string `json:"Type"` // 磁盘类型：SSD
 	DiskSize int    `json:"Size"` // 磁盘大小，单位：GB
-}
-
-type Specifics struct {
-	ProductName ProductName `json:"ProductName"`
 }
 
 type CreateClusterData struct {
@@ -406,152 +402,50 @@ type AddClusterSubnetResult struct {
 	OpenApiCommonResp
 }
 
-type CniType string
-
 // cni类型
 const (
-	CniTypeFlannel CniType = "flannel"
-	CniTypeCalico  CniType = "calico"
-	CniTypeVpcCni  CniType = "vpc-cni"
+	CniTypeFlannel = "flannel"
+	CniTypeCalico  = "calico"
+	CniTypeVpcCni  = "vpc-cni"
 )
-
-type K8sVersion string
 
 // k8s版本
 const (
-	K8sVersion1_30_14 K8sVersion = "v1.30.14"
-	K8sVersion1_26_5  K8sVersion = "v1.26.5"
+	K8sVersion1_30_14 = "v1.30.14"
+	K8sVersion1_26_5  = "v1.26.5"
 )
-
-type FlannelBackendType string
 
 // flannel后端类型
 const (
-	FlannelBackendTypeVxlan FlannelBackendType = "vxlan"
+	FlannelBackendTypeVxlan = "vxlan"
 )
-
-type ProxyConfig string
 
 // 服务转发模式
 const (
-	ProxyConfigIptables ProxyConfig = "iptables"
-	ProxyConfigIPVS     ProxyConfig = "ipvs"
+	ProxyConfigIptables = "iptables"
+	ProxyConfigIPVS     = "ipvs"
 )
-
-type MasterNumber int
 
 // master节点数
 const (
-	MasterNumber3 MasterNumber = 3
-	MasterNumber5 MasterNumber = 5
-	MasterNumber7 MasterNumber = 7
+	MasterNumber3 = 3
+	MasterNumber5 = 5
+	MasterNumber7 = 7
 )
-
-type DiskFeature string
-
-// 云盘类型，ecs适用
-const (
-	DiskFeatureSsd DiskFeature = "ssd"
-)
-
-type ProductName string
-
-// 产品名称及CPU个数,内存大小，GPU数量
-// 已废弃的规格，保留用于向后兼容
-const (
-	ProductName1 ProductName = "Optimized M6,2,4,0"
-	ProductName2 ProductName = "Optimized M6,4,8,0"
-	ProductName3 ProductName = "Optimized M6,8,16,0"
-	ProductName4 ProductName = "Optimized M6,16,32,0"
-)
-
-type OsImageName string
-
-// 镜像名称
-const (
-	OsImageNameUbuntu2204_1_30_14 OsImageName = "eks-Ubuntu22.04-cpu-k8s1.30.14-v1"
-)
-
-type AutoRenew int
-
-// 自动续费,0:关闭自动续费,1:开启自动续费,包年包月适用
-const (
-	AutoRenew1 AutoRenew = 1 // 开启自动续费,包年包月适用
-	AutoRenew0 AutoRenew = 0 // 关闭自动续费,包年包月适用
-)
-
-type BillingMethod string
-
-// 计费方式,0:按需付费,1:包年包月
-const (
-	BillingMethod0 BillingMethod = "0" // 按需付费
-	BillingMethod1 BillingMethod = "1" // 包年包月
-)
-
-type NodeType string
-
-// 节点类型,ecs:云主机，bms:裸金属
-const (
-	NodeTypeEcs NodeType = "ecs"
-	NodeTypeBms NodeType = "bms"
-)
-
-type NodePodsNum int
-
-// 节点的Pods数量
-const (
-	NodePodsNum16  NodePodsNum = 16
-	NodePodsNum32  NodePodsNum = 32
-	NodePodsNum64  NodePodsNum = 64
-	NodePodsNum128 NodePodsNum = 128
-	NodePodsNum256 NodePodsNum = 256
-)
-
-type CalicoEncapsulation string
 
 // calico使用的网络封装模式
 const (
-	CalicoEncapsulationIPIP CalicoEncapsulation = "IPIP"
+	CalicoEncapsulationIPIP = "IPIP"
 )
-
-type ServiceCidr string
 
 // 集群服务CIDR ip地址段
 const (
-	ServiceCidr10_16  ServiceCidr = "10.0.0.0/16"
-	ServiceCidr10_24  ServiceCidr = "10.0.0.0/24"
-	ServiceCidr192_16 ServiceCidr = "192.168.0.0/16"
-	ServiceCidr192_24 ServiceCidr = "192.168.0.0/24"
-	ServiceCidr172_16 ServiceCidr = "172.16.0.0/16"
-	ServiceCidr172_24 ServiceCidr = "172.16.0.0/24"
-)
-
-type IsToMonth int
-
-// 是否购买至月底
-const (
-	IsToMonth1 IsToMonth = 1 // 购买至月底,包年包月适用
-	IsToMonth0 IsToMonth = 0 // 购买整月,包年包月适用
-)
-
-type Duration int
-
-// 购买的月份数，购买前请确保账户余额充足，包年包月适用
-const (
-	Duration1  Duration = 1
-	Duration2  Duration = 2
-	Duration3  Duration = 3
-	Duration4  Duration = 4
-	Duration5  Duration = 5
-	Duration6  Duration = 6
-	Duration7  Duration = 7
-	Duration8  Duration = 8
-	Duration9  Duration = 9
-	Duration10 Duration = 10
-	Duration11 Duration = 11
-	Duration12 Duration = 12
-	Duration13 Duration = 24
-	Duration14 Duration = 36
+	ServiceCidr10_16  = "10.0.0.0/16"
+	ServiceCidr10_24  = "10.0.0.0/24"
+	ServiceCidr192_16 = "192.168.0.0/16"
+	ServiceCidr192_24 = "192.168.0.0/24"
+	ServiceCidr172_16 = "172.16.0.0/16"
+	ServiceCidr172_24 = "172.16.0.0/24"
 )
 
 // NodePoolBillingSpec 节点池计费配置
