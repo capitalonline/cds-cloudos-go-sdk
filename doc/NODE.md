@@ -28,61 +28,61 @@ if err != nil {
 }
 for _, node := range response.Data {
   // 节点的ID
-  fmt.Println(node.NodeId)
+  fmt.Println("node id:", node.NodeId)
   // 节点的名称
-  fmt.Println(node.NodeName)
+  fmt.Println("node name:", node.NodeName)
   // 机器状态:running(运行中)/error(错误)/shutdown(关机)/deleting(删除中)
-  fmt.Println(node.NodeStatus)
+  fmt.Println("node status:", node.NodeStatus)
   // 节点的类型，分为:worker(工作节点)、master(控制平面节点)
-  fmt.Println(node.NodeType)
+  fmt.Println("node type:", node.NodeType)
   // 节点所属集群的ID
-  fmt.Println(node.ClusterId)
+  fmt.Println("cluster id:", node.ClusterId)
   // 节点所属集群的名称
-  fmt.Println(node.ClusterName)
+  fmt.Println("cluster name:", node.ClusterName)
   // 所属主账号ID
-  fmt.Println(node.CustomerId)
+  fmt.Println("customer id:", node.CustomerId)
   // 所属子账号ID
-  fmt.Println(node.UserId)
+  fmt.Println("user id:", node.UserId)
   // 节点所属的vpc的ID
-  fmt.Println(node.VpcId)
+  fmt.Println("vpc id:", node.VpcId)
   // 节点所属的子网的ID
-  fmt.Println(node.SubnetId)
+  fmt.Println("node subnet id:", node.SubnetId)
   // 节点的私网IP
-  fmt.Println(node.PrivateIp)
+  fmt.Println("node private ip:", node.PrivateIp)
   // 节点的cpu核数
-  fmt.Println(node.Cpu)
+  fmt.Println("node cpu:", node.Cpu)
   // 节点的内存,单位G
-  fmt.Println(node.Ram)
+  fmt.Println("node ram:", node.Ram)
   // 节点的gpu卡数量
-  fmt.Println(node.Gpu)
+  fmt.Println("node gpu:", node.Gpu)
   // 节点的gpu卡类型
-  fmt.Println(node.GpuType)
+  fmt.Println("node gpu type:", node.GpuType)
   // 节点的规格配置名称
-  fmt.Println(node.FamilyName)
+  fmt.Println("node family name:", node.FamilyName)
   // 节点是否可调度，0(不可调度)/1(可调度)
-  fmt.Println(node.Schedulable)
+  fmt.Println("node schedule:", node.Schedulable)
   // 节点在k8s集群中的状态，Ready(就绪)/NotReady(未就绪)
-  fmt.Println(node.K8SStatus)
+  fmt.Println("node status in k8s:", node.K8SStatus)
   // 节点所属地域名称
-  fmt.Println(node.RegionName)
+  fmt.Println("region name:", node.RegionName)
   // 节点所属地域的ID
-  fmt.Println(node.RegionId)
+  fmt.Println("region id:", node.RegionId)
   // 节点所属的可用区名称
-  fmt.Println(node.AzName)
+  fmt.Println("az name:", node.AzName)
   // 节点所属的可用区的ID
-  fmt.Println(node.AzId)
+  fmt.Println("az id:", node.AzId)
   // 节点来源，bms(裸金属)/ecs(GPU云主机)/other(第三方或外部节点)
-  fmt.Println(node.SourceType)
+  fmt.Println("node source type:", node.SourceType)
   // 计费方式，0(按需付费)/1(包年包月)
-  fmt.Println(node.BillingMethod)
+  fmt.Println("node billing method:", node.BillingMethod)
   // 包年包月的预付费时长(单位月)
-  fmt.Println(node.Duration)
+  fmt.Println("prepaid duration:", node.Duration)
   // 是否包月到月底:1(是)/0(否)
-  fmt.Println(node.IsToMonth)
+  fmt.Println("prepaid to month:", node.IsToMonth)
   // 是否自动续约:1(是)/0(否)
-  fmt.Println(node.AutoRenew)
+  fmt.Println("prepaid auto renew:",node.AutoRenew)
   // 节点的创建时间，格式 2006-01-02 15:04:05
-  fmt.Println(node.CreateTime)
+  fmt.Println("node create time:",node.CreateTime)
 }
 ```
 

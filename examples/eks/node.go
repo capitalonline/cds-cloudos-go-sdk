@@ -29,6 +29,7 @@ func ListNodes() {
 		// 查询的关键词(节点名或者节点ID，模糊搜索)
 		Keyword: "test-cluster",
 	}
+
 	response, err := eksClient.ListNodes(&params)
 	if err != nil {
 		fmt.Println(err)
