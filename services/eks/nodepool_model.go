@@ -19,7 +19,7 @@ package eks
 // NodePoolBillingSpec 节点池计费配置
 type NodePoolBillingSpec struct {
 	BillingMethod string `json:"InstanceChargeType"` // 实例计费类型：PostPaid(按需付费) / PrePaid(包年包月)
-	Duration      int    `json:"Period"`             // 实例购买时长，单位：月
+	Duration      int    `json:"Duration"`           // 实例购买时长，单位：月
 	IsToMonth     int    `json:"IsToMonth"`          // 是否购买至当前月底：0(购买整月) / 1(购买至月底)
 	AutoRenew     int    `json:"AutoRenew"`          // 是否自动续费：0(不自动续费) / 1(自动续费)
 }

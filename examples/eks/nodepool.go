@@ -9,15 +9,15 @@ import (
 
 // CreateECSNodePool 创建 ECS-CPU云主机 节点池（按需付费）
 func CreateECSNodePool() {
-	ak, sk := "your-ak", "your-sk"
+	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.CreateNodePoolReq{
-		ClusterId: "cluster-01",
-		VpcId:     "vpc-01",
+		ClusterId: "d83c9968-5950-478f-b657-bd63ce869206",
+		VpcId:     "29b1a746-874a-11f0-a3b8-ce9cb1dc408c",
 		Config: eks.NodePoolConfiguration{
-			PoolName: "ecs-cpu-node-pool",
+			PoolName: "ecs-cpu-node-pool-0909-A",
 			NodeType: eks.NodePoolNodeTypeECS,
 			// SubjectId 测试金项目ID; 如果没有申请默认不传或传0; 如需申请请联系销售
 			SubjectId: 0,
@@ -36,12 +36,17 @@ func CreateECSNodePool() {
 						// DiskSize: 最小值80,步长80
 						DiskSize: 80,
 					},
+					{
+						DiskType: eks.NodePoolDiskTypeSSD,
+						// DiskSize: 最小值80,步长80
+						DiskSize: 80,
+					},
 				},
 				//OsImageName 实例镜像名称，根据您的k8s版本，CPU/GPU实例类型按需选择
-				OsImageName: eks.EcsUbuntu2204K8s13014Cpu,
+				OsImageName: "Ubuntu22.04-CPU-1.26",
 
 				// SubnetIds VPC子网ID,支持多选，必须是同一可用区
-				SubnetIds: []string{"subnet-01", "subnet-02"},
+				SubnetIds: []string{"29b72338-874a-11f0-a3b8-ce9cb1dc408c"},
 
 				// InstanceTypeIds 云主机实例类型，目前首云仅支持一个，后续开放多实例规格
 				InstanceTypeIds: []string{
@@ -50,7 +55,7 @@ func CreateECSNodePool() {
 				},
 
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
-				Password: "YourPassword123!",
+				Password: "123abc,.;",
 
 				// Shell 节点初始化完成后执行脚本命令
 				Shell: "#!/bin/bash\necho 'ECS CPU Node initialization complete'",
@@ -62,7 +67,7 @@ func CreateECSNodePool() {
 				},
 			},
 			// Replicas期望节点数量
-			Replicas: 3,
+			Replicas: 1,
 		},
 	}
 
@@ -137,17 +142,16 @@ func CreateECSGPUNodePool() {
 
 // CreateBMSNodePoolPostPaid 创建 BMS-GPU裸金属 节点池（按需付费）
 func CreateBMSNodePoolPostPaid() {
-	ak, sk := "your-ak", "your-sk"
+	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.CreateNodePoolReq{
-		ClusterId: "cluster-03",
-		VpcId:     "vpc-03",
+		ClusterId: "d83c9968-5950-478f-b657-bd63ce869206",
+		VpcId:     "29b1a746-874a-11f0-a3b8-ce9cb1dc408c",
 		Config: eks.NodePoolConfiguration{
-			PoolName:  "bms-gpu-postpaid-node-pool",
-			NodeType:  eks.NodePoolNodeTypeBMS,
-			SubjectId: 0,
+			PoolName: "bms-gpu-postpaid-node-pool",
+			NodeType: eks.NodePoolNodeTypeBMS,
 			NodeConfig: eks.NodePoolNodeConfig{
 				BillingSpec: eks.NodePoolBillingSpec{
 					BillingMethod: eks.NodePoolBillingMethodPostPaid, // 按需付费
@@ -157,10 +161,10 @@ func CreateBMSNodePoolPostPaid() {
 				DataDisk:   []eks.NodePoolDiskInfo{},
 
 				// OsImageName 裸金属实例镜像
-				OsImageName: eks.BmsUbuntu2204K8s13014GpuRtx4090,
+				OsImageName: eks.BmsUbuntu2204K8s12615GpuRtx4090,
 
 				// SubnetIds VPC子网ID,支持多选，必须是同一可用区
-				SubnetIds: []string{"subnet-03", "subnet-04"},
+				SubnetIds: []string{"29b72338-874a-11f0-a3b8-ce9cb1dc408c", "29b9db3c-874a-11f0-a3b8-ce9cb1dc408c"},
 
 				// InstanceTypeIds 裸金属实例类型，目前首云仅支持一个，后续开放多实例规格
 				InstanceTypeIds: []string{
@@ -309,4 +313,8 @@ func DeleteNodePool() {
 	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
+}
+
+func main() {
+	CreateECSNodePool()
 }
