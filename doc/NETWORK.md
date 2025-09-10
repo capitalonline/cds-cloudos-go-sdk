@@ -6,7 +6,7 @@
 **私有网络管理** 
 
 - **CreateVpc**: 创建VPC信息
-- **Getvpc**: 获取指定VPC信息
+- **GetVpc**: 获取指定VPC信息
 - **ListVpcs**: 查询VPC信息
 - **DeleteVpc**: 删除VPC
 

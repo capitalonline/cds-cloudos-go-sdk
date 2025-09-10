@@ -22,7 +22,7 @@ import (
 )
 
 // Getvpc 获取VPC详情
-func Getvpc() {
+func GetVpc() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -104,7 +104,7 @@ func DeleteVpc() {
 
 func main() {
 	// CreateVpc()
-	// Getvpc()
+	// GetVpc()
 	// ListVpcs()
 	// DeleteVpc()
 }
