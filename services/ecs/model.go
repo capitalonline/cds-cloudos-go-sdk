@@ -201,8 +201,8 @@ type OsInfo struct {
 }
 
 type DiskInfo struct {
-	SystemDiskConf *SystemDiskConfInfo          `json:"SystemDiskConf"`
-	DataDiskConf   map[string]*DataDiskConfInfo `json:"DataDiskConf"`
+	SystemDiskConf *SystemDiskConfInfo `json:"SystemDiskConf"`
+	DataDiskConf   []*DataDiskConfInfo `json:"DataDiskConf"`
 }
 type SystemDiskConfInfo struct {
 	ReleaseWithInstance int    `json:"ReleaseWithInstance"`
@@ -229,22 +229,18 @@ type DataDiskConfInfo struct {
 }
 
 type PipeInfo struct {
-	VpcName    string        `json:"VpcName"`
-	VpcId      string        `json:"VpcId"`
-	SubnetId   string        `json:"SubnetId"`
-	SubnetName string        `json:"SubnetName"`
-	CreateTime string        `json:"CreateTime"`
-	PrivateNet string        `json:"PrivateNet"`
-	PubNet     string        `json:"PubNet"`
-	VirtualNet []interface{} `json:"VirtualNet"`
-	EipInfo    *EipInfo      `json:"EipInfo"`
+	VpcName    string              `json:"VpcName"`
+	VpcId      string              `json:"VpcId"`
+	SubnetId   string              `json:"SubnetId"`
+	SubnetName string              `json:"SubnetName"`
+	CreateTime string              `json:"CreateTime"`
+	PrivateNet string              `json:"PrivateNet"`
+	PubNet     string              `json:"PubNet"`
+	VirtualNet []interface{}       `json:"VirtualNet"`
+	EipInfo    map[string]*EipInfo `json:"EipInfo"`
 }
 
 type EipInfo struct {
-	EipInfo map[string]*EipDetail `json:"EipInfo"`
-}
-
-type EipDetail struct {
 	ConfName      string `json:"ConfName"`
 	EipIp         string `json:"EipIp"`
 	CurrentUseQos string `json:"CurrentUseQos"`
@@ -257,17 +253,66 @@ type BillingInfo struct {
 	BillCycleId       string `json:"BillCycleId"`
 }
 type DescribeTaskEventReq struct {
+	EventId string `json:"EventId"`
 }
 
 type DescribeTaskEventResult struct {
+	OpenApiCommonResp
+	Data *EventResultData `json:"Data"`
+}
+
+type EventResultData struct {
+	EventId            string          `json:"EventId"`
+	EventStatus        string          `json:"EventStatus"`
+	EventStatusDisplay string          `json:"EventStatusDisplay"`
+	EventType          string          `json:"EventType"`
+	EventTypeDisplay   string          `json:"EventTypeDisplay"`
+	CreateTime         string          `json:"CreateTime"`
+	TaskList           []*TaskListInfo `json:"TaskList"`
+}
+
+type TaskListInfo struct {
+	TaskId          string `json:"TaskId"`
+	Status          string `json:"Status"`
+	StatusDisplay   string `json:"StatusDisplay"`
+	ResourceId      string `json:"ResourceId"`
+	CreateTime      string `json:"CreateTime"`
+	UpdateTime      string `json:"UpdateTime"`
+	EndTime         string `json:"EndTime"`
+	ResourceType    string `json:"ResourceType"`
+	ResourceDisplay string `json:"ResourceDisplay"`
+	TaskType        string `json:"TaskType"`
+	TaskTypeDisplay string `json:"TaskTypeDisplay"`
 }
 
 type DescribeZoneInstanceTypeReq struct {
+	EcsFamilyName     string `json:"EcsFamilyName"`
+	AvailableZoneCode string `json:"AvailableZoneCode"`
+	Cpu               *int   `json:"Cpu"`
+	Ram               *int   `json:"Ram"`
+	Gpu               *int   `json:"Gpu"`
 }
 
 type DescribeZoneInstanceTypeResult struct {
+	OpenApiCommonResp
+	Data []*ZoneInstanceTypeData `json:"Data"`
 }
 
+type ZoneInstanceTypeData struct {
+	EcsFamilyName string          `json:"EcsFamilyName"`
+	AvailableZone string          `json:"AvailableZone"`
+	SpecList      []*SpecListInfo `json:"SpecList"`
+}
+
+type SpecListInfo struct {
+	Cpu              int    `json:"Cpu"`
+	Ram              int    `json:"Ram"`
+	Gpu              int    `json:"Gpu"`
+	GpuType          string `json:"GpuType"`
+	SupportGpuDriver string `json:"SupportGpuDriver"`
+	Status           string `json:"Status"`
+	CpuName          string `json:"CpuName"`
+}
 type ChangeInstanceConfigureReq struct {
 }
 
@@ -275,7 +320,15 @@ type ChangeInstanceConfigureResult struct {
 }
 
 type ExtendDiskReq struct {
+	DiskId       string `json:"DiskId"`
+	ExtendedSize int    `json:"ExtendedSize"`
 }
 
 type ExtendDiskResult struct {
+	OpenApiCommonResp
+	Data *ExtendDiskData `json:"Data"`
+}
+
+type ExtendDiskData struct {
+	EventId string `json:"EventId"`
 }
