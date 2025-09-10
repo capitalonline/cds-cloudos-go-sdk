@@ -121,23 +121,141 @@ type EipSimpleInfo struct {
 }
 
 type OperateInstanceReq struct {
+	EcsIds    []string `json:"EcsIds"`
+	OpType    string   `json:"OpType"`
+	DeleteEip *int     `json:"DeleteEip"`
 }
 
 type OperateInstanceResult struct {
+	OpenApiCommonResp
+	Data *OperateInstanceData `json:"Data"`
+}
+
+type OperateInstanceData struct {
+	EventId string `json:"EventId"`
 }
 
 type ModifyInstanceNameReq struct {
+	EcsId string `json:"EcsId"`
+	Name  string `json:"Name"`
 }
 
 type ModifyInstanceNameResult struct {
+	OpenApiCommonResp
+	Data *ModifyInstanceNameData `json:"Data"`
+}
+
+type ModifyInstanceNameData struct {
+	EcsId string `json:"EcsId"`
+	Name  string `json:"Name"`
 }
 
 type DescribeInstanceReq struct {
+	EcsId string `json:"EcsId"`
 }
 
 type DescribeInstanceResult struct {
+	OpenApiCommonResp
+	Data *InstanceData `json:"Data"`
 }
 
+type InstanceData struct {
+	EcsId               string       `json:"EcsId"`
+	EcsName             string       `json:"EcsName"`
+	RegionId            string       `json:"RegionId"`
+	RegionName          string       `json:"RegionName"`
+	AzId                string       `json:"AzId"`
+	AzName              string       `json:"AzName"`
+	Status              string       `json:"Status"`
+	StatusDisplay       string       `json:"StatusDisplay"`
+	CreateTime          string       `json:"CreateTime"`
+	Duration            int          `json:"Duration"`
+	EndBillTime         string       `json:"EndBillTime"`
+	IsAutoRenewal       string       `json:"IsAutoRenewal"`
+	TimeZone            string       `json:"TimeZone"`
+	IsRam               bool         `json:"IsRam"`
+	NoChargeForShutdown int          `json:"NoChargeForShutdown"`
+	EcsRule             *EcsRuleInfo `json:"EcsRule"`
+	OsInfo              *OsInfo      `json:"OsInfo"`
+	Disk                *DiskInfo    `json:"Disk"`
+	Pipe                *PipeInfo    `json:"Pipe"`
+	BillingInfo         *BillingInfo `json:"BillingInfo"`
+}
+
+type EcsRuleInfo struct {
+	Name    string `json:"Name"`
+	CpuNum  int    `json:"CpuNum"`
+	CpuUnit string `json:"CpuUnit"`
+	Ram     int    `json:"Ram"`
+	Gpu     int    `json:"Gpu"`
+	RamUnit string `json:"RamUnit"`
+	GpuUnit string `json:"GpuUnit"`
+}
+
+type OsInfo struct {
+	ImageId   string `json:"ImageId"`
+	ImageName string `json:"ImageName"`
+	OsType    string `json:"OsType"`
+	Bit       int    `json:"Bit"`
+	Version   string `json:"Version"`
+}
+
+type DiskInfo struct {
+	SystemDiskConf *SystemDiskConfInfo          `json:"SystemDiskConf"`
+	DataDiskConf   map[string]*DataDiskConfInfo `json:"DataDiskConf"`
+}
+type SystemDiskConfInfo struct {
+	ReleaseWithInstance int    `json:"ReleaseWithInstance"`
+	DiskType            string `json:"DiskType"`
+	Name                string `json:"Name"`
+	Size                int    `json:"Size"`
+	DiskIops            int    `json:"DiskIops"`
+	BandMbps            int    `json:"BandMbps"`
+	Unit                string `json:"Unit"`
+	DiskId              string `json:"DiskId"`
+	DiskFeature         string `json:"DiskFeature"`
+}
+
+type DataDiskConfInfo struct {
+	ReleaseWithInstance int    `json:"ReleaseWithInstance"`
+	DiskType            string `json:"DiskType"`
+	Name                string `json:"Name"`
+	Size                int    `json:"Size"`
+	DiskIops            int    `json:"DiskIops"`
+	BandMbps            int    `json:"BandMbps"`
+	Unit                string `json:"Unit"`
+	Id                  string `json:"Id"`
+	DiskFeature         string `json:"DiskFeature"`
+}
+
+type PipeInfo struct {
+	VpcName    string        `json:"VpcName"`
+	VpcId      string        `json:"VpcId"`
+	SubnetId   string        `json:"SubnetId"`
+	SubnetName string        `json:"SubnetName"`
+	CreateTime string        `json:"CreateTime"`
+	PrivateNet string        `json:"PrivateNet"`
+	PubNet     string        `json:"PubNet"`
+	VirtualNet []interface{} `json:"VirtualNet"`
+	EipInfo    *EipInfo      `json:"EipInfo"`
+}
+
+type EipInfo struct {
+	EipInfo map[string]*EipDetail `json:"EipInfo"`
+}
+
+type EipDetail struct {
+	ConfName      string `json:"ConfName"`
+	EipIp         string `json:"EipIp"`
+	CurrentUseQos string `json:"CurrentUseQos"`
+}
+
+type BillingInfo struct {
+	BillingMethod     string `json:"BillingMethod"`
+	BillingMethodName string `json:"BillingMethodName"`
+	BillingStatus     string `json:"BillingStatus"`
+	BillCycleId       string `json:"BillCycleId"`
+}
 type DescribeTaskEventReq struct {
 }
 
