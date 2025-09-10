@@ -28,7 +28,7 @@ func TestEcsSdk(t *testing.T) {
 	t.Run("DescribeRegions", func(t *testing.T) {
 		result, cliErr := cli.DescribeRegions()
 		if cliErr != nil {
-			t.Error(err)
+			t.Error(cliErr)
 			return
 		}
 		b, _ := json.Marshal(result)
@@ -43,7 +43,7 @@ func TestEcsSdk(t *testing.T) {
 		})
 
 		if cliErr != nil {
-			t.Error(err)
+			t.Error(cliErr)
 			return
 		}
 		b, _ := json.Marshal(result)
