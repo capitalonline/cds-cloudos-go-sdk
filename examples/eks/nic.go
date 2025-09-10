@@ -7,7 +7,7 @@ import (
 )
 
 func AttachNetworkInterface() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 	req := eks.AttachNetworkInterfaceReq{
@@ -28,7 +28,7 @@ func AttachNetworkInterface() {
 }
 
 func DetachNetworkInterface() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 	req := eks.DetachNetworkInterfaceReq{}
@@ -45,7 +45,7 @@ func DetachNetworkInterface() {
 }
 
 func DescribeNetworkInterface() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
@@ -62,7 +62,7 @@ func DescribeNetworkInterface() {
 }
 
 func IsAttachedECS() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
@@ -78,7 +78,7 @@ func IsAttachedECS() {
 }
 
 func QueryTaskStatus() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
