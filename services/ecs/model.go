@@ -160,29 +160,29 @@ type DescribeInstanceResult struct {
 }
 
 type InstanceData struct {
-	EcsId               string       `json:"EcsId"`
-	EcsName             string       `json:"EcsName"`
-	RegionId            string       `json:"RegionId"`
-	RegionName          string       `json:"RegionName"`
-	AzId                string       `json:"AzId"`
-	AzName              string       `json:"AzName"`
-	Status              string       `json:"Status"`
-	StatusDisplay       string       `json:"StatusDisplay"`
-	CreateTime          string       `json:"CreateTime"`
-	Duration            int          `json:"Duration"`
-	EndBillTime         string       `json:"EndBillTime"`
-	IsAutoRenewal       string       `json:"IsAutoRenewal"`
-	TimeZone            string       `json:"TimeZone"`
-	IsRam               bool         `json:"IsRam"`
-	NoChargeForShutdown int          `json:"NoChargeForShutdown"`
-	EcsRule             *EcsRuleInfo `json:"EcsRule"`
-	OsInfo              *OsInfo      `json:"OsInfo"`
-	Disk                *DiskInfo    `json:"Disk"`
-	Pipe                *PipeInfo    `json:"Pipe"`
-	BillingInfo         *BillingInfo `json:"BillingInfo"`
+	EcsId               string                   `json:"EcsId"`
+	EcsName             string                   `json:"EcsName"`
+	RegionId            string                   `json:"RegionId"`
+	RegionName          string                   `json:"RegionName"`
+	AzId                string                   `json:"AzId"`
+	AzName              string                   `json:"AzName"`
+	Status              string                   `json:"Status"`
+	StatusDisplay       string                   `json:"StatusDisplay"`
+	CreateTime          string                   `json:"CreateTime"`
+	Duration            int                      `json:"Duration"`
+	EndBillTime         string                   `json:"EndBillTime"`
+	IsAutoRenewal       string                   `json:"IsAutoRenewal"`
+	TimeZone            string                   `json:"TimeZone"`
+	IsRam               bool                     `json:"IsRam"`
+	NoChargeForShutdown int                      `json:"NoChargeForShutdown"`
+	EcsRule             *InstanceDataEcsRuleInfo `json:"EcsRule"`
+	OsInfo              *OsInfo                  `json:"OsInfo"`
+	Disk                *DiskInfo                `json:"Disk"`
+	Pipe                *PipeInfo                `json:"Pipe"`
+	BillingInfo         *BillingInfo             `json:"BillingInfo"`
 }
 
-type EcsRuleInfo struct {
+type InstanceDataEcsRuleInfo struct {
 	Name    string `json:"Name"`
 	CpuNum  int    `json:"CpuNum"`
 	CpuUnit string `json:"CpuUnit"`
