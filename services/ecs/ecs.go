@@ -2,10 +2,23 @@ package ecs
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
+
+func (c *client) DescribeRegions() (result *DescribeRegionsResult, err error) {
+	result = new(DescribeRegionsResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.GET).
+		WithQueryParam(actionKey, ActionDescribeRegions).
+		WithResult(result).Do()
+
+	return
+}
 
 func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *DescribeInstanceListResult, err error) {
 	result = new(DescribeInstanceListResult)
@@ -25,6 +38,10 @@ func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *Des
 
 	if req.SearchInfo != "" {
 		op = op.WithQueryParam(searchInfoKey, req.SearchInfo)
+	}
+
+	if len(req.Ids) != 0 {
+		op = op.WithQueryParamFilter(idsKey, strings.Join(req.Ids, ","))
 	}
 
 	err = op.WithResult(result).Do()

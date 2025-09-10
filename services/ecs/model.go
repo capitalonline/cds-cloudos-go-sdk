@@ -1,6 +1,7 @@
 package ecs
 
 const (
+	ActionDescribeRegions          = "DescribeRegions"
 	ActionDescribeInstanceList     = "DescribeInstanceList"
 	ActionOperateInstance          = "OperateInstance"
 	ActionModifyInstanceName       = "ModifyInstanceName"
@@ -19,6 +20,7 @@ var (
 	azCodeKey     = "AvailableZoneCode"
 	vpcIdKey      = "VpcId"
 	searchInfoKey = "SearchInfo"
+	idsKey        = "EcsIds"
 )
 
 type OpenApiCommonResp struct {
@@ -34,10 +36,35 @@ type CommonOpenApiPage struct {
 	PageSize   int `json:"PageSize,omitempty"`
 }
 
-type DescribeInstanceListReq struct {
+type DescribeRegionsResult struct {
+	OpenApiCommonResp
+	Data []*RegionGroup `json:"Data"`
+}
+
+type RegionGroup struct {
+	RegionGroupId   string        `json:"RegionGroupId"`
+	RegionGroupName string        `json:"RegionGroupName"`
+	RegionList      []*RegionInfo `json:"RegionList"`
+}
+
+type RegionInfo struct {
+	RegionId   string    `json:"RegionId"`
+	RegionName string    `json:"RegionName"`
+	AzList     []*AzInfo `json:"AzList"`
+	RegionCode string    `json:"RegionCode"`
+}
+
+type AzInfo struct {
+	AzId              string `json:"AzId"`
+	AzName            string `json:"AzName"`
 	AvailableZoneCode string `json:"AvailableZoneCode"`
-	VpcId             string `json:"VpcId"`
-	SearchInfo        string `json:"SearchInfo"`
+}
+
+type DescribeInstanceListReq struct {
+	AvailableZoneCode string   `json:"AvailableZoneCode"`
+	VpcId             string   `json:"VpcId"`
+	SearchInfo        string   `json:"SearchInfo"`
+	Ids               []string `json:"EcsIds"`
 }
 
 type DescribeInstanceListResult struct {

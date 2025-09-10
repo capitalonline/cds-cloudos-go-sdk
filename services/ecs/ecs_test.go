@@ -11,7 +11,7 @@ const (
 	SK = "CDS_SECRET_KEY"
 )
 
-func TestDescribeInstanceList(t *testing.T) {
+func TestEcsSdk(t *testing.T) {
 	ak := os.Getenv(AK)
 	sk := os.Getenv(SK)
 
@@ -25,16 +25,29 @@ func TestDescribeInstanceList(t *testing.T) {
 		return
 	}
 
-	result, err := cli.DescribeInstanceList(&DescribeInstanceListReq{
-		AvailableZoneCode: "",
-		VpcId:             "",
-		SearchInfo:        "",
+	t.Run("DescribeRegions", func(t *testing.T) {
+		result, cliErr := cli.DescribeRegions()
+		if cliErr != nil {
+			t.Error(err)
+			return
+		}
+		b, _ := json.Marshal(result)
+		t.Logf("%s", string(b))
 	})
 
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	b, _ := json.Marshal(result)
-	t.Logf("%s", string(b))
+	t.Run("DescribeInstanceList", func(t *testing.T) {
+		result, cliErr := cli.DescribeInstanceList(&DescribeInstanceListReq{
+			AvailableZoneCode: "",
+			VpcId:             "",
+			SearchInfo:        "",
+		})
+
+		if cliErr != nil {
+			t.Error(err)
+			return
+		}
+		b, _ := json.Marshal(result)
+		t.Logf("%s", string(b))
+	})
+
 }
