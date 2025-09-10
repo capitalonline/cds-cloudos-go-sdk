@@ -108,7 +108,7 @@ func CreateVpc() {
 
 **获取指定VPC信息**
 ```go
-func Getvpc() {
+func GetVpc() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -149,7 +149,7 @@ func ListVpcs() {
 ```
 **删除VPC**
 ```go
-func DeleteVPC() {
+func DeleteVpc() {
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
