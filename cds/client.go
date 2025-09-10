@@ -30,14 +30,14 @@ import (
 
 var (
 	endpoint        string
-	EnvEKSAPIHost   = "CDS_API_HOST"
-	EnvEKSAPISchema = "CDS_API_SCHEMA"
-	defaultEndpoint = "http://api.capitalonline.net"
+	envCDSAPIHost   = "CDS_API_HOST"
+	envCDSAPISchema = "CDS_API_SCHEMA"
+	defaultEndpoint = "https://api.capitalonline.net"
 )
 
 func init() {
-	host := os.Getenv(EnvEKSAPIHost)
-	schema := os.Getenv(EnvEKSAPISchema)
+	host := os.Getenv(envCDSAPIHost)
+	schema := os.Getenv(envCDSAPISchema)
 
 	if host == "" || schema == "" {
 		endpoint = defaultEndpoint
