@@ -24,7 +24,7 @@ func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *Des
 	}
 
 	if req.SearchInfo != "" {
-		op = op.WithQueryParam(azCodeKey, req.SearchInfo)
+		op = op.WithQueryParam(searchInfoKey, req.SearchInfo)
 	}
 
 	err = op.WithResult(result).Do()
