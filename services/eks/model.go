@@ -251,12 +251,28 @@ type GetClusterDetail struct {
 	VipId           string       `json:"VipId"`
 	VpcName         string       `json:"VpcName"`
 	WorkerSum       int          `json:"WorkerSum"`
-	CniInfo         CniInfo      `json:"CniInfo"`
+	CniInfo         CniDetail    `json:"CniInfo"`
 	DestinationEip  EipInfo      `json:"DestinationEip"`
 	SourceEip       EipInfo      `json:"SourceEip"`
 	MasterSubnet    []SubnetInfo `json:"MasterSubnet"`
 	WorkerSubnet    []SubnetInfo `json:"WorkerSubnet"`
 	SubnetList      []SubnetInfo `json:"SubnetList"`
+}
+
+type CniDetail struct {
+	CniConfig   CniConfigDetail `json:"CniConfig"`
+	CniType     string          `json:"CniType"`
+	ProxyConfig string          `json:"ProxyConfig"`
+	ServiceCidr string          `json:"ServiceCidr"`
+}
+
+type CniConfigDetail struct {
+	FlannelBackendType  string       `json:"FlannelBackendType"`
+	CalicoBlockSize     int          `json:"CalicoBlockSize"`
+	CalicoEncapsulation string       `json:"CalicoEncapsulation"`
+	NodePodsNum         int          `json:"NodePodsNum"`
+	PodCidr             string       `json:"PodCidr"`
+	SubnetList          []SubnetInfo `json:"SubnetList"`
 }
 
 type CniInfo struct {
@@ -321,7 +337,7 @@ type ListNodesData struct {
 	GpuType       string `json:"GpuType"`
 	FamilyName    string `json:"FamilyName"`
 	Schedulable   int    `json:"Schedulable"`
-	K8SStatus     string `json:"K8SStatus"`
+	K8sStatus     string `json:"K8sStatus"`
 	RegionName    string `json:"RegionName"`
 	RegionId      string `json:"RegionId"`
 	AzName        string `json:"AzName"`
@@ -393,9 +409,7 @@ type AddClusterSubnetReq struct {
 }
 
 type ClusterSubnet struct {
-	SubnetId  string `json:"SubnetId"`
-	Segment   string `json:"Segment"`
-	UsedIpNum int    `json:"UsedIpNum"`
+	SubnetId string `json:"SubnetId"`
 }
 
 type AddClusterSubnetResult struct {

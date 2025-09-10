@@ -196,10 +196,6 @@ func AddClusterSubnet() {
 		SubnetList: []eks.ClusterSubnet{{
 			// 需要使用的子网的ID
 			SubnetId: "cc2ff5e6-74f2-11f0-bd15-0a6c401afcb2",
-			// 需要使用的网段
-			Segment: "192.168.0.0/22",
-			// 需要使用的ip数量
-			UsedIpNum: 256,
 		}},
 	}
 	response, err := eksClient.AddClusterSubnet(&params)
