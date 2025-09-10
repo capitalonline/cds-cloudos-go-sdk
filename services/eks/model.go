@@ -393,9 +393,7 @@ type AddClusterSubnetReq struct {
 }
 
 type ClusterSubnet struct {
-	SubnetId  string `json:"SubnetId"`
-	Segment   string `json:"Segment"`
-	UsedIpNum int    `json:"UsedIpNum"`
+	SubnetId string `json:"SubnetId"`
 }
 
 type AddClusterSubnetResult struct {

@@ -190,15 +190,13 @@ func GetCluster() {
 }
 
 func AddClusterSubnet() {
-	ak, sk := "your-ak", "your-sk"
+	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 	params := eks.AddClusterSubnetReq{
-		ClusterId: "861deabe-832d-4266-ade5-4aa411104a68",
+		ClusterId: "132e7235-5574-4a87-8b45-da73634a6617",
 		SubnetList: []eks.ClusterSubnet{{
-			SubnetId:  "cc2ff5e6-74f2-11f0-bd15-0a6c401afcb2",
-			Segment:   "192.168.0.0/22",
-			UsedIpNum: 256,
+			SubnetId: "9ab4444a-8df7-11f0-b443-2eb410f96a95",
 		}},
 	}
 	response, err := eksClient.AddClusterSubnet(&params)
@@ -211,4 +209,8 @@ func AddClusterSubnet() {
 	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
+}
+
+func main() {
+	AddClusterSubnet()
 }
