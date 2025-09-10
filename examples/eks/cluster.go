@@ -118,56 +118,53 @@ func TaskStatus() {
 }
 
 func ListClusters() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := eks.ListClustersReq{
+		// 集群所使用的vpc的ID
 		VpcId: "d4ceb516-6def-11f0-a509-5672334e2706",
+		// 集群的名称(模糊搜素)或者ID
+		Keyword: "test-cluster",
 	}
 
 	response, err := eksClient.ListClusters(&req)
 	if err != nil {
 		fmt.Println(err)
-
+		return
 	}
-	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
 func GetClusterEvents() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
-
-	response, err := eksClient.GetClusterEvents("466603a8-32c4-4bd7-98c5-bb7b6b152e9e")
+	// 传集群的ID
+	response, err := eksClient.GetClusterEvents("b9ee61c2-87fa-4035-9ca5-a580980e3dde")
 	if err != nil {
 		fmt.Println(err)
-
+		return
 	}
-	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
 func DeleteCluster() {
-	ak, sk := "E101277-ak", "E101277-sk"
+	ak, sk := "Your Ak", "Your Sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
-
+	// 传集群的ID
 	response, err := eksClient.DeleteCluster("4a5da7b9-0c3d-4dc3-96db-4c041c273d05")
 	if err != nil {
 		fmt.Println(err)
-
+		return
 	}
-	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -190,27 +187,22 @@ func GetCluster() {
 }
 
 func AddClusterSubnet() {
-	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
+	ak, sk := "your-ak", "your-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 	params := eks.AddClusterSubnetReq{
-		ClusterId: "132e7235-5574-4a87-8b45-da73634a6617",
+		// 集群ID
+		ClusterId: "861deabe-832d-4266-ade5-4aa411104a68",
 		SubnetList: []eks.ClusterSubnet{{
-			SubnetId: "9ab4444a-8df7-11f0-b443-2eb410f96a95",
+			// 需要使用的子网的ID
+			SubnetId: "cc2ff5e6-74f2-11f0-bd15-0a6c401afcb2",
 		}},
 	}
 	response, err := eksClient.AddClusterSubnet(&params)
 	if err != nil {
 		fmt.Println(err)
-
 	}
-	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
-}
-
-func main() {
-	AddClusterSubnet()
 }
