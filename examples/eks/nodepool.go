@@ -9,7 +9,7 @@ import (
 
 // CreateECSNodePool 创建 ECS-CPU云主机 节点池（按需付费）
 func CreateECSNodePool() {
-	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
+	ak, sk := "your-ak", "your-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
