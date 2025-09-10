@@ -286,32 +286,31 @@ type TaskListInfo struct {
 }
 
 type DescribeEcsFamilyInfoReq struct {
-	EcsFamilyName     string `json:"EcsFamilyName"`
 	AvailableZoneCode string `json:"AvailableZoneCode"`
-	Cpu               *int   `json:"Cpu"`
-	Ram               *int   `json:"Ram"`
-	Gpu               *int   `json:"Gpu"`
+	BillingMethod     string `json:"BillingMethod"`
 }
 
 type DescribeEcsFamilyInfoResult struct {
 	OpenApiCommonResp
-	Data []*ZoneInstanceTypeData `json:"Data"`
+	Data FamilyData `json:"Data"`
 }
 
-type ZoneInstanceTypeData struct {
+type FamilyData struct {
+	EcsFamilyInfo []*FamilyInfo `json:"EcsFamilyInfo"`
+}
+
+type FamilyInfo struct {
 	EcsFamilyName string          `json:"EcsFamilyName"`
-	AvailableZone string          `json:"AvailableZone"`
 	SpecList      []*SpecListInfo `json:"SpecList"`
 }
 
 type SpecListInfo struct {
+	GpuShowType      string `json:"GpuShowType"`
+	GpuTypeId        string `json:"GpuTypeId"`
 	Cpu              int    `json:"Cpu"`
 	Ram              int    `json:"Ram"`
 	Gpu              int    `json:"Gpu"`
-	GpuType          string `json:"GpuType"`
 	SupportGpuDriver string `json:"SupportGpuDriver"`
-	Status           string `json:"Status"`
-	CpuName          string `json:"CpuName"`
 }
 type ChangeInstanceConfigureReq struct {
 }
