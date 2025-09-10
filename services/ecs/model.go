@@ -1,14 +1,14 @@
 package ecs
 
 const (
-	ActionDescribeRegions          = "DescribeRegions"
-	ActionDescribeInstanceList     = "DescribeInstanceList"
-	ActionOperateInstance          = "OperateInstance"
-	ActionModifyInstanceName       = "ModifyInstanceName"
-	ActionDescribeInstance         = "DescribeInstance"
-	ActionDescribeTaskEvent        = "DescribeEvent"
-	ActionDescribeZoneInstanceType = "DescribeZoneInstanceType"
-	ActionChangeInstanceConfigure  = "ChangeInstanceConfigure"
+	ActionDescribeRegions         = "DescribeRegions"
+	ActionDescribeInstanceList    = "DescribeInstanceList"
+	ActionOperateInstance         = "OperateInstance"
+	ActionModifyInstanceName      = "ModifyInstanceName"
+	ActionDescribeInstance        = "DescribeInstance"
+	ActionDescribeTaskEvent       = "DescribeEvent"
+	ActionDescribeEcsFamilyInfo   = "DescribeEcsFamilyInfo"
+	ActionChangeInstanceConfigure = "ChangeInstanceConfigure"
 )
 
 const (
@@ -285,7 +285,7 @@ type TaskListInfo struct {
 	TaskTypeDisplay string `json:"TaskTypeDisplay"`
 }
 
-type DescribeZoneInstanceTypeReq struct {
+type DescribeEcsFamilyInfoReq struct {
 	EcsFamilyName     string `json:"EcsFamilyName"`
 	AvailableZoneCode string `json:"AvailableZoneCode"`
 	Cpu               *int   `json:"Cpu"`
@@ -293,7 +293,7 @@ type DescribeZoneInstanceTypeReq struct {
 	Gpu               *int   `json:"Gpu"`
 }
 
-type DescribeZoneInstanceTypeResult struct {
+type DescribeEcsFamilyInfoResult struct {
 	OpenApiCommonResp
 	Data []*ZoneInstanceTypeData `json:"Data"`
 }

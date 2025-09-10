@@ -7,7 +7,7 @@ type Client interface {
 	ModifyInstanceName(*ModifyInstanceNameReq) (*ModifyInstanceNameResult, error)
 	DescribeInstance(*DescribeInstanceReq) (*DescribeInstanceResult, error)
 	DescribeTaskEvent(*DescribeTaskEventReq) (*DescribeTaskEventResult, error)
-	DescribeZoneInstanceType(*DescribeZoneInstanceTypeReq) (*DescribeZoneInstanceTypeResult, error)
+	DescribeEcsFamilyInfo(*DescribeEcsFamilyInfoReq) (*DescribeEcsFamilyInfoResult, error)
 	ChangeInstanceConfigure(*ChangeInstanceConfigureReq) (*ChangeInstanceConfigureResult, error)
 
 	ExtendDisk(*ExtendDiskReq) (*ExtendDiskResult, error)

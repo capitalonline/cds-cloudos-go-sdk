@@ -69,7 +69,7 @@ func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (*DescribeTaskEven
 	return nil, fmt.Errorf("implement me")
 }
 
-func (c *client) DescribeZoneInstanceType(req *DescribeZoneInstanceTypeReq) (*DescribeZoneInstanceTypeResult, error) {
+func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (*DescribeEcsFamilyInfoResult, error) {
 	//TODO implement me
 	return nil, fmt.Errorf("implement me")
 }
