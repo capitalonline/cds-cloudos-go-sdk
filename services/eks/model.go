@@ -267,7 +267,6 @@ type CniDetail struct {
 }
 
 type CniConfigDetail struct {
-	FlannelBackendType  string       `json:"FlannelBackendType"`
 	CalicoBlockSize     int          `json:"CalicoBlockSize"`
 	CalicoEncapsulation string       `json:"CalicoEncapsulation"`
 	NodePodsNum         int          `json:"NodePodsNum"`
@@ -283,12 +282,9 @@ type CniInfo struct {
 }
 
 type CniConfig struct {
-	FlannelBackendType  string   `json:"FlannelBackendType"`
-	CalicoBlockSize     int      `json:"CalicoBlockSize"`
-	CalicoEncapsulation string   `json:"CalicoEncapsulation"`
-	NodePodsNum         int      `json:"NodePodsNum"`
-	PodCidr             string   `json:"PodCidr"`
-	SubnetIds           []string `json:"SubnetIds"`
+	NodePodsNum int      `json:"NodePodsNum"`
+	PodCidr     string   `json:"PodCidr"`
+	SubnetIds   []string `json:"SubnetIds"`
 }
 
 type EipInfo struct {
@@ -300,7 +296,6 @@ type SubnetInfo struct {
 	AvailableZoneId string `json:"AvailableZoneId"`
 	SubnetId        string `json:"SubnetId"`
 	Segment         string `json:"Segment"`
-	SelectSegment   string `json:"SelectSegment"`
 }
 
 type ListNodesReq struct {
@@ -381,13 +376,6 @@ type CreateClusterReq struct {
 	NodePoolConfig   NodePoolConfiguration `json:"NodePoolConfig"`
 }
 
-//type BillingSpec struct {
-//	BillingMethod BillingMethod `json:"BillingMethod"`
-//	Duration      Duration      `json:"Duration"`
-//	IsToMonth     IsToMonth     `json:"IsToMonth"`
-//	AutoRenew     AutoRenew     `json:"AutoRenew"`
-//}
-
 type NodePoolDiskInfo struct {
 	DiskType string `json:"Type"` // 磁盘类型：SSD
 	DiskSize int    `json:"Size"` // 磁盘大小，单位：GB
@@ -419,7 +407,6 @@ type AddClusterSubnetResult struct {
 // cni类型
 const (
 	CniTypeFlannel = "flannel"
-	CniTypeCalico  = "calico"
 	CniTypeVpcCni  = "vpc-cni"
 )
 
