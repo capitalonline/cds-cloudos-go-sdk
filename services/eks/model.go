@@ -321,7 +321,7 @@ type ListNodesData struct {
 	GpuType       string `json:"GpuType"`
 	FamilyName    string `json:"FamilyName"`
 	Schedulable   int    `json:"Schedulable"`
-	K8SStatus     string `json:"K8SStatus"`
+	K8sStatus     string `json:"K8sStatus"`
 	RegionName    string `json:"RegionName"`
 	RegionId      string `json:"RegionId"`
 	AzName        string `json:"AzName"`
