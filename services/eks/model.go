@@ -267,11 +267,9 @@ type CniDetail struct {
 }
 
 type CniConfigDetail struct {
-	CalicoBlockSize     int          `json:"CalicoBlockSize"`
-	CalicoEncapsulation string       `json:"CalicoEncapsulation"`
-	NodePodsNum         int          `json:"NodePodsNum"`
-	PodCidr             string       `json:"PodCidr"`
-	SubnetList          []SubnetInfo `json:"SubnetList"`
+	NodePodsNum int          `json:"NodePodsNum"`
+	PodCidr     string       `json:"PodCidr"`
+	SubnetList  []SubnetInfo `json:"SubnetList"`
 }
 
 type CniInfo struct {
