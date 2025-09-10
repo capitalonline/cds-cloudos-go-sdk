@@ -352,7 +352,7 @@ type CreateClusterReq struct {
 	ClusterName      string                `json:"ClusterName"`
 	VpcId            string                `json:"VpcId"`
 	Cni              CniInfo               `json:"Cni"`
-	K8sVersion       string                `json:"K8SVersion"`
+	K8sVersion       string                `json:"K8sVersion"`
 	RuntimeType      string                `json:"RuntimeType"`
 	NatId            string                `json:"NatId"`
 	SourceEipId      string                `json:"SourceEipId"`
