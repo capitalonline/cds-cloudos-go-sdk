@@ -20,7 +20,11 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
 )
 
-// Client of EKS service is a kind of CdsClient, so derived from CdsClient
+const (
+	ecsRoute = "/ecs/v1"
+	ebsRoute = "/ebs/v1"
+)
+
 type client struct {
 	*cds.CdsClient
 	ecsRoute string
@@ -36,20 +40,7 @@ func NewClient(ak, sk string) (Client, error) {
 	cli.Config.Retry = cds.NewNoRetryPolicy()
 	return &client{
 		CdsClient: cli,
-		ecsRoute:  "/ecs/v1",
-		ebsRoute:  "/ebs/v1",
-	}, nil
-}
-
-func NewClientWidthEndpoint(ak, sk string, endpoint string) (Client, error) {
-	cli, err := cds.NewCdsClientWithAkSk(ak, sk)
-	if err != nil {
-		return nil, err
-	}
-	cli.Config.Retry = cds.NewNoRetryPolicy()
-	return &client{
-		CdsClient: cli,
-		ecsRoute:  "/ecs/v1",
-		ebsRoute:  "/ebs/v1",
+		ecsRoute:  ecsRoute,
+		ebsRoute:  ebsRoute,
 	}, nil
 }

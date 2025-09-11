@@ -36,12 +36,7 @@ func TestEcsSdk(t *testing.T) {
 	})
 
 	t.Run("DescribeInstanceList", func(t *testing.T) {
-		result, cliErr := cli.DescribeInstanceList(&DescribeInstanceListReq{
-			AvailableZoneCode: "",
-			VpcId:             "",
-			SearchInfo:        "",
-		})
-
+		result, cliErr := cli.DescribeInstanceList(&DescribeInstanceListReq{})
 		if cliErr != nil {
 			t.Error(cliErr)
 			return
