@@ -111,12 +111,8 @@ go mod tidy
 
 ```go
 import (
-    "github.com/capitalonline/cds-cloudos-go-sdk/common"
     "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
 )
-
-// 创建认证信息
-credential := common.NewCredential("your-access-key-id", "your-secret-access-key")
 
 // 创建EKS服务客户端
 eksClient, err := eks.NewClient("your-access-key-id", "your-secret-access-key")

@@ -21,12 +21,12 @@
 - **GetEip**: 获取指定弹性eip信息
 - **ListEips**: 查询弹性eip
 - **ReleaseEip**: 释放弹性eip
-- **UpdateEIP**: 更改弹性eip带宽信息
+- **UpdateEip**: 更改弹性eip带宽信息
 
 **共享带宽包管理**
 - **CreateBandwidthPackage**: 创建共享带宽包
 - **GetBandwidthPackage**: 获取指定共享带宽包信息
-- **ListBandwidthPackages**: 查询共享带宽包
+- **ListBandwidthPackage**: 查询共享带宽包
 - **UpdateBandwidthPackage**: 更新共享带宽包
 - **AddBandwidthPackageIp**: 向指定共享带宽包添加eip
 - **RemoveBandwidthPackageIp**: 从指定带宽包移除弹性eip
