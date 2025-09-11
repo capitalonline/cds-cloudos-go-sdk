@@ -175,7 +175,7 @@ type OperateInstanceResult struct {
 }
 
 type OperateInstanceData struct {
-	EventId string `json:"EventId"`
+	EventIdData
 }
 
 type ModifyInstanceNameReq struct {
@@ -329,7 +329,7 @@ type DescribeTaskEventResult struct {
 }
 
 type EventResultData struct {
-	EventId            string          `json:"EventId"`
+	EventIdData
 	EventStatus        string          `json:"EventStatus"`
 	EventStatusDisplay string          `json:"EventStatusDisplay"`
 	EventType          string          `json:"EventType"`
@@ -424,7 +424,7 @@ type ChangeInstanceConfigureResult struct {
 }
 
 type InstanceConfigureData struct {
-	EventId string `json:"EventId"`
+	EventIdData
 }
 
 type ExtendDiskReq struct {
@@ -445,9 +445,9 @@ func (req *ExtendDiskReq) check() error {
 
 type ExtendDiskResult struct {
 	OpenApiCommonResp
-	Data *ExtendDiskData `json:"Data"`
+	Data *EventIdData `json:"Data"`
 }
 
-type ExtendDiskData struct {
+type EventIdData struct {
 	EventId string `json:"EventId"`
 }
