@@ -23,6 +23,7 @@ import (
 
 //ListSubnets 查询子网
 func ListSubnets() {
+	// 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
@@ -40,6 +41,7 @@ func ListSubnets() {
 
 // GetSubnet 获取子网数据
 func GetSubnet() {
+	// 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	GetSubnetArgs := &subnet.GetSubnetReq{
@@ -56,6 +58,7 @@ func GetSubnet() {
 
 // CreateSubnet 创建子网
 func CreateSubnet() {
+	// 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	CreateSubnetArgs := &subnet.CreateSubnetReq{
@@ -80,6 +83,7 @@ func CreateSubnet() {
 
 // DeleteSubnet 删除子网
 func DeleteSubnet() {
+	// 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)

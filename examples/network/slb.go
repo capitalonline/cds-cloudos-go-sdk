@@ -18,11 +18,13 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/slb"
 )
 
 
 func ListVPCSlb() {
+	// 替换为您的实际访问密钥
 	ak, sk := "your-ak", "your-sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
@@ -38,6 +40,7 @@ func ListVPCSlb() {
 }
 
 func GetVPCSlbDetail() {
+	// 替换为您的实际访问密钥
 	ak, sk := "your-ak", "your-sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)

@@ -23,6 +23,7 @@ import (
 
 // ListEIPs 查询eip列表
 func ListEIPs() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	ListEipArgs := &eip.ListEipsReq{
@@ -39,6 +40,7 @@ func ListEIPs() {
 }
 // GetEIP 获取某个eip信息
 func GetEIP() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -56,6 +58,7 @@ func GetEIP() {
 }
 // CreateEIP 创建eip
 func CreateEIP(){
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
@@ -76,6 +79,7 @@ func CreateEIP(){
 }
 // UpdateEIP 更新eip带宽或者描述
 func UpdateEIP(){
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -96,6 +100,7 @@ func UpdateEIP(){
 
 // ReleaseEIP删除弹性eip
 func ReleaseEIP(){
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 
