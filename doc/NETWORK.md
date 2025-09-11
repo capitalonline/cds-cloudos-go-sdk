@@ -5,10 +5,10 @@
 
 **私有网络管理** 
 
-- **CreateVpc**: 创建VPC信息
-- **GetVpc**: 获取指定VPC信息
-- **ListVpcs**: 查询VPC信息
-- **DeleteVpc**: 删除VPC
+- **CreateVPC**: 创建VPC信息
+- **GetVPC**: 获取指定VPC信息
+- **ListVPCs**: 查询VPC信息
+- **DeleteVPC**: 删除VPC
 
 **子网管理**
 - **CreateSubnet**: 创建子网
@@ -16,12 +16,12 @@
 - **ListSubnets**: 查询子网信息
 - **DeleteSubnet**: 删除子网
 
-**弹性公网IP(EIp)管理**
-- **CreateEip**: 创建弹性eip
-- **GetEip**: 获取指定弹性eip信息
-- **ListEips**: 查询弹性eip
-- **ReleaseEip**: 释放弹性eip
-- **UpdateEip**: 更改弹性eip带宽信息
+**弹性公网IP(EIP)管理**
+- **CreateEIP**: 创建弹性EIP
+- **GetEIP**: 获取指定弹性EIP信息
+- **ListEIPs**: 查询弹性EIP
+- **ReleaseEIP**: 释放弹性EIP
+- **UpdateEIP**: 更改弹性EIP带宽信息
 
 **共享带宽包管理**
 - **CreateBandwidthPackage**: 创建共享带宽包
@@ -45,12 +45,14 @@
 ### 初始化VPC客户端
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/vpc"
+// 替换为您的实际访问密钥
 ak, sk := "ak", "sk"
 vpcClient, _ := vpc.NewClient(ak, sk)
 ```
 ### 初始化子网客户端
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/subnet"
+// 替换为您的实际访问密钥
 ak, sk :=  "ak", "sk"
 subnetClient, _ := subnet.NewClient(ak, sk)
 ```
@@ -58,18 +60,21 @@ subnetClient, _ := subnet.NewClient(ak, sk)
 ### 初始化EIP客户端
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
+// 替换为您的实际访问密钥
 ak, sk := "ak", "sk"
 EipClient, _ := eip.NewClient(ak, sk)
 ```
 ### 初始化共享带宽包客户端
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/bandwidthpackage"
+// 替换为您的实际访问密钥
 ak, sk := "ak", "sk"
 BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 ```
 ### 初始化NAT网关客户端
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/natgateway"
+// 替换为您的实际访问密钥
 ak, sk := "ak", "sk"
 natgatewayClient, _ := natgateway.NewClient(ak, sk)
 ```
@@ -78,7 +83,8 @@ natgatewayClient, _ := natgateway.NewClient(ak, sk)
 ### VPC管理代码示例
 **创建VPC**
 ```go
-func CreateVpc() {
+func CreateVPC() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -108,7 +114,8 @@ func CreateVpc() {
 
 **获取指定VPC信息**
 ```go
-func Getvpc() {
+func GetVPC() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -127,7 +134,8 @@ func Getvpc() {
 ```
 **查询VPC信息**
 ```go
-func ListVpcs() {
+func ListVPCs() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -150,6 +158,7 @@ func ListVpcs() {
 **删除VPC**
 ```go
 func DeleteVPC() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
@@ -168,6 +177,7 @@ func DeleteVPC() {
 **创建子网**
 ```go
 func CreateSubnet() {
+    // 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	CreateSubnetArgs := &subnet.CreateSubnetReq{
@@ -195,6 +205,7 @@ func CreateSubnet() {
 **获取指定子网信息**
 ```go
 func GetSubnet() {
+    // 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	GetSubnetArgs := &subnet.GetSubnetReq{
@@ -212,6 +223,7 @@ func GetSubnet() {
 **查询子网信息**
 ```go
 func ListSubnet() {
+    // 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
@@ -234,6 +246,7 @@ func ListSubnet() {
 **删除子网**
 ```go
 func DeleteSubnet() {
+    // 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
@@ -252,9 +265,10 @@ func DeleteSubnet() {
 
 ```
 ### EIP管理代码示例
-**创建弹性eip**
+**创建弹性EIP**
 ```go
-func CreateEip(){
+func CreateEIP(){
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
@@ -276,9 +290,10 @@ func CreateEip(){
 	fmt.Println(response.Data)
 }
 ```
-**获取指定弹性eip信息**
+**获取指定弹性EIP信息**
 ```go
-func GetEip() {
+func GetEIP() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -295,9 +310,10 @@ func GetEip() {
 	fmt.Println(response.Data.Total)
 }
 ```
-**查询弹性eip**
+**查询弹性EIP**
 ```go
-func ListEips() {
+func ListEIPs() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	ListEipArgs := &eip.ListEipsReq{
@@ -314,15 +330,16 @@ func ListEips() {
 	fmt.Println(response.Data.Total)
 }
 ```
-**释放弹性eip**
+**释放弹性EIP**
 ```go
-func ReleaseEip(){
+func ReleaseEIP(){
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 
 	EipClient, _ := eip.NewClient(ak, sk)
 	ReleaseEipArgs := &eip.ReleaseEipReq{
-		EIPId: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",
+		EIPId: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",  // eip ID
 	}
 
 	response, err := EipClient.ReleaseEip(ReleaseEipArgs)
@@ -335,16 +352,17 @@ func ReleaseEip(){
 
 }
 ```
-**更改弹性eip带宽信息**
+**更改弹性EIP带宽信息**
 ```go
-func UpdateEip(){
+func UpdateEIP(){
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
 	UpdateEipArgs := &eip.UpdateEIPReq{
 		EIPId: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",
-        Qos: 10,
-		Description: "go create",
+        Qos: 10, // 变更的带宽大小
+		Description: "go create", // 描述信息
 	}
 
 	response, err := EipClient.UpdateEip(UpdateEipArgs)
@@ -360,6 +378,7 @@ func UpdateEip(){
 **创建共享带宽包**
 ```go
 func CreateBandwidthPackage() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -386,6 +405,7 @@ func CreateBandwidthPackage() {
 **获取指定共享带宽包信息**
 ```go
 func GetBandwidthPackage() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -405,6 +425,7 @@ func GetBandwidthPackage() {
 **查询共享带宽包**
 ```go
 func ListBandwidthPackage() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -425,6 +446,7 @@ func ListBandwidthPackage() {
 **更新共享带宽包**
 ```go
 func UpdateBandwidthPackage() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -443,6 +465,7 @@ func UpdateBandwidthPackage() {
 **向指定共享带宽包添加eip**
 ```go
 func AddBandwidthPackageIp() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -463,6 +486,7 @@ func AddBandwidthPackageIp() {
 **从指定带宽包移除并保留弹性eip**
 ```go
 func RemoveBandwidthPackageIp() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -475,17 +499,19 @@ func RemoveBandwidthPackageIp() {
         BillScheme: "BandwIdth",  // 计费方案
         Qos: 10,
 	}
+}
 ```
 **从指定带宽包移除并删除弹性eip**
 ```go
 func RemoveBandwidthPackageIp() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	// 移除删除eip
 	RemoveBandwidthPackageIpArgs := &bandwidthpackage.RemoveBandwidthPackageIpReq{
-		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"},
-		Delete: true,
+		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"}, // EIP的ID
+		Delete: true,  // 移除EIP并删除EIP
 	}
 
 	response, err := BandwidthPackageClient.RemoveBandwidthPackageIp(RemoveBandwidthPackageIpArgs)
@@ -501,11 +527,12 @@ func RemoveBandwidthPackageIp() {
 **删除共享带宽包**
 ```go
 func DeleteBandwidthPackage() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	DeletebandwidthpackageArgs := &bandwidthpackage.DeleteBandwidthPackageReq{
-        BandwidthId: "868bb384-79a4-11f0-adfa-6e18e986f14e",
+        BandwidthId: "868bb384-79a4-11f0-adfa-6e18e986f14e",  // 共享带宽的ID
 	}
 	response, err := BandwidthPackageClient.DeleteBandwidthPackage(DeletebandwidthpackageArgs)
 	if err != nil {
@@ -519,6 +546,7 @@ func DeleteBandwidthPackage() {
 **获取指定nat网关信息**
 ```go
 func GetNatGateway() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	natgatewayClient, _ := natgateway.NewClient(ak, sk)
 	GetNatGatewayArgs := map[string]string{
@@ -536,6 +564,7 @@ func GetNatGateway() {
 **查询nat网关**
 ```go
 func ListNatGateways() {
+    // 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	natgatewayClient, _ := natgateway.NewClient(ak, sk)
@@ -551,8 +580,46 @@ func ListNatGateways() {
 	fmt.Println(response.Data)
 }
 ```
+### SLB管理代码示例
+**获取指定高性能负载均衡信息**
+```go
+func GetVPCSlbDetail() {
+	// 替换为您的实际访问密钥
+	ak, sk := "your-ak", "your-sk"
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.GetVpcSlbDetailReq{
+		SlbId: "",
+		SlbName: "",
+	}
+	response, err := slbClient.GetVpcSlbDetail(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+```
+**查询高性能负载均衡信息**
+```go
+func ListVPCSlb() {
+	// 替换为您的实际访问密钥
+	ak, sk := "your-ak", "your-sk"
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.ListVpcSlbReq{
+		VpcId: "",
+	}
+	response, err := slbClient.ListVpcSlb(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+```
 # 数据结构说明
-## 创建vpc请求参数
+## 创建VPC请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |
 | ----------------- | ------ | -------- | ----------------------- | ----------------------------------- |
 | RegionCode        | string | 是       | CN_Hongkong             | VPC区域code               |
@@ -659,6 +726,30 @@ func ListNatGateways() {
 | Status            | string | ok                                   | 带宽状态                |
 | CreateTime        | string | 2022-06-02 18:05:47                  | 带宽创建时间                  |
 
+## 错误处理
+
+所有SDK方法都会返回标准的错误信息：
+
+```go
+vpcClient, err := vpc.NewClient(ak, sk)
+if err != nil {
+    log.Printf("API call failed: %v", err)
+    return
+}
+
+if result.Code != "Success" {
+    log.Printf("API returned error: Code=%s, Message=%s", result.Code, result.Message)
+    return
+}
+
+// 处理成功的结果
+fmt.Printf("VPC created successfully: %+v\\n", result.Data)
+```
+
+## 注意事项
+
+1. **VPC私有网络名称规范**: 名称最多输入255个中文，英文，'_'，'-'及数字
+2. **子网名称规范**: 名称最多输入255个中文，英文，'_'，'-'及数字
 
 # 常用常量说明
 ## 私有网络区域名称

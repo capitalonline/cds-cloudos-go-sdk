@@ -23,6 +23,7 @@ import (
 
 // ListBandwidthPackage 查询共享带宽包
 func ListBandwidthPackage() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -40,6 +41,7 @@ func ListBandwidthPackage() {
 }
 //获取共享带宽包
 func GetBandwidthPackage() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -57,6 +59,7 @@ func GetBandwidthPackage() {
 
 // CreateBandwidthPackage 创建共享带宽包
 func CreateBandwidthPackage() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -80,6 +83,7 @@ func CreateBandwidthPackage() {
 
 //UpdateBandwidthPackage 更新带宽包带宽
 func UpdateBandwidthPackage() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -97,6 +101,7 @@ func UpdateBandwidthPackage() {
 
 //DeleteBandwidthPackage 删除共享带宽包
 func DeleteBandwidthPackage() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -113,6 +118,7 @@ func DeleteBandwidthPackage() {
 
 //AddBandwidthPackageIp 为共享带宽包添加EIP
 func AddBandwidthPackageIp() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
@@ -131,6 +137,7 @@ func AddBandwidthPackageIp() {
 
 //RemoveBandwidthPackageIp 从共享带宽包移除eip
 func RemoveBandwidthPackageIp() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)

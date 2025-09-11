@@ -358,20 +358,21 @@ type DeleteNodesData struct {
 }
 
 type CreateClusterReq struct {
-	ClusterName      string                `json:"ClusterName"`
-	VpcId            string                `json:"VpcId"`
-	Cni              CniInfo               `json:"Cni"`
-	K8sVersion       string                `json:"K8sVersion"`
-	RuntimeType      string                `json:"RuntimeType"`
-	NatId            string                `json:"NatId"`
-	SourceEipId      string                `json:"SourceEipId"`
-	DestinationEipId string                `json:"DestinationEipId"`
-	SlbId            string                `json:"SlbId"`
-	Ak               string                `json:"Ak"`
-	Sk               string                `json:"Sk"`
-	MasterNumber     int                   `json:"MasterNumber"`
-	MasterConfig     NodePoolNodeConfig    `json:"MasterConfig"`
-	NodePoolConfig   NodePoolConfiguration `json:"NodePoolConfig"`
+	ClusterName    string                `json:"ClusterName"`
+	VpcId          string                `json:"VpcId"`
+	Cni            CniInfo               `json:"Cni"`
+	K8sVersion     string                `json:"K8sVersion"`
+	RuntimeType    string                `json:"RuntimeType"`
+	NatId          string                `json:"NatId"`
+	SourceEip      string                `json:"SourceEip"`
+	DestinationEip string                `json:"DestinationEip"`
+	Password       string                `json:"Password"`
+	SlbId          string                `json:"SlbId"`
+	Ak             string                `json:"Ak"`
+	Sk             string                `json:"Sk"`
+	MasterNumber   int                   `json:"MasterNumber"`
+	MasterConfig   NodePoolNodeConfig    `json:"MasterConfig"`
+	NodePoolConfig NodePoolConfiguration `json:"NodePoolConfig"`
 }
 
 type NodePoolDiskInfo struct {
@@ -414,11 +415,6 @@ const (
 	K8sVersion1_26_5  = "v1.26.5"
 )
 
-// flannel后端类型
-const (
-	FlannelBackendTypeVxlan = "vxlan"
-)
-
 // 服务转发模式
 const (
 	ProxyConfigIptables = "iptables"
@@ -430,11 +426,6 @@ const (
 	MasterNumber3 = 3
 	MasterNumber5 = 5
 	MasterNumber7 = 7
-)
-
-// calico使用的网络封装模式
-const (
-	CalicoEncapsulationIPIP = "IPIP"
 )
 
 // 集群服务CIDR ip地址段
