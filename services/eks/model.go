@@ -582,8 +582,7 @@ const (
 	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
 	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
 
-	// BmsGpuGbm32XLarge
-	BmsGpuGbm32XLarge = "Inference gbm c6 nr4.128c1024g8gpu"
+	BmsGpuGbm32XLarge = "Inference gbm c6 nr44.128c1024g8gpu"
 )
 
 // ECS、BMS支持的操作系统镜像
