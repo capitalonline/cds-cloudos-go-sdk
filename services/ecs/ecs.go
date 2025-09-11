@@ -69,6 +69,7 @@ func (c *client) ModifyInstanceName(req *ModifyInstanceNameReq) (result *ModifyI
 	if err = req.check(); err != nil {
 		return
 	}
+
 	result = new(ModifyInstanceNameResult)
 
 	err = cds.NewRequestBuilder(c).
@@ -119,6 +120,7 @@ func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *D
 	if err = req.check(); err != nil {
 		return
 	}
+
 	result = new(DescribeEcsFamilyInfoResult)
 
 	err = cds.NewRequestBuilder(c).
