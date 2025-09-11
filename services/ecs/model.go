@@ -1,5 +1,9 @@
 package ecs
 
+import (
+	"fmt"
+)
+
 const (
 	ActionDescribeRegions         = "DescribeRegions"
 	ActionDescribeInstanceList    = "DescribeInstanceList"
@@ -147,6 +151,24 @@ type OperateInstanceReq struct {
 	DeleteEip int      `json:"DeleteEip"`
 }
 
+func (req *OperateInstanceReq) check() error {
+	if len(req.EcsIds) == 0 {
+		return fmt.Errorf("field EcsIds is required")
+	}
+
+	switch req.OpType {
+	case StartUpInstance, RestartInstance, HardShutdownInstance, ShutdownInstance:
+		req.DeleteEip = 0
+	case FreeShutdownInstance:
+		if req.DeleteEip != 1 {
+			req.DeleteEip = 0
+		}
+	default:
+		return fmt.Errorf("invalid OpType: %s", req.OpType)
+	}
+	return nil
+}
+
 type OperateInstanceResult struct {
 	OpenApiCommonResp
 	Data *OperateInstanceData `json:"Data"`
@@ -161,6 +183,16 @@ type ModifyInstanceNameReq struct {
 	Name  string `json:"Name"`
 }
 
+func (req *ModifyInstanceNameReq) check() error {
+	if req.EcsId == "" {
+		return fmt.Errorf("field EcsId is required")
+	}
+	if req.Name == "" {
+		return fmt.Errorf("field Name is required")
+	}
+	return nil
+}
+
 type ModifyInstanceNameResult struct {
 	OpenApiCommonResp
 	Data *ModifyInstanceNameData `json:"Data"`
@@ -173,6 +205,13 @@ type ModifyInstanceNameData struct {
 
 type DescribeInstanceReq struct {
 	EcsId string `json:"EcsId"`
+}
+
+func (req *DescribeInstanceReq) check() error {
+	if req.EcsId == "" {
+		return fmt.Errorf("field EcsId is required")
+	}
+	return nil
 }
 
 type DescribeInstanceResult struct {
@@ -277,6 +316,13 @@ type DescribeTaskEventReq struct {
 	EventId string `json:"EventId"`
 }
 
+func (req *DescribeTaskEventReq) check() error {
+	if req.EventId == "" {
+		return fmt.Errorf("field EventId is required")
+	}
+	return nil
+}
+
 type DescribeTaskEventResult struct {
 	OpenApiCommonResp
 	Data *EventResultData `json:"Data"`
@@ -311,6 +357,16 @@ type DescribeEcsFamilyInfoReq struct {
 	BillingMethod     billingMethod `json:"BillingMethod"`
 }
 
+func (req *DescribeEcsFamilyInfoReq) check() error {
+	if req.AvailableZoneCode == "" {
+		return fmt.Errorf("field AvailableZoneCode is required")
+	}
+	if req.BillingMethod != MonthlyBillingMethod {
+		req.BillingMethod = OnDemandBillingMethod
+	}
+	return nil
+}
+
 type DescribeEcsFamilyInfoResult struct {
 	OpenApiCommonResp
 	Data FamilyData `json:"Data"`
@@ -342,6 +398,26 @@ type ChangeInstanceConfigureReq struct {
 	Gpu               int      `json:"Gpu"`
 }
 
+func (req *ChangeInstanceConfigureReq) check() error {
+	if req.AvailableZoneCode == "" {
+		return fmt.Errorf("field AvailableZoneCode is required")
+	}
+	if req.EcsFamilyName == "" {
+		return fmt.Errorf("field EcsFamilyName is required")
+	}
+	if req.Cpu <= 0 {
+		return fmt.Errorf("field Cpu is required")
+	}
+	if req.Ram <= 0 {
+		return fmt.Errorf("field Ram is required")
+	}
+	if len(req.EcsIds) == 0 {
+		return fmt.Errorf("field EcsIds is required")
+	}
+
+	return nil
+}
+
 type ChangeInstanceConfigureResult struct {
 	OpenApiCommonResp
 	Data *InstanceConfigureData `json:"Data"`
@@ -354,6 +430,17 @@ type InstanceConfigureData struct {
 type ExtendDiskReq struct {
 	DiskId       string `json:"DiskId"`
 	ExtendedSize int    `json:"ExtendedSize"`
+}
+
+func (req *ExtendDiskReq) check() error {
+	if req.DiskId == "" {
+		return fmt.Errorf("field DiskId is required")
+	}
+
+	if req.ExtendedSize == 0 || req.ExtendedSize%8 != 0 {
+		return fmt.Errorf("field ExtendedSize must be a multiple of 8")
+	}
+	return nil
 }
 
 type ExtendDiskResult struct {
