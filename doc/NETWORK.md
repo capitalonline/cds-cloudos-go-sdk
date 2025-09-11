@@ -38,8 +38,8 @@
 - **ListNatGateways**: 查询nat网关
 
 **高性能负载均衡管理**
-- **GetSlb**: 获取指定高性能负载均衡信息
-- **ListSlb**:  查询高性能负载均衡信息
+- **ListVPCSlb**:  查询VPC下的SLB列表信息
+- **GetVPCSlbDetail**: 查询高性能负载均衡详情
 
 ## 快速开始
 ### 初始化VPC客户端
@@ -551,6 +551,45 @@ func ListNatGateways() {
 	fmt.Println(response.Data)
 }
 ```
+### 高性能负载均衡管理代码示例
+**查询VPC下的SLB列表信息**
+```go
+func ListVPCSlb() {
+	ak, sk := "your-ak", "your-sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.ListVpcSlbReq{
+		VpcId: "",      // 需要查询的VPC ID
+	}
+	response, err := slbClient.ListVpcSlb(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	fmt.Println(response.Data)  // 获取VPC下SLB列表信息
+}
+```
+**查询高性能负载均衡详情**
+```go
+func GetVPCSlbDetail() {
+	ak, sk := "your-ak", "your-sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.GetVpcSlbDetailReq{
+        SlbId: "",  // 需要查询的SLB的ID
+        SlbName: "",    // 需要查询的SLB的名称
+    }
+    response, err := slbClient.GetVpcSlbDetail(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	fmt.Println(response.Data)  // 获取VPC下SLB列表信息
+}
+```
+> 注意: 对请求参数的内容解释如下
+> - SlbId: 此参数允许为空字符串，当此参数为空时会使用SlbName进行实例详情查询，当此参数不为空时将高优先级使用此参数进行实例详情查询，当SlbId和SlbName同时传参时将使用SlbId进行实例详情查询
+> - SlbName: 此参数允许为空字符串，仅当SlbId为空时会使用此参数进行实例详情查询，当SlbId不为空时不会使用此参数进行实例匹配查询
 # 数据结构说明
 ## 创建VPC请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |

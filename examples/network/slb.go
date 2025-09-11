@@ -22,8 +22,8 @@ import (
 )
 
 
-func ListVpcSlb() {
-	ak, sk := "ak", "sk"
+func ListVPCSlb() {
+	ak, sk := "your-ak", "your-sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	args := &slb.ListVpcSlbReq{
@@ -37,8 +37,8 @@ func ListVpcSlb() {
 	fmt.Println(response.Data)
 }
 
-func GetVpcSlbDetail() {
-	ak, sk := "ak", "sk"
+func GetVPCSlbDetail() {
+	ak, sk := "your-ak", "your-sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	args := &slb.GetVpcSlbDetailReq{
@@ -55,6 +55,6 @@ func GetVpcSlbDetail() {
 
 
 func main() {
-	ListVpcSlb()
-	// GetVpcSlbDetail()
+	ListVPCSlb()
+	// GetVPCSlbDetail()
 }
