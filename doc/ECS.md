@@ -57,6 +57,8 @@
 
 #### 代码示例
 
+[查看示例代码](https://github.com/capitalonline/cds-cloudos-go-sdk/blob/dev-ecs/services/ecs/ecs_test.go#L23)
+
 ### DescribeTaskEvent
 
 #### 参数说明
