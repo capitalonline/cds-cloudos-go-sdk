@@ -23,6 +23,7 @@ import (
 
 // ListNatGateways 查询nat网关
 func ListNatGateways() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	natgatewayClient, _ := natgateway.NewClient(ak, sk)
@@ -38,6 +39,7 @@ func ListNatGateways() {
 }
 // GetNatGateway 获取nat网关数据
 func GetNatGateway() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	natgatewayClient, _ := natgateway.NewClient(ak, sk)
 	GetNatGatewayArgs := map[string]string{
