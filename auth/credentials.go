@@ -21,7 +21,15 @@ limitations under the License.
 
 package auth
 
-import "errors"
+import (
+	"errors"
+	"os"
+)
+
+const (
+	AK = "CDS_SECRET_ID"
+	SK = "CDS_SECRET_KEY"
+)
 
 type CdsCredentials struct {
 	AccessKeyId     string // access key id to the service
@@ -34,6 +42,19 @@ func (c *CdsCredentials) String() string {
 }
 
 func NewCdsCredentials(ak, sk string) (*CdsCredentials, error) {
+	if len(ak) == 0 {
+		return nil, errors.New("accessKeyId should not be empty")
+	}
+	if len(sk) == 0 {
+		return nil, errors.New("secretKey should not be empty")
+	}
+
+	return &CdsCredentials{ak, sk}, nil
+}
+
+func NewCdsCredentialsByEnv() (*CdsCredentials, error) {
+	ak := os.Getenv(AK)
+	sk := os.Getenv(SK)
 	if len(ak) == 0 {
 		return nil, errors.New("accessKeyId should not be empty")
 	}
