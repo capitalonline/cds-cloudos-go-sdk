@@ -1,10 +1,27 @@
+/*
+Copyright 2024.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
 )
 
+// ListEips 查询eip列表
 func ListEips() {
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -20,13 +37,13 @@ func ListEips() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-
+// GetEip 获取某个eip信息
 func GetEip() {
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
 	GetEipArgs := &eip.GetEipReq{
-		Keyword: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",
+		Keyword: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",  // eip地址或者id
 	}
 	response, err := EipClient.GetEip(GetEipArgs)
 	if err != nil {
@@ -37,16 +54,16 @@ func GetEip() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-
+// CreateEip 创建eip
 func CreateEip(){
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
-		RegionCode: "CN_Qingyang",
-        BandwidthType: "Bandwidth_Multi_ISP_BGP",
-        BillScheme: "BandwIdth",
-        Qos: 5,
-        Size: 1,
+		RegionCode: "CN_Qingyang",  // 区域code
+        BandwidthType: "Bandwidth_Multi_ISP_BGP",  // 带宽类型
+        BillScheme: "BandwIdth",  // 计费方案
+        Qos: 5,  // 带宽大小
+        Size: 1,  // 数量
         Description: "go create",
 	}
 	response, err := EipClient.CreateEip(CreateEipArgs)
@@ -57,7 +74,7 @@ func CreateEip(){
 	fmt.Printf(">>> response: %+v", response)
 	fmt.Println(response.Data)
 }
-
+// UpdateEip 更新eip带宽或者描述
 func UpdateEip(){
 	ak, sk := "ak", "sk"
 
@@ -77,7 +94,7 @@ func UpdateEip(){
 	fmt.Println(response.Data)
 }
 
-
+// ReleaseEip 删除弹性eip
 func ReleaseEip(){
 	ak, sk := "ak", "sk"
 

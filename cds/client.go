@@ -24,8 +24,27 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/util/log"
 	"io"
 	"io/ioutil"
+	"os"
 	"time"
 )
+
+var (
+	endpoint        string
+	envCDSAPIHost   = "CDS_API_HOST"
+	envCDSAPISchema = "CDS_API_SCHEMA"
+	defaultEndpoint = "https://api.capitalonline.net"
+)
+
+func init() {
+	host := os.Getenv(envCDSAPIHost)
+	schema := os.Getenv(envCDSAPISchema)
+
+	if host == "" || schema == "" {
+		endpoint = defaultEndpoint
+	} else {
+		endpoint = schema + "://" + host
+	}
+}
 
 // Client is the general interface which can perform sending request. Different service
 // will define its own client in case of specific extension.
@@ -209,14 +228,14 @@ func NewCdsClientWithTimeout(conf *CdsClientConfiguration, sign auth.Signer) *Cd
 	return &CdsClient{conf, sign}
 }
 
-func NewCdsClientWithAkSk(ak, sk, endPoint string) (*CdsClient, error) {
+func NewCdsClientWithAkSk(ak, sk string) (*CdsClient, error) {
 	credentials, err := auth.NewCdsCredentials(ak, sk)
 	if err != nil {
 		return nil, err
 	}
 
 	defaultConf := &CdsClientConfiguration{
-		Endpoint:                  endPoint,
+		Endpoint:                  endpoint,
 		Credentials:               credentials,
 		UserAgent:                 DEFAULT_USER_AGENT,
 		Region:                    DEFAULT_REGION,

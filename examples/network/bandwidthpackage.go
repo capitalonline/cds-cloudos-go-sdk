@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,21 +13,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/bandwidthpackage"
 )
 
-
+// ListBandwidthPackage 查询共享带宽包
 func ListBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	ListBandwidthPackageArgs := &bandwidthpackage.ListBandwidthPackagesReq{
-		RegionCode:"CN_Qingyang",
+		RegionCode:"CN_Qingyang", // VPC区域code
 	}
 	response, err := BandwidthPackageClient.ListBandwidthPackages(ListBandwidthPackageArgs)
 	if err != nil {
@@ -38,13 +38,13 @@ func ListBandwidthPackage() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-
+//获取共享带宽包
 func GetBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	GetBandwidthPackageArgs := &bandwidthpackage.GetBandwidthPackageReq{
-		Keyword: "868bb384-79a4-11f0-adfa-6e18e986f14e",
+		Keyword: "868bb384-79a4-11f0-adfa-6e18e986f14e", //查询关键字: id或名称
 	}
 	response, err := BandwidthPackageClient.GetBandwidthPackage(GetBandwidthPackageArgs)
 	if err != nil {
@@ -55,17 +55,17 @@ func GetBandwidthPackage() {
 	fmt.Println(response.Data)
 }
 
-
+// CreateBandwidthPackage 创建共享带宽包
 func CreateBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	CreatebandwidthpackageArgs := &bandwidthpackage.CreateBandwidthPackageReq{
-        RegionCode: "CN_Qingyang",
+        RegionCode: "CN_Qingyang",  // 	VPC区域code
         Name: "go_create",
-        AvailableZoneCode: "CN_Qingyang_A",
-        BandwidthType: "Bandwidth_Multi_ISP_BGP",
-        BillScheme: "BandwIdth_Shared",
+        AvailableZoneCode: "CN_Qingyang_A",  // VPC可用区code
+        BandwidthType: "Bandwidth_Multi_ISP_BGP", // 带宽类型
+        BillScheme: "BandwIdth_Shared", // 计费方案
         Qos: 10,
     
 	}
@@ -78,7 +78,7 @@ func CreateBandwidthPackage() {
 	fmt.Println(response.Data)
 }
 
-
+//UpdateBandwidthPackage 更新带宽包带宽
 func UpdateBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
@@ -95,7 +95,7 @@ func UpdateBandwidthPackage() {
 	fmt.Println(response.Data)
 }
 
-
+//DeleteBandwidthPackage 删除共享带宽包
 func DeleteBandwidthPackage() {
 	ak, sk := "ak", "sk"
 
@@ -111,14 +111,14 @@ func DeleteBandwidthPackage() {
 	fmt.Println(response.Data)
 }
 
-
+//AddBandwidthPackageIp 为共享带宽包添加EIP
 func AddBandwidthPackageIp() {
 	ak, sk := "ak", "sk"
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	AddBandwidthPackageIpArgs := &bandwidthpackage.AddBandwidthPackageIpReq{
 		BandwidthId:"868bb384-79a4-11f0-adfa-6e18e986f14e",
-		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"},
+		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"},  // eip id
 	}
 	response, err := BandwidthPackageClient.AddBandwidthPackageIp(AddBandwidthPackageIpArgs)
 	if err != nil {
@@ -129,7 +129,7 @@ func AddBandwidthPackageIp() {
 	fmt.Println(response.Data)
 }
 
-
+//RemoveBandwidthPackageIp 从共享带宽包移除eip
 func RemoveBandwidthPackageIp() {
 	ak, sk := "ak", "sk"
 
@@ -138,10 +138,10 @@ func RemoveBandwidthPackageIp() {
 	RemoveBandwidthPackageIpArgs := &bandwidthpackage.RemoveBandwidthPackageIpReq{
 		EIPIdList: []string{"70cf50e2-79a3-11f0-9be8-6e18e986f14e"},
 		// Delete: true,
-		Delete: false,
-		RegionCode: "CN_Qingyang",
-        BandwidthType: "Bandwidth_Multi_ISP_BGP",
-        BillScheme: "BandwIdth",
+		Delete: false,  // 保留弹性eip, 为true时，下方参数可不传
+		RegionCode: "CN_Qingyang",  // 区域code
+        BandwidthType: "Bandwidth_Multi_ISP_BGP",  // 带宽类型
+        BillScheme: "BandwIdth",  // 计费方案
         Qos: 10,
 	}
 	
@@ -160,42 +160,6 @@ func RemoveBandwidthPackageIp() {
 	fmt.Println(response.Data)
 }
 
-
-func BandwidthPackageBindResource() {
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
-
-	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
-	BandwidthPackageBindResourceArgs := &bandwidthpackage.BandwidthBindResourceReq{
-		BandwidthId:"868bb384-79a4-11f0-adfa-6e18e986f14e",
-		BindType: "NAT",
-		ResourceId: "c3e95ed4-79a9-11f0-a8a0-7a973848a269",
-	}
-	response, err := BandwidthPackageClient.BandwidthBindResource(BandwidthPackageBindResourceArgs)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-
-}
-
-func BandwidthPackageUnbindResource() {
-	ak, sk := "ak", "sk"
-
-	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
-	BandwidthPackageUnbindResourceArgs := &bandwidthpackage.BandwidthUnbindResourceReq{
-		BandwidthId:"868bb384-79a4-11f0-adfa-6e18e986f14e",
-	}
-	response, err := BandwidthPackageClient.BandwidthUnbindResource(BandwidthPackageUnbindResourceArgs)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-}
-
 func main(){
 	// ListBandwidthPackage()
 	// GetBandwidthPackage()
@@ -204,6 +168,4 @@ func main(){
 	// DeleteBandwidthPackage()
 	// AddBandwidthPackageIp()
 	// RemoveBandwidthPackageIp()
-	// BandwidthPackageBindResource()
-	// BandwidthPackageUnbindResource()
 }

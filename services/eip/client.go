@@ -19,16 +19,15 @@ package eip
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	DefaultEndpoint = "http://cdsapi.capitalonline.net"
-	EipURI          = "/vpc"
+	EipURI = "/vpc"
 )
 
 type Client struct {
 	*cds.CdsClient
 }
 
-func NewClient(ak, sk string) (*Client, error) { 
-	client, err := cds.NewCdsClientWithAkSk(ak, sk, DefaultEndpoint)
+func NewClient(ak, sk string) (*Client, error) {
+	client, err := cds.NewCdsClientWithAkSk(ak, sk)
 	if err != nil {
 		return nil, err
 	}

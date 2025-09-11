@@ -20,10 +20,10 @@ limitations under the License.
 package sdk
 
 import (
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/vpc"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/subnet"
-	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
 	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/bandwidthpackage"
+	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
+	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/eks"
 	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/natgateway"
+	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/subnet"
+	_ "github.com/capitalonline/cds-cloudos-go-sdk/services/vpc"
 )

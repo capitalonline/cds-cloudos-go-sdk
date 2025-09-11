@@ -21,13 +21,14 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"fmt"
-	"github.com/capitalonline/cds-cloudos-go-sdk/http"
-	"github.com/capitalonline/cds-cloudos-go-sdk/util"
 	"log"
 	"net/url"
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/capitalonline/cds-cloudos-go-sdk/http"
+	"github.com/capitalonline/cds-cloudos-go-sdk/util"
 )
 
 const (

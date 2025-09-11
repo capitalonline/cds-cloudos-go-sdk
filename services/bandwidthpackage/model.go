@@ -22,6 +22,7 @@ type CreateBandwidthPackageReq struct {
     BillScheme        string `json:"BillScheme"`
     Qos               int `json:"Qos"`
     NETID             string `json:"NETID"`
+	SubjectId         int `json:"SubjectId,omitempty"`
 }
 
 

@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,20 +13,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package main
 
 import (
 	"fmt"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/subnet"
 )
 
-func ListSubnet() {
+//ListSubnets 查询子网
+func ListSubnets() {
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	ListSubnetArgs := &subnet.ListSubnetsReq{
-		RegionCode: "CN_Qingyang",
+		RegionCode: "CN_Qingyang",  // 区域code
 	}
 	response, err := subnetClient.ListSubnets(ListSubnetArgs)
 	if err != nil {
@@ -37,11 +38,12 @@ func ListSubnet() {
 	fmt.Println(response.Data)
 }
 
+// GetSubnet 获取子网数据
 func GetSubnet() {
 	ak, sk :=  "ak", "sk"
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	GetSubnetArgs := &subnet.GetSubnetReq{
-		Keyword: "919a5290-799e-11f0-adfa-6e18e986f14e",
+		Keyword: "919a5290-799e-11f0-adfa-6e18e986f14e",  // 子网id或者名称
 	}
 	response, err := subnetClient.GetSubnet(GetSubnetArgs)
 	if err != nil {
@@ -52,16 +54,17 @@ func GetSubnet() {
 	fmt.Println(response.Data)
 }
 
+// CreateSubnet 创建子网
 func CreateSubnet() {
 	ak, sk :=  "ak", "sk"
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	CreateSubnetArgs := &subnet.CreateSubnetReq{
-        VPCId:        "9197340c-799e-11f0-adfa-6e18e986f14e",
+        VPCId:        "9197340c-799e-11f0-adfa-6e18e986f14e",  // 私有网络VPC ID
         SubnetList: []subnet.CreateSubnetData{
             {
-                AvailableZoneCode: "CN_Qingyang_A",
+                AvailableZoneCode: "CN_Qingyang_A",  // 可用区code
                 SubnetName:        "子网2",
-                SubnetSegment:     "10.21.2.0/24",
+                SubnetSegment:     "10.21.2.0/24", // 子网网段
             },
         },
     }
@@ -75,12 +78,13 @@ func CreateSubnet() {
 
 }
 
+// DeleteSubnet 删除子网
 func DeleteSubnet() {
 	ak, sk :=  "ak", "sk"
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	DeleteSubnetArgs := &subnet.DeleteSubnetReq{
-		SubnetId: "919a5290-799e-11f0-adfa-6e18e986f14e",
+		SubnetId: "919a5290-799e-11f0-adfa-6e18e986f14e",  
     }
 
 	response, err := subnetClient.DeleteSubnet(DeleteSubnetArgs)
