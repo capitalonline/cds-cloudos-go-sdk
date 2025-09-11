@@ -249,14 +249,16 @@ func CreateBMSNodePoolPrePaid() {
 	fmt.Println(string(bytes))
 }
 
-// ListNodePools 查询节点池列表
-func ListNodePools() {
+// ListNodePool 查询节点池列表
+func ListNodePool() {
 	ak, sk := "your-ak", "your-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.ListNodePoolReq{
-		ClusterId: "cluster-xxxxx",
+		ClusterId:  "d4b94e26-dd0f-4415-b4b0-2444059375ae",
+		NodePoolId: "9ac20605-fba5-493a-8f48-91e003b87984",
+		Filter:     "nodepool",
 	}
 
 	response, err := eksClient.ListNodePool(req)
@@ -313,8 +315,4 @@ func DeleteNodePool() {
 	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
-}
-
-func main() {
-	CreateECSNodePool()
 }
