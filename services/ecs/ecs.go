@@ -50,6 +50,22 @@ func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *Des
 }
 
 func (c *client) OperateInstance(req *OperateInstanceReq) (result *OperateInstanceResult, err error) {
+	if req.EcsIds == nil || len(req.EcsIds) == 0 {
+		return nil, fmt.Errorf("field EcsIds is required")
+	}
+	if req.OpType == "" {
+		return nil, fmt.Errorf("field OpType is required")
+	}
+	switch req.OpType {
+	case StartUpInstance, RestartInstance, HardShutdownInstance, ShutdownInstance:
+		req.DeleteEip = 0
+	case FreeShutdownInstance:
+		if req.DeleteEip != 1 {
+			req.DeleteEip = 0
+		}
+	default:
+		return nil, fmt.Errorf("invalid OpType: %s", req.OpType)
+	}
 	result = new(OperateInstanceResult)
 
 	err = cds.NewRequestBuilder(c).
@@ -63,6 +79,12 @@ func (c *client) OperateInstance(req *OperateInstanceReq) (result *OperateInstan
 }
 
 func (c *client) ModifyInstanceName(req *ModifyInstanceNameReq) (result *ModifyInstanceNameResult, err error) {
+	if req.EcsId == "" {
+		return nil, fmt.Errorf("field EcsId is required")
+	}
+	if req.Name == "" {
+		return nil, fmt.Errorf("field Name is required")
+	}
 	result = new(ModifyInstanceNameResult)
 
 	err = cds.NewRequestBuilder(c).
@@ -76,16 +98,16 @@ func (c *client) ModifyInstanceName(req *ModifyInstanceNameReq) (result *ModifyI
 }
 
 func (c *client) DescribeInstance(req *DescribeInstanceReq) (result *DescribeInstanceResult, err error) {
+	if req.EcsId == "" {
+		return nil, fmt.Errorf("field EcsId is required")
+	}
 	result = new(DescribeInstanceResult)
 
 	op := cds.NewRequestBuilder(c).
 		WithURI(c.ecsRoute).
 		WithMethod(http.GET).
-		WithQueryParam(actionKey, ActionDescribeInstance)
-
-	if req.EcsId != "" {
-		op = op.WithQueryParam(idKey, req.EcsId)
-	}
+		WithQueryParam(actionKey, ActionDescribeInstance).
+		WithQueryParam(idKey, req.EcsId)
 
 	err = op.WithResult(result).Do()
 
@@ -93,16 +115,16 @@ func (c *client) DescribeInstance(req *DescribeInstanceReq) (result *DescribeIns
 }
 
 func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (result *DescribeTaskEventResult, err error) {
+	if req.EventId == "" {
+		return nil, fmt.Errorf("field EventId is required")
+	}
 	result = new(DescribeTaskEventResult)
 
 	op := cds.NewRequestBuilder(c).
 		WithURI(c.ecsRoute).
 		WithMethod(http.GET).
-		WithQueryParam(actionKey, ActionDescribeTaskEvent)
-
-	if req.EventId != "" {
-		op = op.WithQueryParam(eventKey, req.EventId)
-	}
+		WithQueryParam(actionKey, ActionDescribeTaskEvent).
+		WithQueryParam(eventKey, req.EventId)
 
 	err = op.WithResult(result).Do()
 
@@ -110,16 +132,19 @@ func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (result *DescribeT
 }
 
 func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *DescribeEcsFamilyInfoResult, err error) {
+	if req.AvailableZoneCode == "" {
+		return nil, fmt.Errorf("field AvailableZoneCode is required")
+	}
+	if req.BillingMethod == "" {
+		return nil, fmt.Errorf("field BillingMethod is required")
+	}
 	result = new(DescribeEcsFamilyInfoResult)
 
 	op := cds.NewRequestBuilder(c).
 		WithURI(c.ecsRoute).
 		WithMethod(http.GET).
-		WithQueryParam(actionKey, ActionDescribeEcsFamilyInfo)
-
-	if req.AvailableZoneCode != "" {
-		op = op.WithQueryParam(azCodeKey, req.AvailableZoneCode)
-	}
+		WithQueryParam(actionKey, ActionDescribeEcsFamilyInfo).
+		WithQueryParam(azCodeKey, req.AvailableZoneCode)
 
 	if req.BillingMethod != "" {
 		op = op.WithQueryParam(billingMethodKey, string(req.BillingMethod))
@@ -132,12 +157,38 @@ func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *D
 	return
 }
 
-func (c *client) ChangeInstanceConfigure(req *ChangeInstanceConfigureReq) (*ChangeInstanceConfigureResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) ChangeInstanceConfigure(req *ChangeInstanceConfigureReq) (result *ChangeInstanceConfigureResult, err error) {
+	if req.AvailableZoneCode == "" {
+		return nil, fmt.Errorf("field AvailableZoneCode is required")
+	}
+	if req.EcsFamilyName == "" {
+		return nil, fmt.Errorf("field EcsFamilyName is required")
+	}
+	if req.Cpu <= 0 {
+		return nil, fmt.Errorf("field Cpu is required")
+	}
+	if req.Ram <= 0 {
+		return nil, fmt.Errorf("field Ram is required")
+	}
+	if req.EcsIds == nil || len(req.EcsIds) == 0 {
+		return nil, fmt.Errorf("field EcsIds is required")
+	}
+	result = new(ChangeInstanceConfigureResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionChangeInstanceConfigure).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
 }
 
 func (c *client) ExtendDisk(req *ExtendDiskReq) (result *ExtendDiskResult, err error) {
+	if req.DiskId == "" {
+		return nil, fmt.Errorf("field DiskId is required")
+	}
 	result = new(ExtendDiskResult)
 
 	if req.ExtendedSize%8 != 0 {

@@ -103,7 +103,7 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionDescribeEcsFamilyInfo, func(t *testing.T) {
 		result, cliErr := cli.DescribeEcsFamilyInfo(&DescribeEcsFamilyInfoReq{
-			AvailableZoneCode: "CN_Qingyang_A",
+			AvailableZoneCode: "CN_SJZ_B",
 			BillingMethod:     OnDemandBillingMethod,
 		})
 
@@ -123,6 +123,26 @@ func TestEcsSdk(t *testing.T) {
 		}
 
 		result, cliErr := cli.ExtendDisk(req)
+		if cliErr != nil {
+			t.Error(cliErr)
+			return
+		}
+
+		b, _ := json.Marshal(result)
+		t.Logf("%s", string(b))
+	})
+
+	t.Run(ActionChangeInstanceConfigure, func(t *testing.T) {
+		req := &ChangeInstanceConfigureReq{
+			EcsIds:            []string{"ins-dhz8kr4u7ajp5gcc"},
+			AvailableZoneCode: "CN_SJZ_B",
+			EcsFamilyName:     "优化型M2",
+			Cpu:               2,
+			Ram:               4,
+			Gpu:               0,
+		}
+
+		result, cliErr := cli.ChangeInstanceConfigure(req)
 		if cliErr != nil {
 			t.Error(cliErr)
 			return

@@ -335,8 +335,6 @@ type SpecListInfo struct {
 }
 type ChangeInstanceConfigureReq struct {
 	EcsIds            []string `json:"EcsIds"`
-	CustomerId        string   `json:"CustomerId"`
-	UserId            string   `json:"UserId"`
 	AvailableZoneCode string   `json:"AvailableZoneCode"`
 	EcsFamilyName     string   `json:"EcsFamilyName"`
 	Cpu               int      `json:"Cpu"`
