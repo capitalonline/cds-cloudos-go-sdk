@@ -21,8 +21,8 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
 )
 
-// ListEips 查询eip列表
-func ListEips() {
+// ListEIPs 查询eip列表
+func ListEIPs() {
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	ListEipArgs := &eip.ListEipsReq{
@@ -37,8 +37,8 @@ func ListEips() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-// GetEip 获取某个eip信息
-func GetEip() {
+// GetEIP 获取某个eip信息
+func GetEIP() {
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -54,8 +54,8 @@ func GetEip() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-// CreateEip 创建eip
-func CreateEip(){
+// CreateEIP 创建eip
+func CreateEIP(){
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
@@ -74,8 +74,8 @@ func CreateEip(){
 	fmt.Printf(">>> response: %+v", response)
 	fmt.Println(response.Data)
 }
-// UpdateEip 更新eip带宽或者描述
-func UpdateEip(){
+// UpdateEIP 更新eip带宽或者描述
+func UpdateEIP(){
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -94,8 +94,8 @@ func UpdateEip(){
 	fmt.Println(response.Data)
 }
 
-// ReleaseEip 删除弹性eip
-func ReleaseEip(){
+// ReleaseEIP删除弹性eip
+func ReleaseEIP(){
 	ak, sk := "ak", "sk"
 
 
@@ -115,9 +115,9 @@ func ReleaseEip(){
 }
 
 func main() {
-	// ListEips()
-	// GetEip()
-	// CreateEip()
-	// UpdateEip()
-	ReleaseEip()
+	// ListEIPs()
+	// GetEIP()
+	// CreateEIP()
+	// UpdateEIP()
+	ReleaseEIP()
 }
