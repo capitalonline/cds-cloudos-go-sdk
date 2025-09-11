@@ -22,7 +22,7 @@ import (
 )
 
 // Getvpc 获取VPC详情
-func GetVpc() {
+func GetVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -39,7 +39,7 @@ func GetVpc() {
 	fmt.Println(response.Data.VPCList)
 }
 // CreateVpc 创建VPC
-func CreateVpc() {
+func CreateVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -68,7 +68,7 @@ func CreateVpc() {
 }
 
 // ListVpcs 查询VPC数据
-func ListVpcs() {
+func ListVPCs() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -87,7 +87,7 @@ func ListVpcs() {
 
 
 // DeleteVpc 删除vpc数据
-func DeleteVpc() {
+func DeleteVPC() {
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
@@ -103,8 +103,8 @@ func DeleteVpc() {
 }
 
 func main() {
-	// CreateVpc()
-	// GetVpc()
-	// ListVpcs()
-	// DeleteVpc()
+	// CreateVPC()
+	// GetVPC()
+	// ListVPCs()
+	// DeleteVPC()
 }

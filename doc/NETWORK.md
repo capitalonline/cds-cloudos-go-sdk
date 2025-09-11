@@ -5,10 +5,10 @@
 
 **私有网络管理** 
 
-- **CreateVpc**: 创建VPC信息
-- **GetVpc**: 获取指定VPC信息
-- **ListVpcs**: 查询VPC信息
-- **DeleteVpc**: 删除VPC
+- **CreateVPC**: 创建VPC信息
+- **GetVPC**: 获取指定VPC信息
+- **ListVPCs**: 查询VPC信息
+- **DeleteVPC**: 删除VPC
 
 **子网管理**
 - **CreateSubnet**: 创建子网
@@ -38,8 +38,8 @@
 - **ListNatGateways**: 查询nat网关
 
 **高性能负载均衡管理**
-- **GetSlb**: 获取指定高性能负载均衡信息
-- **ListSlb**:  查询高性能负载均衡信息
+- **ListVPCSlb**:  查询VPC下的SLB列表信息
+- **GetVPCSlbDetail**: 查询高性能负载均衡详情
 
 ## 快速开始
 ### 初始化VPC客户端
@@ -78,7 +78,7 @@ natgatewayClient, _ := natgateway.NewClient(ak, sk)
 ### VPC管理代码示例
 **创建VPC**
 ```go
-func CreateVpc() {
+func CreateVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -108,7 +108,7 @@ func CreateVpc() {
 
 **获取指定VPC信息**
 ```go
-func Getvpc() {
+func GetVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -127,7 +127,7 @@ func Getvpc() {
 ```
 **查询VPC信息**
 ```go
-func ListVpcs() {
+func ListVPCs() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -343,8 +343,8 @@ func UpdateEip(){
 	EipClient, _ := eip.NewClient(ak, sk)
 	UpdateEipArgs := &eip.UpdateEIPReq{
 		EIPId: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",
-        Qos: 10,
-		Description: "go create",
+        Qos: 10, // 变更的带宽大小
+		Description: "go create", // 描述信息
 	}
 
 	response, err := EipClient.UpdateEip(UpdateEipArgs)
@@ -484,8 +484,8 @@ func RemoveBandwidthPackageIp() {
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	// 移除删除eip
 	RemoveBandwidthPackageIpArgs := &bandwidthpackage.RemoveBandwidthPackageIpReq{
-		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"},
-		Delete: true,
+		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"}, // EIP的ID
+		Delete: true,  // 移除EIP并删除EIP
 	}
 
 	response, err := BandwidthPackageClient.RemoveBandwidthPackageIp(RemoveBandwidthPackageIpArgs)
@@ -505,7 +505,7 @@ func DeleteBandwidthPackage() {
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	DeletebandwidthpackageArgs := &bandwidthpackage.DeleteBandwidthPackageReq{
-        BandwidthId: "868bb384-79a4-11f0-adfa-6e18e986f14e",
+        BandwidthId: "868bb384-79a4-11f0-adfa-6e18e986f14e",  // 共享带宽的ID
 	}
 	response, err := BandwidthPackageClient.DeleteBandwidthPackage(DeletebandwidthpackageArgs)
 	if err != nil {
@@ -551,8 +551,47 @@ func ListNatGateways() {
 	fmt.Println(response.Data)
 }
 ```
+### 高性能负载均衡管理代码示例
+**查询VPC下的SLB列表信息**
+```go
+func ListVPCSlb() {
+	ak, sk := "your-ak", "your-sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.ListVpcSlbReq{
+		VpcId: "",      // 需要查询的VPC ID
+	}
+	response, err := slbClient.ListVpcSlb(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	fmt.Println(response.Data)  // 获取VPC下SLB列表信息
+}
+```
+**查询高性能负载均衡详情**
+```go
+func GetVPCSlbDetail() {
+	ak, sk := "your-ak", "your-sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.GetVpcSlbDetailReq{
+        SlbId: "",  // 需要查询的SLB的ID
+        SlbName: "",    // 需要查询的SLB的名称
+    }
+    response, err := slbClient.GetVpcSlbDetail(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	fmt.Println(response.Data)  // 获取SLB详情
+}
+```
+> 注意: 对请求参数的内容解释如下
+> - SlbId: 此参数允许为空字符串，当此参数为空时会使用SlbName进行实例详情查询，当此参数不为空时将高优先级使用此参数进行实例详情查询，当SlbId和SlbName同时传参时将使用SlbId进行实例详情查询
+> - SlbName: 此参数允许为空字符串，仅当SlbId为空时会使用此参数进行实例详情查询，当SlbId不为空时不会使用此参数进行实例匹配查询
 # 数据结构说明
-## 创建vpc请求参数
+## 创建VPC请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |
 | ----------------- | ------ | -------- | ----------------------- | ----------------------------------- |
 | RegionCode        | string | 是       | CN_Hongkong             | VPC区域code               |
@@ -659,6 +698,30 @@ func ListNatGateways() {
 | Status            | string | ok                                   | 带宽状态                |
 | CreateTime        | string | 2022-06-02 18:05:47                  | 带宽创建时间                  |
 
+## 错误处理
+
+所有SDK方法都会返回标准的错误信息：
+
+```go
+vpcClient, err := vpc.NewClient(ak, sk)
+if err != nil {
+    log.Printf("API call failed: %v", err)
+    return
+}
+
+if result.Code != "Success" {
+    log.Printf("API returned error: Code=%s, Message=%s", result.Code, result.Message)
+    return
+}
+
+// 处理成功的结果
+fmt.Printf("VPC created successfully: %+v\\n", result.Data)
+```
+
+## 注意事项
+
+1. **VPC私有网络名称规范**: 名称最多输入255个中文，英文，'_'，'-'及数字
+2. **子网名称规范**: 名称最多输入255个中文，英文，'_'，'-'及数字
 
 # 常用常量说明
 ## 私有网络区域名称
@@ -727,5 +790,6 @@ func ListNatGateways() {
     EIP参考 examples/network/eip.go文件查看完整的使用示例。
     共享带宽包参考 examples/network/bandwidthpackage.go文件查看完整的使用示例。
     NAT网关参考 examples/network/natgateway.go文件查看完整的使用示例。
+    SLB参考 examples/network/slb.go文件查看完整的使用示例。
 
 如有问题，请参考项目文档或联系技术支持。
