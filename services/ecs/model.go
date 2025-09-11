@@ -15,6 +15,24 @@ const (
 	ActionExtendDisk = "ExtendDisk"
 )
 
+type (
+	operate       string
+	billingMethod string
+)
+
+const (
+	ShutdownInstance     operate = "shutdown_ecs"
+	StartUpInstance      operate = "start_up_ecs"
+	RestartInstance      operate = "restart_ecs"
+	HardShutdownInstance operate = "hard_shutdown_ecs"
+	FreeShutdownInstance operate = "free_shutdown_ecs"
+)
+
+const (
+	OnDemandBillingMethod billingMethod = "0"
+	MonthlyBillingMethod  billingMethod = "1"
+)
+
 var (
 	actionKey        = "Action"
 	azCodeKey        = "AvailableZoneCode"
@@ -125,7 +143,7 @@ type EipSimpleInfo struct {
 
 type OperateInstanceReq struct {
 	EcsIds    []string `json:"EcsIds"`
-	OpType    string   `json:"OpType"`
+	OpType    operate  `json:"OpType"`
 	DeleteEip int      `json:"DeleteEip"`
 }
 
@@ -289,8 +307,8 @@ type TaskListInfo struct {
 }
 
 type DescribeEcsFamilyInfoReq struct {
-	AvailableZoneCode string `json:"AvailableZoneCode"`
-	BillingMethod     string `json:"BillingMethod"`
+	AvailableZoneCode string        `json:"AvailableZoneCode"`
+	BillingMethod     billingMethod `json:"BillingMethod"`
 }
 
 type DescribeEcsFamilyInfoResult struct {

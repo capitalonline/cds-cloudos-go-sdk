@@ -122,7 +122,9 @@ func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *D
 	}
 
 	if req.BillingMethod != "" {
-		op = op.WithQueryParam(billingMethodKey, req.BillingMethod)
+		op = op.WithQueryParam(billingMethodKey, string(req.BillingMethod))
+	} else {
+		op = op.WithQueryParam(billingMethodKey, string(OnDemandBillingMethod))
 	}
 
 	err = op.WithResult(result).Do()
@@ -137,6 +139,10 @@ func (c *client) ChangeInstanceConfigure(req *ChangeInstanceConfigureReq) (*Chan
 
 func (c *client) ExtendDisk(req *ExtendDiskReq) (result *ExtendDiskResult, err error) {
 	result = new(ExtendDiskResult)
+
+	if req.ExtendedSize%8 != 0 {
+		return nil, fmt.Errorf("disk size must be a multiple of 8")
+	}
 
 	err = cds.NewRequestBuilder(c).
 		WithURI(c.ebsRoute).

@@ -25,7 +25,7 @@ func TestEcsSdk(t *testing.T) {
 		return
 	}
 
-	t.Run("DescribeRegions", func(t *testing.T) {
+	t.Run(ActionDescribeRegions, func(t *testing.T) {
 		result, cliErr := cli.DescribeRegions()
 		if cliErr != nil {
 			t.Error(cliErr)
@@ -35,7 +35,7 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("DescribeInstanceList", func(t *testing.T) {
+	t.Run(ActionDescribeInstanceList, func(t *testing.T) {
 		result, cliErr := cli.DescribeInstanceList(&DescribeInstanceListReq{})
 		if cliErr != nil {
 			t.Error(cliErr)
@@ -45,10 +45,10 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("OperateInstance", func(t *testing.T) {
+	t.Run(ActionOperateInstance, func(t *testing.T) {
 		req := &OperateInstanceReq{
 			EcsIds:    []string{"ins-ti1ugucuxix8uo5j"},
-			OpType:    "shutdown_ecs",
+			OpType:    StartUpInstance,
 			DeleteEip: 0,
 		}
 
@@ -62,7 +62,7 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("ModifyInstanceName", func(t *testing.T) {
+	t.Run(ActionModifyInstanceName, func(t *testing.T) {
 		req := &ModifyInstanceNameReq{
 			EcsId: "ins-ti1ugucuxix8uo5j",
 			Name:  "yh-test",
@@ -78,7 +78,7 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("DescribeInstance", func(t *testing.T) {
+	t.Run(ActionDescribeInstance, func(t *testing.T) {
 		result, cliErr := cli.DescribeInstance(&DescribeInstanceReq{
 			EcsId: "ins-ti1ugucuxix8uo5j",
 		})
@@ -92,9 +92,9 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("DescribeTaskEvent", func(t *testing.T) {
+	t.Run(ActionDescribeTaskEvent, func(t *testing.T) {
 		result, cliErr := cli.DescribeTaskEvent(&DescribeTaskEventReq{
-			EventId: "1c004e06-8e14-11f0-9162-9601b14a8b77",
+			EventId: "f7c1dd60-bfff-4bde-a3ef-0d284ace14bc",
 		})
 
 		if cliErr != nil {
@@ -106,10 +106,10 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("DescribeEcsFamilyInfo", func(t *testing.T) {
+	t.Run(ActionDescribeEcsFamilyInfo, func(t *testing.T) {
 		result, cliErr := cli.DescribeEcsFamilyInfo(&DescribeEcsFamilyInfoReq{
 			AvailableZoneCode: "CN_Qingyang_A",
-			BillingMethod:     "0",
+			BillingMethod:     OnDemandBillingMethod,
 		})
 
 		if cliErr != nil {
@@ -121,7 +121,7 @@ func TestEcsSdk(t *testing.T) {
 		t.Logf("%s", string(b))
 	})
 
-	t.Run("ExtendDisk", func(t *testing.T) {
+	t.Run(ActionExtendDisk, func(t *testing.T) {
 		req := &ExtendDiskReq{
 			DiskId:       "disk-wrssau7uain81ogj",
 			ExtendedSize: 72,
