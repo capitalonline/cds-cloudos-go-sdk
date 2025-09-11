@@ -73,13 +73,19 @@ import "github.com/capitalonline/cds-cloudos-go-sdk/services/natgateway"
 ak, sk := "ak", "sk"
 natgatewayClient, _ := natgateway.NewClient(ak, sk)
 ```
+### 初始化NAT网关客户端
+```go
+import "github.com/capitalonline/cds-cloudos-go-sdk/services/slb"
+ak, sk := "ak", "sk"
+slbClient, _ := slb.NewClient(ak, sk)
+```
 
 ## 代码示例
 ### VPC管理代码示例
 **创建VPC**
 ```go
 func CreateVPC() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	CreateVpcArgs := &vpc.CreateVpcReq{
@@ -109,7 +115,7 @@ func CreateVPC() {
 **获取指定VPC信息**
 ```go
 func GetVPC() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	GetVpcArgs := &vpc.GetVpcReq{
@@ -128,7 +134,7 @@ func GetVPC() {
 **查询VPC信息**
 ```go
 func ListVPCs() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	ListVpcArgs := &vpc.ListVpcsReq{
@@ -150,7 +156,7 @@ func ListVPCs() {
 **删除VPC**
 ```go
 func DeleteVPC() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
 		VPCId: "9197340c-799e-11f0-adfa-6e18e986f14e",  // 删除私有网络VPC
@@ -255,7 +261,7 @@ func DeleteSubnet() {
 **创建弹性eip**
 ```go
 func CreateEip(){
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
 		RegionCode: "CN_Qingyang",  // 区域code
@@ -279,7 +285,7 @@ func CreateEip(){
 **获取指定弹性eip信息**
 ```go
 func GetEip() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	EipClient, _ := eip.NewClient(ak, sk)
 	GetEipArgs := &eip.GetEipReq{
@@ -298,7 +304,7 @@ func GetEip() {
 **查询弹性eip**
 ```go
 func ListEips() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 	EipClient, _ := eip.NewClient(ak, sk)
 	ListEipArgs := &eip.ListEipsReq{
 		RegionCode:"CN_Qingyang",
@@ -317,7 +323,7 @@ func ListEips() {
 **释放弹性eip**
 ```go
 func ReleaseEip(){
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -338,7 +344,7 @@ func ReleaseEip(){
 **更改弹性eip带宽信息**
 ```go
 func UpdateEip(){
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	EipClient, _ := eip.NewClient(ak, sk)
 	UpdateEipArgs := &eip.UpdateEIPReq{
@@ -360,7 +366,7 @@ func UpdateEip(){
 **创建共享带宽包**
 ```go
 func CreateBandwidthPackage() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	CreatebandwidthpackageArgs := &bandwidthpackage.CreateBandwidthPackageReq{
@@ -386,7 +392,7 @@ func CreateBandwidthPackage() {
 **获取指定共享带宽包信息**
 ```go
 func GetBandwidthPackage() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	GetBandwidthPackageArgs := &bandwidthpackage.GetBandwidthPackageReq{
@@ -405,7 +411,7 @@ func GetBandwidthPackage() {
 **查询共享带宽包**
 ```go
 func ListBandwidthPackage() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	ListBandwidthPackageArgs := &bandwidthpackage.ListBandwidthPackagesReq{
@@ -425,7 +431,7 @@ func ListBandwidthPackage() {
 **更新共享带宽包**
 ```go
 func UpdateBandwidthPackage() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	UpdatebandwidthpackageArgs := &bandwidthpackage.UpdateBandwidthPackageReq{
@@ -443,7 +449,7 @@ func UpdateBandwidthPackage() {
 **向指定共享带宽包添加eip**
 ```go
 func AddBandwidthPackageIp() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	AddBandwidthPackageIpArgs := &bandwidthpackage.AddBandwidthPackageIpReq{
@@ -463,7 +469,7 @@ func AddBandwidthPackageIp() {
 **从指定带宽包移除并保留弹性eip**
 ```go
 func RemoveBandwidthPackageIp() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	// 移除保留eip
@@ -479,7 +485,7 @@ func RemoveBandwidthPackageIp() {
 **从指定带宽包移除并删除弹性eip**
 ```go
 func RemoveBandwidthPackageIp() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	// 移除删除eip
@@ -501,7 +507,7 @@ func RemoveBandwidthPackageIp() {
 **删除共享带宽包**
 ```go
 func DeleteBandwidthPackage() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	DeletebandwidthpackageArgs := &bandwidthpackage.DeleteBandwidthPackageReq{
@@ -519,7 +525,7 @@ func DeleteBandwidthPackage() {
 **获取指定nat网关信息**
 ```go
 func GetNatGateway() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 	natgatewayClient, _ := natgateway.NewClient(ak, sk)
 	GetNatGatewayArgs := map[string]string{
 		"Keyword": "c3e95ed4-79a9-11f0-a8a0-7a973848a269", // nat网关id或者名称
@@ -536,7 +542,7 @@ func GetNatGateway() {
 **查询nat网关**
 ```go
 func ListNatGateways() {
-	ak, sk := "ak", "sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	natgatewayClient, _ := natgateway.NewClient(ak, sk)
 	ListNatGatewaysArgs := map[string]string{
@@ -555,7 +561,7 @@ func ListNatGateways() {
 **查询VPC下的SLB列表信息**
 ```go
 func ListVPCSlb() {
-	ak, sk := "your-ak", "your-sk"      // 替换为您的实际密钥
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	args := &slb.ListVpcSlbReq{
@@ -572,7 +578,7 @@ func ListVPCSlb() {
 **查询高性能负载均衡详情**
 ```go
 func GetVPCSlbDetail() {
-	ak, sk := "your-ak", "your-sk"      // 替换为您的实际密钥
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	args := &slb.GetVpcSlbDetailReq{
