@@ -49,29 +49,85 @@ func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *Des
 	return
 }
 
-func (c *client) OperateInstance(req *OperateInstanceReq) (*OperateInstanceResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) OperateInstance(req *OperateInstanceReq) (result *OperateInstanceResult, err error) {
+	result = new(OperateInstanceResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionOperateInstance).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
 }
 
-func (c *client) ModifyInstanceName(req *ModifyInstanceNameReq) (*ModifyInstanceNameResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) ModifyInstanceName(req *ModifyInstanceNameReq) (result *ModifyInstanceNameResult, err error) {
+	result = new(ModifyInstanceNameResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionModifyInstanceName).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
 }
 
-func (c *client) DescribeInstance(req *DescribeInstanceReq) (*DescribeInstanceResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) DescribeInstance(req *DescribeInstanceReq) (result *DescribeInstanceResult, err error) {
+	result = new(DescribeInstanceResult)
+
+	op := cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.GET).
+		WithQueryParam(actionKey, ActionDescribeInstance)
+
+	if req.EcsId != "" {
+		op = op.WithQueryParam(idKey, req.EcsId)
+	}
+
+	err = op.WithResult(result).Do()
+
+	return
 }
 
-func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (*DescribeTaskEventResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (result *DescribeTaskEventResult, err error) {
+	result = new(DescribeTaskEventResult)
+
+	op := cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.GET).
+		WithQueryParam(actionKey, ActionDescribeTaskEvent)
+
+	if req.EventId != "" {
+		op = op.WithQueryParam(eventKey, req.EventId)
+	}
+
+	err = op.WithResult(result).Do()
+
+	return
 }
 
-func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (*DescribeEcsFamilyInfoResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *DescribeEcsFamilyInfoResult, err error) {
+	result = new(DescribeEcsFamilyInfoResult)
+
+	op := cds.NewRequestBuilder(c).
+		WithURI(c.ecsRoute).
+		WithMethod(http.GET).
+		WithQueryParam(actionKey, ActionDescribeEcsFamilyInfo)
+
+	if req.AvailableZoneCode != "" {
+		op = op.WithQueryParam(azCodeKey, req.AvailableZoneCode)
+	}
+
+	if req.BillingMethod != "" {
+		op = op.WithQueryParam(billingMethodKey, req.BillingMethod)
+	}
+
+	err = op.WithResult(result).Do()
+
+	return
 }
 
 func (c *client) ChangeInstanceConfigure(req *ChangeInstanceConfigureReq) (*ChangeInstanceConfigureResult, error) {
@@ -79,7 +135,15 @@ func (c *client) ChangeInstanceConfigure(req *ChangeInstanceConfigureReq) (*Chan
 	return nil, fmt.Errorf("implement me")
 }
 
-func (c *client) ExtendDisk(req *ExtendDiskReq) (*ExtendDiskResult, error) {
-	//TODO implement me
-	return nil, fmt.Errorf("implement me")
+func (c *client) ExtendDisk(req *ExtendDiskReq) (result *ExtendDiskResult, err error) {
+	result = new(ExtendDiskResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(c.ebsRoute).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionExtendDisk).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
 }

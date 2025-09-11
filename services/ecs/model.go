@@ -16,11 +16,14 @@ const (
 )
 
 var (
-	actionKey     = "Action"
-	azCodeKey     = "AvailableZoneCode"
-	vpcIdKey      = "VpcId"
-	searchInfoKey = "SearchInfo"
-	idsKey        = "EcsIds"
+	actionKey        = "Action"
+	azCodeKey        = "AvailableZoneCode"
+	vpcIdKey         = "VpcId"
+	searchInfoKey    = "SearchInfo"
+	idsKey           = "EcsIds"
+	idKey            = "EcsId"
+	eventKey         = "EventId"
+	billingMethodKey = "BillingMethod"
 )
 
 type OpenApiCommonResp struct {
@@ -123,7 +126,7 @@ type EipSimpleInfo struct {
 type OperateInstanceReq struct {
 	EcsIds    []string `json:"EcsIds"`
 	OpType    string   `json:"OpType"`
-	DeleteEip *int     `json:"DeleteEip"`
+	DeleteEip int      `json:"DeleteEip"`
 }
 
 type OperateInstanceResult struct {
@@ -243,7 +246,7 @@ type PipeInfo struct {
 type EipInfo struct {
 	ConfName      string `json:"ConfName"`
 	EipIp         string `json:"EipIp"`
-	CurrentUseQos string `json:"CurrentUseQos"`
+	CurrentUseQos int    `json:"CurrentUseQos"`
 }
 
 type BillingInfo struct {
@@ -313,9 +316,23 @@ type SpecListInfo struct {
 	SupportGpuDriver string `json:"SupportGpuDriver"`
 }
 type ChangeInstanceConfigureReq struct {
+	EcsIds            []string `json:"EcsIds"`
+	CustomerId        string   `json:"CustomerId"`
+	UserId            string   `json:"UserId"`
+	AvailableZoneCode string   `json:"AvailableZoneCode"`
+	EcsFamilyName     string   `json:"EcsFamilyName"`
+	Cpu               int      `json:"Cpu"`
+	Ram               int      `json:"Ram"`
+	Gpu               int      `json:"Gpu"`
 }
 
 type ChangeInstanceConfigureResult struct {
+	OpenApiCommonResp
+	Data *InstanceConfigureData `json:"Data"`
+}
+
+type InstanceConfigureData struct {
+	EventId string `json:"EventId"`
 }
 
 type ExtendDiskReq struct {
