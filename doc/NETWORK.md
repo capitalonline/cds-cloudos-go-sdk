@@ -127,7 +127,7 @@ func GetVPC() {
 ```
 **查询VPC信息**
 ```go
-func ListVpcs() {
+func ListVPCs() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -343,8 +343,8 @@ func UpdateEip(){
 	EipClient, _ := eip.NewClient(ak, sk)
 	UpdateEipArgs := &eip.UpdateEIPReq{
 		EIPId: "70cf50e2-79a3-11f0-9be8-6e18e986f14e",
-        Qos: 10,
-		Description: "go create",
+        Qos: 10, // 变更的带宽大小
+		Description: "go create", // 描述信息
 	}
 
 	response, err := EipClient.UpdateEip(UpdateEipArgs)
@@ -484,8 +484,8 @@ func RemoveBandwidthPackageIp() {
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	// 移除删除eip
 	RemoveBandwidthPackageIpArgs := &bandwidthpackage.RemoveBandwidthPackageIpReq{
-		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"},
-		Delete: true,
+		EIPIdList: []string{"6870eeac-79ac-11f0-8503-6e18e986f14e"}, // EIP的ID
+		Delete: true,  // 移除EIP并删除EIP
 	}
 
 	response, err := BandwidthPackageClient.RemoveBandwidthPackageIp(RemoveBandwidthPackageIpArgs)
@@ -505,7 +505,7 @@ func DeleteBandwidthPackage() {
 
 	BandwidthPackageClient, _ := bandwidthpackage.NewClient(ak, sk)
 	DeletebandwidthpackageArgs := &bandwidthpackage.DeleteBandwidthPackageReq{
-        BandwidthId: "868bb384-79a4-11f0-adfa-6e18e986f14e",
+        BandwidthId: "868bb384-79a4-11f0-adfa-6e18e986f14e",  // 共享带宽的ID
 	}
 	response, err := BandwidthPackageClient.DeleteBandwidthPackage(DeletebandwidthpackageArgs)
 	if err != nil {
