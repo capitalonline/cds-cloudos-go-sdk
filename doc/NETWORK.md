@@ -5,10 +5,10 @@
 
 **私有网络管理** 
 
-- **CreateVpc**: 创建VPC信息
-- **GetVpc**: 获取指定VPC信息
-- **ListVpcs**: 查询VPC信息
-- **DeleteVpc**: 删除VPC
+- **CreateVPC**: 创建VPC信息
+- **GetVPC**: 获取指定VPC信息
+- **ListVPCs**: 查询VPC信息
+- **DeleteVPC**: 删除VPC
 
 **子网管理**
 - **CreateSubnet**: 创建子网
@@ -78,7 +78,7 @@ natgatewayClient, _ := natgateway.NewClient(ak, sk)
 ### VPC管理代码示例
 **创建VPC**
 ```go
-func CreateVpc() {
+func CreateVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -108,7 +108,7 @@ func CreateVpc() {
 
 **获取指定VPC信息**
 ```go
-func GetVpc() {
+func GetVPC() {
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -149,7 +149,7 @@ func ListVpcs() {
 ```
 **删除VPC**
 ```go
-func DeleteVpc() {
+func DeleteVPC() {
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
@@ -659,6 +659,30 @@ func ListNatGateways() {
 | Status            | string | ok                                   | 带宽状态                |
 | CreateTime        | string | 2022-06-02 18:05:47                  | 带宽创建时间                  |
 
+## 错误处理
+
+所有SDK方法都会返回标准的错误信息：
+
+```go
+vpcClient, err := vpc.NewClient(ak, sk)
+if err != nil {
+    log.Printf("API call failed: %v", err)
+    return
+}
+
+if result.Code != "Success" {
+    log.Printf("API returned error: Code=%s, Message=%s", result.Code, result.Message)
+    return
+}
+
+// 处理成功的结果
+fmt.Printf("VPC created successfully: %+v\\n", result.Data)
+```
+
+## 注意事项
+
+1. **VPC私有网络名称规范**: 名称最多输入255个中文，英文，'_'，'-'及数字
+2. **子网名称规范**: 名称最多输入255个中文，英文，'_'，'-'及数字
 
 # 常用常量说明
 ## 私有网络区域名称
