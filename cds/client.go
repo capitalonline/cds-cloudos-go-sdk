@@ -249,6 +249,31 @@ func NewCdsClientWithAkSk(ak, sk string) (*CdsClient, error) {
 	return NewCdsClient(defaultConf, Signer), nil
 }
 
+func NewCdsClientWithAkSkV1(ak, sk, ep string) (*CdsClient, error) {
+	credentials, err := auth.NewCdsCredentials(ak, sk)
+	if err != nil {
+		return nil, err
+	}
+
+	if endpoint != defaultEndpoint {
+		ep = endpoint
+	}
+
+	defaultConf := &CdsClientConfiguration{
+		Endpoint:                  ep,
+		Credentials:               credentials,
+		UserAgent:                 DEFAULT_USER_AGENT,
+		Region:                    DEFAULT_REGION,
+		Retry:                     DEFAULT_RETRY_POLICY,
+		ConnectionTimeoutInMillis: DEFAULT_CONNECTION_TIMEOUT_IN_MILLIS, // http client timeout
+		RedirectDisabled:          false,
+		DisableKeepAlives:         false,
+	}
+	Signer := &auth.CdsSigner{}
+
+	return NewCdsClient(defaultConf, Signer), nil
+}
+
 func NewCdsClient(conf *CdsClientConfiguration, sign auth.Signer) *CdsClient {
 	clientConfig := http.ClientConfig{
 		RedirectDisabled:  conf.RedirectDisabled,
