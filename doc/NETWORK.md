@@ -584,7 +584,7 @@ func GetVPCSlbDetail() {
 		fmt.Println(err)
 	}
 	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
-	fmt.Println(response.Data)  // 获取VPC下SLB列表信息
+	fmt.Println(response.Data)  // 获取SLB详情
 }
 ```
 > 注意: 对请求参数的内容解释如下
@@ -790,5 +790,6 @@ fmt.Printf("VPC created successfully: %+v\\n", result.Data)
     EIP参考 examples/network/eip.go文件查看完整的使用示例。
     共享带宽包参考 examples/network/bandwidthpackage.go文件查看完整的使用示例。
     NAT网关参考 examples/network/natgateway.go文件查看完整的使用示例。
+    SLB参考 examples/network/slb.go文件查看完整的使用示例。
 
 如有问题，请参考项目文档或联系技术支持。
