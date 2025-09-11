@@ -73,7 +73,7 @@ import "github.com/capitalonline/cds-cloudos-go-sdk/services/natgateway"
 ak, sk := "ak", "sk"
 natgatewayClient, _ := natgateway.NewClient(ak, sk)
 ```
-### 初始化NAT网关客户端
+### 初始化SLB客户端
 ```go
 import "github.com/capitalonline/cds-cloudos-go-sdk/services/slb"
 ak, sk := "ak", "sk"
@@ -174,7 +174,7 @@ func DeleteVPC() {
 **创建子网**
 ```go
 func CreateSubnet() {
-	ak, sk :=  "ak", "sk"
+	ak, sk :=  "ak", "sk"      // 替换为您的实际密钥
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	CreateSubnetArgs := &subnet.CreateSubnetReq{
         VPCId:        "9197340c-799e-11f0-adfa-6e18e986f14e",  // 私有网络VPC ID
@@ -201,7 +201,7 @@ func CreateSubnet() {
 **获取指定子网信息**
 ```go
 func GetSubnet() {
-	ak, sk :=  "ak", "sk"
+	ak, sk :=  "ak", "sk"      // 替换为您的实际密钥
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	GetSubnetArgs := &subnet.GetSubnetReq{
 		Keyword: "919a5290-799e-11f0-adfa-6e18e986f14e",  // 子网id或者名称
@@ -218,7 +218,7 @@ func GetSubnet() {
 **查询子网信息**
 ```go
 func ListSubnet() {
-	ak, sk :=  "ak", "sk"
+	ak, sk :=  "ak", "sk"      // 替换为您的实际密钥
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	ListSubnetArgs := &subnet.ListSubnetsReq{
@@ -240,7 +240,7 @@ func ListSubnet() {
 **删除子网**
 ```go
 func DeleteSubnet() {
-	ak, sk :=  "ak", "sk"
+	ak, sk :=  "ak", "sk"      // 替换为您的实际密钥
 
 	subnetClient, _ := subnet.NewClient(ak, sk)
 	DeleteSubnetArgs := &subnet.DeleteSubnetReq{
