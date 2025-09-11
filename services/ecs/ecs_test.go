@@ -2,24 +2,19 @@ package ecs
 
 import (
 	"encoding/json"
-	"os"
 	"testing"
-)
 
-const (
-	AK = "CDS_SECRET_ID"
-	SK = "CDS_SECRET_KEY"
+	"github.com/capitalonline/cds-cloudos-go-sdk/auth"
 )
 
 func TestEcsSdk(t *testing.T) {
-	ak := os.Getenv(AK)
-	sk := os.Getenv(SK)
+	credentials, _ := auth.NewCdsCredentialsByEnv()
 
-	if ak == "" || sk == "" {
+	if credentials == nil || credentials.AccessKeyId == "" || credentials.SecretAccessKey == "" {
 		t.Skip()
 	}
 
-	cli, err := NewClient(ak, sk)
+	cli, err := NewClient(credentials.AccessKeyId, credentials.SecretAccessKey)
 	if err != nil {
 		t.Error(err)
 		return
