@@ -389,8 +389,8 @@ type CreateClusterReq struct {
 //}
 
 type NodePoolDiskInfo struct {
-	DiskType string `json:"Type"` // 磁盘类型：SSD
-	DiskSize int    `json:"Size"` // 磁盘大小，单位：GB
+	DiskType string `json:"Type,omitempty"` // 磁盘类型：SSD
+	DiskSize int    `json:"Size,omitempty"` // 磁盘大小，单位：GB
 }
 
 type CreateClusterData struct {
@@ -510,7 +510,9 @@ type CreateNodePoolData struct {
 }
 
 type ListNodePoolReq struct {
-	ClusterId string `json:"ClusterId"` // 集群ID
+	ClusterId  string `json:"ClusterId"`  // 集群ID
+	NodePoolId string `json:"NodePoolId"` // 节点池ID
+	Filter     string `json:"Filter"`     // 节点池名称、ID模糊搜索
 }
 
 type ListNodePoolResult struct {
@@ -595,8 +597,8 @@ const (
 	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
 	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
 
-	// BmsGpuGbm32XLarge 20250907 改英文
-	BmsGpuGbm32XLarge = "推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu"
+	// BmsGpuGbm32XLarge
+	BmsGpuGbm32XLarge = "Inference gbm c6 nr4.128c1024g8gpu"
 )
 
 // ECS、BMS支持的操作系统镜像
