@@ -580,6 +580,44 @@ func ListNatGateways() {
 	fmt.Println(response.Data)
 }
 ```
+### SLB管理代码示例
+**获取指定高性能负载均衡信息**
+```go
+func GetVPCSlbDetail() {
+	// 替换为您的实际访问密钥
+	ak, sk := "your-ak", "your-sk"
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.GetVpcSlbDetailReq{
+		SlbId: "",
+		SlbName: "",
+	}
+	response, err := slbClient.GetVpcSlbDetail(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+```
+**查询高性能负载均衡信息**
+```go
+func ListVPCSlb() {
+	// 替换为您的实际访问密钥
+	ak, sk := "your-ak", "your-sk"
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.ListVpcSlbReq{
+		VpcId: "",
+	}
+	response, err := slbClient.ListVpcSlb(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+```
 # 数据结构说明
 ## 创建VPC请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |
