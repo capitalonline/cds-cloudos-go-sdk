@@ -8,9 +8,9 @@ import (
 )
 
 func TestEcsSdk(t *testing.T) {
-	credentials, _ := auth.NewCdsCredentialsByEnv()
+	credentials, authErr := auth.NewCdsCredentialsByEnv()
 
-	if credentials == nil || credentials.AccessKeyId == "" || credentials.SecretAccessKey == "" {
+	if authErr != nil {
 		t.Skip()
 	}
 
