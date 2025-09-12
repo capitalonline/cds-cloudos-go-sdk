@@ -33,6 +33,14 @@
 | cancel_recycling | 取消回收中 |
 | creating_image   | 定制镜像中 |
 
+### 代码示例
+
+[查看示例代码](https://github.com/capitalonline/cds-cloudos-go-sdk/blob/dev-ecs/examples/ecs/ecs.go)
+
+为了方便开发者进行单元测试，我们为每个SDK客户端提供了 Mock 实现。可以完全模拟真实客户端的行为，而无需实际调用远程 API.
+
+[查看Mock单元测试示例代码](https://github.com/capitalonline/cds-cloudos-go-sdk/blob/dev-ecs/examples/ecs/ecs_test.go)
+
 ## SDK接口列表
 
 - [x] ECS弹性GPU云服务器
@@ -51,61 +59,61 @@
     - [X] 云盘相关
         - [x] [ExtendDisk](#ExtendDisk)
 
+
+
 ### DescribeRegions
 
 #### 参数说明
 
-#### 代码示例
 
-[查看示例代码](https://github.com/capitalonline/cds-cloudos-go-sdk/blob/dev-ecs/services/ecs/ecs_test.go#L23)
 
 ### DescribeTaskEvent
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### DescribeInstanceList
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### DescribeInstance
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### OperateInstance
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### ModifyInstanceName
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### DescribeEcsFamilyInfo
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### ChangeInstanceConfigure
 
 #### 参数说明
 
-#### 代码示例
+
 
 ### ExtendDisk
 
 #### 参数说明
 
-#### 代码示例
+
 
 
 
