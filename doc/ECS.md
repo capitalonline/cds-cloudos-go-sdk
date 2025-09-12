@@ -35,7 +35,7 @@
 
 ### 代码示例
 
-[查看示例代码](https://github.com/capitalonline/cds-cloudos-go-sdk/blob/dev-ecs/examples/ecs/ecs.go)
+[查看示例代码](../examples/ecs/ecs.go)
 
 为了方便开发者进行单元测试，我们为客户端每个SDK方法提供了Mock实现，可以完全模拟真实客户端的行为，而无需实际调用远程 API：
 
