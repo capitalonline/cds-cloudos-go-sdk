@@ -231,13 +231,13 @@
 
 ##### operate-云服务器操作
 
-| 参数名               | 类型   | 描述                                                         |
-| -------------------- | ------ | ------------------------------------------------------------ |
-| ShutdownInstance     | string | 关机操作                                                     |
-| StartUpInstance      | string | 开机操作                                                     |
-| RestartInstance      | string | 重启操作                                                     |
-| HardShutdownInstance | string | 强制关机操作                                                 |
-| FreeShutdownInstance | string | 关机不计费，注：仅按需计费的云盘实例支持关机不计费，再开机公网IP可能会变化； 若批量操作关机：支持关机不收费的实例，关机后停止 CPU、内存、GPU和公网收费； 不支持关机不收费的实例，正常关机，继续收费； 不计费关机期间不支持除开机、删除、定制镜像外的操作。 注意：目前关机不计费白名单开放，若需要请联系商务。 |
+| 常量名               | 类型   | 值                | 描述                                                         |
+| -------------------- | ------ | ----------------- | ------------------------------------------------------------ |
+| ShutdownInstance     | string | shutdown_ecs      | 关机操作                                                     |
+| StartUpInstance      | string | start_up_ecs      | 开机操作                                                     |
+| RestartInstance      | string | restart_ecs       | 重启操作                                                     |
+| HardShutdownInstance | string | hard_shutdown_ecs | 强制关机操作                                                 |
+| FreeShutdownInstance | string | free_shutdown_ecs | 关机不计费，注：仅按需计费的云盘实例支持关机不计费，再开机公网IP可能会变化； 若批量操作关机：支持关机不收费的实例，关机后停止 CPU、内存、GPU和公网收费； 不支持关机不收费的实例，正常关机，继续收费； 不计费关机期间不支持除开机、删除、定制镜像外的操作。 注意：目前关机不计费白名单开放，若需要请联系商务。 |
 
 ##### OperateInstanceResult
 
