@@ -9,7 +9,7 @@
 ### 获取密钥
 您需要拥有一个有效的AK(Access Key ID)和SK(Secret Access Key)用来进行签名认证。AK/SK是由系统分配给用户的，均为字符串，用于标识用户，为访问服务做签名验证。
 
-可前往[**首云-密钥管理**](https://c2.capitalonline.net/portal/webapps/user/securityKeySubuse获取用户密钥
+可前往[**首云-密钥管理**](https://c2.capitalonline.net/portal/webapps/user/securityKeySubuse)获取用户密钥
 
 ### 云服务器状态说明
 
