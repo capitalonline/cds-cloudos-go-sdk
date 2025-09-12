@@ -229,7 +229,7 @@ func GetSubnet() {
 ```
 **查询子网信息**
 ```go
-func ListSubnet() {
+func ListSubnets() {
     // 替换为您的实际访问密钥
 	ak, sk :=  "ak", "sk"
 
