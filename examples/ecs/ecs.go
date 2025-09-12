@@ -10,17 +10,32 @@ import (
 )
 
 func makeClient() ecs.Client {
+	/*
+		默认环境变量：
+		ak := os.Getenv("CDS_SECRET_ID")
+		sk := os.Getenv("CDS_SECRET_KEY")
+	*/
 	// 从环境变量中获取认证信息
 	credentials, err := auth.NewCdsCredentialsByEnv()
 	if err != nil {
-		log.Fatal("Failed to get credentials:", err)
+		log.Fatalln("Failed to get credentials:", err)
 	}
 
 	// 创建 ECS 客户端
 	client, err := ecs.NewClient(credentials.AccessKeyId, credentials.SecretAccessKey)
 	if err != nil {
-		log.Fatal("Failed to create ECS client:", err)
+		log.Fatalln("Failed to create ECS client:", err)
 	}
+
+	/*
+		// 也可以通过硬编码变量(ak/sk)创建客户端，或自定义环境变量
+		ak := "ak-xxxx" // os.Getenv("your_ak_env")
+		sk := "sk-xxxx" // os.Getenv("your_sk_env")
+		client, err := ecs.NewClient(ak, sk)
+		if err != nil {
+			log.Fatal("Failed to create ECS client:", err)
+		}
+	*/
 
 	return client
 }
@@ -32,6 +47,10 @@ func describeRegions(client ecs.Client) {
 	if err != nil {
 		log.Fatal("Failed to describe regions:", err)
 	}
+
+	// 提示：SDK中传参需要的AvailableZoneCode, 可以通过如下接口获取。
+	// AvailableZoneCode的值轻易不会更变，可以一次性获取后，将值以固定变量保存在代码中使用。
+	fmt.Println(result.Data[0].RegionList[0].AzList[0].AvailableZoneCode)
 
 	data, _ := json.MarshalIndent(result, "", "  ")
 	fmt.Println(string(data))
@@ -59,14 +78,32 @@ func operateInstance(client ecs.Client) {
 	// 调用 OperateInstance 方法启动实例
 	req := &ecs.OperateInstanceReq{
 		EcsIds: []string{"ins-test000000000000"}, // 替换为实际的实例ID
-		OpType: ecs.StartUpInstance,
+		OpType: ecs.StartUpInstance,              // 开机
 	}
+
+	/*
+		// 其他可选操作
+			req = &ecs.OperateInstanceReq{
+				EcsIds: []string{"ins-test000000000000"},
+				OpType: ecs.RestartInstance, // 重启
+
+			}
+			req = &ecs.OperateInstanceReq{
+				EcsIds: []string{"ins-test000000000000"},
+				OpType: ecs.ShutdownInstance, // 关机
+
+			}
+			req = &ecs.OperateInstanceReq{
+				EcsIds: []string{"ins-test000000000000"},
+				OpType: ecs.HardShutdownInstance, // 强制关机
+
+			}
+	*/
 	result, err := client.OperateInstance(req)
 	if err != nil {
 		log.Fatal("Failed to operate instance:", err)
 	}
 
-	// 将结果转换为 JSON 格式并打印
 	data, _ := json.MarshalIndent(result, "", "  ")
 	fmt.Println(string(data))
 }
@@ -127,7 +164,6 @@ func describeEcsFamilyInfo(client ecs.Client) {
 		log.Fatal("Failed to describe ECS family info:", err)
 	}
 
-	// 将结果转换为 JSON 格式并打印
 	data, _ := json.MarshalIndent(result, "", "  ")
 	fmt.Println(string(data))
 	fmt.Println()
@@ -139,7 +175,10 @@ func changeInstanceConfigure(client ecs.Client) {
 	req := &ecs.ChangeInstanceConfigureReq{
 		EcsIds:            []string{"ins-test000000000000"}, // 替换为实际的实例ID
 		AvailableZoneCode: "CN_DEMO",                        // 替换为实际的可用区代码
-		EcsFamilyName:     "极速渲染型re3",                       // 替换为实际的实例规格族名称
+
+		// EcsFamilyName, 可通过DescribeInstance/DescribeEcsFamilyInfo方法获取实例规格信息
+		EcsFamilyName: "极速渲染型re3", // 替换为实际的实例规格族名称
+
 		// 更变的配置
 		Cpu: 16,
 		Ram: 64,
@@ -168,4 +207,10 @@ func extendDisk(client ecs.Client) {
 
 	data, _ := json.MarshalIndent(result, "", "  ")
 	fmt.Println(string(data))
+}
+
+func main() {
+	// Example
+	client := makeClient()
+	describeRegions(client)
 }
