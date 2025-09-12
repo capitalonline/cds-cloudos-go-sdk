@@ -11,9 +11,9 @@ import (
 
 func makeClient() ecs.Client {
 	/*
-		默认环境变量：
-		ak := os.Getenv("CDS_SECRET_ID")
-		sk := os.Getenv("CDS_SECRET_KEY")
+		默认环境变量名称：CDS_SECRET_ID/CDS_SECRET_KEY
+		os.Getenv("CDS_SECRET_ID") // ak
+		os.Getenv("CDS_SECRET_KEY") // sk
 	*/
 	// 从环境变量中获取认证信息
 	credentials, err := auth.NewCdsCredentialsByEnv()
@@ -50,7 +50,7 @@ func describeRegions(client ecs.Client) {
 
 	// 提示：SDK中传参需要的AvailableZoneCode, 可以通过如下接口获取。
 	// AvailableZoneCode的值轻易不会更变，可以一次性获取后，将值以固定变量保存在代码中使用。
-	fmt.Println(result.Data[0].RegionList[0].AzList[0].AvailableZoneCode)
+	// fmt.Println(result.Data[0].RegionList[0].AzList[0].AvailableZoneCode)
 
 	data, _ := json.MarshalIndent(result, "", "  ")
 	fmt.Println(string(data))
@@ -83,21 +83,21 @@ func operateInstance(client ecs.Client) {
 
 	/*
 		// 其他可选操作
-			req = &ecs.OperateInstanceReq{
-				EcsIds: []string{"ins-test000000000000"},
-				OpType: ecs.RestartInstance, // 重启
+		req = &ecs.OperateInstanceReq{
+			EcsIds: []string{"ins-test000000000000"},
+			OpType: ecs.RestartInstance, // 重启
 
-			}
-			req = &ecs.OperateInstanceReq{
-				EcsIds: []string{"ins-test000000000000"},
-				OpType: ecs.ShutdownInstance, // 关机
+		}
+		req = &ecs.OperateInstanceReq{
+			EcsIds: []string{"ins-test000000000000"},
+			OpType: ecs.ShutdownInstance, // 关机
 
-			}
-			req = &ecs.OperateInstanceReq{
-				EcsIds: []string{"ins-test000000000000"},
-				OpType: ecs.HardShutdownInstance, // 强制关机
+		}
+		req = &ecs.OperateInstanceReq{
+			EcsIds: []string{"ins-test000000000000"},
+			OpType: ecs.HardShutdownInstance, // 强制关机
 
-			}
+		}
 	*/
 	result, err := client.OperateInstance(req)
 	if err != nil {
@@ -166,7 +166,6 @@ func describeEcsFamilyInfo(client ecs.Client) {
 
 	data, _ := json.MarshalIndent(result, "", "  ")
 	fmt.Println(string(data))
-	fmt.Println()
 }
 
 func changeInstanceConfigure(client ecs.Client) {
@@ -176,7 +175,7 @@ func changeInstanceConfigure(client ecs.Client) {
 		EcsIds:            []string{"ins-test000000000000"}, // 替换为实际的实例ID
 		AvailableZoneCode: "CN_DEMO",                        // 替换为实际的可用区代码
 
-		// EcsFamilyName, 可通过DescribeInstance/DescribeEcsFamilyInfo方法获取实例规格信息
+		// EcsFamilyName, 可通过DescribeInstance/DescribeEcsFamilyInfo方法获取实例规格组信息
 		EcsFamilyName: "极速渲染型re3", // 替换为实际的实例规格族名称
 
 		// 更变的配置
