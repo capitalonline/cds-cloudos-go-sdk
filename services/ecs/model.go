@@ -85,6 +85,10 @@ type AzInfo struct {
 	AvailableZoneCode string `json:"AvailableZoneCode"`
 }
 
+type EventIdData struct {
+	EventId string `json:"EventId"`
+}
+
 type DescribeInstanceListReq struct {
 	AvailableZoneCode string   `json:"AvailableZoneCode"`
 	VpcId             string   `json:"VpcId"`
@@ -171,11 +175,7 @@ func (req *OperateInstanceReq) check() error {
 
 type OperateInstanceResult struct {
 	OpenApiCommonResp
-	Data *OperateInstanceData `json:"Data"`
-}
-
-type OperateInstanceData struct {
-	EventId string `json:"EventId"`
+	Data *EventIdData `json:"Data"`
 }
 
 type ModifyInstanceNameReq struct {
@@ -420,11 +420,7 @@ func (req *ChangeInstanceConfigureReq) check() error {
 
 type ChangeInstanceConfigureResult struct {
 	OpenApiCommonResp
-	Data *InstanceConfigureData `json:"Data"`
-}
-
-type InstanceConfigureData struct {
-	EventId string `json:"EventId"`
+	Data *EventIdData `json:"Data"`
 }
 
 type ExtendDiskReq struct {
@@ -445,9 +441,5 @@ func (req *ExtendDiskReq) check() error {
 
 type ExtendDiskResult struct {
 	OpenApiCommonResp
-	Data *ExtendDiskData `json:"Data"`
-}
-
-type ExtendDiskData struct {
-	EventId string `json:"EventId"`
+	Data *EventIdData `json:"Data"`
 }
