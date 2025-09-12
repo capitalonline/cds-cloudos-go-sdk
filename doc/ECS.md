@@ -67,10 +67,10 @@
 
 #### billingMethod
 
-| 参数名                | 类型   | 描述     |
-| --------------------- | ------ | -------- |
-| OnDemandBillingMethod | string | 按需计费 |
-| MonthlyBillingMethod  | string | 包月     |
+| 常量名                | 类型   | 值   | 描述     |
+| --------------------- | ------ | ---- | -------- |
+| OnDemandBillingMethod | string | "0"  | 按需计费 |
+| MonthlyBillingMethod  | string | "1"  | 包月     |
 
 ## SDK接口列表
 
