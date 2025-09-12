@@ -38,8 +38,8 @@
 - **ListNatGateways**: 查询nat网关
 
 **高性能负载均衡管理**
-- **GetSlb**: 获取指定高性能负载均衡信息
-- **ListSlb**:  查询高性能负载均衡信息
+- **ListVPCSlb**:  查询VPC下的SLB列表信息
+- **GetVPCSlbDetail**: 查询高性能负载均衡详情
 
 ## 快速开始
 ### 初始化VPC客户端
@@ -77,6 +77,13 @@ import "github.com/capitalonline/cds-cloudos-go-sdk/services/natgateway"
 // 替换为您的实际访问密钥
 ak, sk := "ak", "sk"
 natgatewayClient, _ := natgateway.NewClient(ak, sk)
+```
+### 初始化SLB客户端
+```go
+import "github.com/capitalonline/cds-cloudos-go-sdk/services/slb"
+// 替换为您的实际访问密钥
+ak, sk := "ak", "sk"
+slbClient, _ := slb.NewClient(ak, sk)
 ```
 
 ## 代码示例
@@ -580,44 +587,45 @@ func ListNatGateways() {
 	fmt.Println(response.Data)
 }
 ```
-### SLB管理代码示例
-**获取指定高性能负载均衡信息**
-```go
-func GetVPCSlbDetail() {
-	// 替换为您的实际访问密钥
-	ak, sk := "your-ak", "your-sk"
-
-	slbClient, _ := slb.NewClient(ak, sk)
-	args := &slb.GetVpcSlbDetailReq{
-		SlbId: "",
-		SlbName: "",
-	}
-	response, err := slbClient.GetVpcSlbDetail(args)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
-}
-```
-**查询高性能负载均衡信息**
+### 高性能负载均衡管理代码示例
+**查询VPC下的SLB列表信息**
 ```go
 func ListVPCSlb() {
-	// 替换为您的实际访问密钥
-	ak, sk := "your-ak", "your-sk"
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	args := &slb.ListVpcSlbReq{
-		VpcId: "",
+		VpcId: "",      // 需要查询的VPC ID
 	}
 	response, err := slbClient.ListVpcSlb(args)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf(">>> response: %+v", response)
-	fmt.Println(response.Data)
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	fmt.Println(response.Data)  // 获取VPC下SLB列表信息
 }
 ```
+**查询高性能负载均衡详情**
+```go
+func GetVPCSlbDetail() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.GetVpcSlbDetailReq{
+        SlbId: "",  // 需要查询的SLB的ID
+        SlbName: "",    // 需要查询的SLB的名称
+    }
+    response, err := slbClient.GetVpcSlbDetail(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	fmt.Println(response.Data)  // 获取SLB详情
+}
+```
+> 注意: 对请求参数的内容解释如下
+> - SlbId: 此参数允许为空字符串，当此参数为空时会使用SlbName进行实例详情查询，当此参数不为空时将高优先级使用此参数进行实例详情查询，当SlbId和SlbName同时传参时将使用SlbId进行实例详情查询
+> - SlbName: 此参数允许为空字符串，仅当SlbId为空时会使用此参数进行实例详情查询，当SlbId不为空时不会使用此参数进行实例匹配查询
 # 数据结构说明
 ## 创建VPC请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |
@@ -818,5 +826,6 @@ fmt.Printf("VPC created successfully: %+v\\n", result.Data)
     EIP参考 examples/network/eip.go文件查看完整的使用示例。
     共享带宽包参考 examples/network/bandwidthpackage.go文件查看完整的使用示例。
     NAT网关参考 examples/network/natgateway.go文件查看完整的使用示例。
+    SLB参考 examples/network/slb.go文件查看完整的使用示例。
 
 如有问题，请参考项目文档或联系技术支持。
