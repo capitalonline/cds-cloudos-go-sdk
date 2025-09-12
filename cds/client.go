@@ -31,19 +31,33 @@ import (
 
 var (
 	endpoint        string
+	networkEndpoint string
+
+	envCDSNetworkAPIHost   = "CDS_NETWORK_API_HOST"
+	envCDSNetworkAPISchema = "CDS_NETWORK_API_SCHEMA"
+
 	envCDSAPIHost   = "CDS_API_HOST"
 	envCDSAPISchema = "CDS_API_SCHEMA"
-	defaultEndpoint = "https://api.capitalonline.net"
+
+	defaultEndpoint        = "https://api.capitalonline.net"
+	defaultNetworkEndpoint = "http://cdsapi.capitalonline.net"
 )
 
 func init() {
 	host := os.Getenv(envCDSAPIHost)
 	schema := os.Getenv(envCDSAPISchema)
+	endpoint = defaultEndpoint
 
-	if host == "" || schema == "" {
-		endpoint = defaultEndpoint
-	} else {
+	if host != "" && schema != "" {
 		endpoint = schema + "://" + host
+	}
+
+	networkHost := os.Getenv(envCDSNetworkAPIHost)
+	networkSchema := os.Getenv(envCDSNetworkAPISchema)
+	networkEndpoint = defaultNetworkEndpoint
+
+	if networkHost != "" && networkSchema != "" {
+		networkEndpoint = networkSchema + "://" + networkHost
 	}
 }
 
@@ -250,17 +264,14 @@ func NewCdsClientWithAkSk(ak, sk string) (*CdsClient, error) {
 	return NewCdsClient(defaultConf, Signer), nil
 }
 
-func NewCdsClientWithAkSkV1(ak, sk, ep string) (*CdsClient, error) {
+func NewCdsClientWithAkSkV1(ak, sk string) (*CdsClient, error) {
 	credentials, err := auth.NewCdsCredentials(ak, sk)
 	if err != nil {
 		return nil, err
 	}
 
-	if endpoint != defaultEndpoint {
-		ep = endpoint
-	}
 	defaultConf := &CdsClientConfiguration{
-		Endpoint:                  ep,
+		Endpoint:                  networkEndpoint,
 		Credentials:               credentials,
 		UserAgent:                 DEFAULT_USER_AGENT,
 		Region:                    DEFAULT_REGION,

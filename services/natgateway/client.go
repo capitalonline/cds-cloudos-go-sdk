@@ -19,7 +19,6 @@ package natgateway
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	DefaultEndpoint = "http://cdsapi.capitalonline.net"
 	NatURI = "/vpc"
 )
 
@@ -28,7 +27,7 @@ type Client struct {
 }
 
 func NewClient(ak, sk string) (*Client, error) {
-	client, err := cds.NewCdsClientWithAkSkV1(ak, sk, DefaultEndpoint)
+	client, err := cds.NewCdsClientWithAkSkV1(ak, sk)
 	if err != nil {
 		return nil, err
 	}
