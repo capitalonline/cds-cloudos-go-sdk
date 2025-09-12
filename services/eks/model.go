@@ -404,8 +404,8 @@ type CreateClusterResult struct {
 }
 
 type AddClusterSubnetReq struct {
-	ClusterId  string          `json:"ClusterId"`
-	SubnetList []ClusterSubnet `json:"SubnetList"`
+	ClusterId string   `json:"ClusterId"`
+	SubnetIds []string `json:"SubnetIds"`
 }
 
 type ClusterSubnet struct {
