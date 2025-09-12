@@ -72,7 +72,7 @@ func CreateVPC() {
 // ListVpcs 查询VPC数据
 func ListVPCs() {
 	// 替换为您的实际访问密钥
-	ak, sk := "ak", "sk"
+	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	ListVpcArgs := &vpc.ListVpcsReq{
@@ -109,6 +109,6 @@ func DeleteVPC() {
 func main() {
 	// CreateVPC()
 	// GetVPC()
-	// ListVPCs()
+	ListVPCs()
 	// DeleteVPC()
 }

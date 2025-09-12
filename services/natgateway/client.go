@@ -27,7 +27,7 @@ type Client struct {
 }
 
 func NewClient(ak, sk string) (*Client, error) {
-	client, err := cds.NewCdsClientWithAkSk(ak, sk)
+	client, err := cds.NewCdsClientWithAkSkV1(ak, sk)
 	if err != nil {
 		return nil, err
 	}
