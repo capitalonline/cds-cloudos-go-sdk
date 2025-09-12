@@ -267,12 +267,9 @@ type CniDetail struct {
 }
 
 type CniConfigDetail struct {
-	FlannelBackendType  string       `json:"FlannelBackendType"`
-	CalicoBlockSize     int          `json:"CalicoBlockSize"`
-	CalicoEncapsulation string       `json:"CalicoEncapsulation"`
-	NodePodsNum         int          `json:"NodePodsNum"`
-	PodCidr             string       `json:"PodCidr"`
-	SubnetList          []SubnetInfo `json:"SubnetList"`
+	NodePodsNum int          `json:"NodePodsNum"`
+	PodCidr     string       `json:"PodCidr"`
+	SubnetList  []SubnetInfo `json:"SubnetList"`
 }
 
 type CniInfo struct {
@@ -283,12 +280,9 @@ type CniInfo struct {
 }
 
 type CniConfig struct {
-	FlannelBackendType  string   `json:"FlannelBackendType"`
-	CalicoBlockSize     int      `json:"CalicoBlockSize"`
-	CalicoEncapsulation string   `json:"CalicoEncapsulation"`
-	NodePodsNum         int      `json:"NodePodsNum"`
-	PodCidr             string   `json:"PodCidr"`
-	SubnetIds           []string `json:"SubnetIds"`
+	NodePodsNum int      `json:"NodePodsNum"`
+	PodCidr     string   `json:"PodCidr"`
+	SubnetIds   []string `json:"SubnetIds"`
 }
 
 type EipInfo struct {
@@ -300,7 +294,6 @@ type SubnetInfo struct {
 	AvailableZoneId string `json:"AvailableZoneId"`
 	SubnetId        string `json:"SubnetId"`
 	Segment         string `json:"Segment"`
-	SelectSegment   string `json:"SelectSegment"`
 }
 
 type ListNodesReq struct {
@@ -365,32 +358,26 @@ type DeleteNodesData struct {
 }
 
 type CreateClusterReq struct {
-	ClusterName      string                `json:"ClusterName"`
-	VpcId            string                `json:"VpcId"`
-	Cni              CniInfo               `json:"Cni"`
-	K8sVersion       string                `json:"K8sVersion"`
-	RuntimeType      string                `json:"RuntimeType"`
-	NatId            string                `json:"NatId"`
-	SourceEipId      string                `json:"SourceEipId"`
-	DestinationEipId string                `json:"DestinationEipId"`
-	SlbId            string                `json:"SlbId"`
-	Ak               string                `json:"Ak"`
-	Sk               string                `json:"Sk"`
-	MasterNumber     int                   `json:"MasterNumber"`
-	MasterConfig     NodePoolNodeConfig    `json:"MasterConfig"`
-	NodePoolConfig   NodePoolConfiguration `json:"NodePoolConfig"`
+	ClusterName    string                `json:"ClusterName"`
+	VpcId          string                `json:"VpcId"`
+	Cni            CniInfo               `json:"Cni"`
+	K8sVersion     string                `json:"K8sVersion"`
+	RuntimeType    string                `json:"RuntimeType"`
+	NatId          string                `json:"NatId"`
+	SourceEip      string                `json:"SourceEip"`
+	DestinationEip string                `json:"DestinationEip"`
+	Password       string                `json:"Password"`
+	SlbId          string                `json:"SlbId"`
+	Ak             string                `json:"Ak"`
+	Sk             string                `json:"Sk"`
+	MasterNumber   int                   `json:"MasterNumber"`
+	MasterConfig   NodePoolNodeConfig    `json:"MasterConfig"`
+	NodePoolConfig NodePoolConfiguration `json:"NodePoolConfig"`
 }
 
-//type BillingSpec struct {
-//	BillingMethod BillingMethod `json:"BillingMethod"`
-//	Duration      Duration      `json:"Duration"`
-//	IsToMonth     IsToMonth     `json:"IsToMonth"`
-//	AutoRenew     AutoRenew     `json:"AutoRenew"`
-//}
-
 type NodePoolDiskInfo struct {
-	DiskType string `json:"Type"` // 磁盘类型：SSD
-	DiskSize int    `json:"Size"` // 磁盘大小，单位：GB
+	DiskType string `json:"Type,omitempty"` // 磁盘类型：SSD
+	DiskSize int    `json:"Size,omitempty"` // 磁盘大小，单位：GB
 }
 
 type CreateClusterData struct {
@@ -419,7 +406,6 @@ type AddClusterSubnetResult struct {
 // cni类型
 const (
 	CniTypeFlannel = "flannel"
-	CniTypeCalico  = "calico"
 	CniTypeVpcCni  = "vpc-cni"
 )
 
@@ -427,11 +413,6 @@ const (
 const (
 	K8sVersion1_30_14 = "v1.30.14"
 	K8sVersion1_26_5  = "v1.26.5"
-)
-
-// flannel后端类型
-const (
-	FlannelBackendTypeVxlan = "vxlan"
 )
 
 // 服务转发模式
@@ -445,11 +426,6 @@ const (
 	MasterNumber3 = 3
 	MasterNumber5 = 5
 	MasterNumber7 = 7
-)
-
-// calico使用的网络封装模式
-const (
-	CalicoEncapsulationIPIP = "IPIP"
 )
 
 // 集群服务CIDR ip地址段
@@ -510,7 +486,9 @@ type CreateNodePoolData struct {
 }
 
 type ListNodePoolReq struct {
-	ClusterId string `json:"ClusterId"` // 集群ID
+	ClusterId  string `json:"ClusterId"`  // 集群ID
+	NodePoolId string `json:"NodePoolId"` // 节点池ID
+	Filter     string `json:"Filter"`     // 节点池名称、ID模糊搜索
 }
 
 type ListNodePoolResult struct {
@@ -595,8 +573,7 @@ const (
 	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
 	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
 
-	// BmsGpuGbm32XLarge 20250907 改英文
-	BmsGpuGbm32XLarge = "推理型GPU裸金属igbm.c6.nr44.128c1024g8gpu"
+	BmsGpuGbm32XLarge = "Inference gbm c6 nr44.128c1024g8gpu"
 )
 
 // ECS、BMS支持的操作系统镜像

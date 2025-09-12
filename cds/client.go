@@ -19,13 +19,47 @@ package cds
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"os"
+	"time"
+
 	"github.com/capitalonline/cds-cloudos-go-sdk/auth"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 	"github.com/capitalonline/cds-cloudos-go-sdk/util/log"
-	"io"
-	"io/ioutil"
-	"time"
 )
+
+var (
+	endpoint        string
+	networkEndpoint string
+
+	envCDSNetworkAPIHost   = "CDS_NETWORK_API_HOST"
+	envCDSNetworkAPISchema = "CDS_NETWORK_API_SCHEMA"
+
+	envCDSAPIHost   = "CDS_API_HOST"
+	envCDSAPISchema = "CDS_API_SCHEMA"
+
+	defaultEndpoint        = "https://api.capitalonline.net"
+	defaultNetworkEndpoint = "http://cdsapi.capitalonline.net"
+)
+
+func init() {
+	host := os.Getenv(envCDSAPIHost)
+	schema := os.Getenv(envCDSAPISchema)
+	endpoint = defaultEndpoint
+
+	if host != "" && schema != "" {
+		endpoint = schema + "://" + host
+	}
+
+	networkHost := os.Getenv(envCDSNetworkAPIHost)
+	networkSchema := os.Getenv(envCDSNetworkAPISchema)
+	networkEndpoint = defaultNetworkEndpoint
+
+	if networkHost != "" && networkSchema != "" {
+		networkEndpoint = networkSchema + "://" + networkHost
+	}
+}
 
 // Client is the general interface which can perform sending request. Different service
 // will define its own client in case of specific extension.
@@ -209,14 +243,35 @@ func NewCdsClientWithTimeout(conf *CdsClientConfiguration, sign auth.Signer) *Cd
 	return &CdsClient{conf, sign}
 }
 
-func NewCdsClientWithAkSk(ak, sk, endPoint string) (*CdsClient, error) {
+func NewCdsClientWithAkSk(ak, sk string) (*CdsClient, error) {
 	credentials, err := auth.NewCdsCredentials(ak, sk)
 	if err != nil {
 		return nil, err
 	}
 
 	defaultConf := &CdsClientConfiguration{
-		Endpoint:                  endPoint,
+		Endpoint:                  endpoint,
+		Credentials:               credentials,
+		UserAgent:                 DEFAULT_USER_AGENT,
+		Region:                    DEFAULT_REGION,
+		Retry:                     DEFAULT_RETRY_POLICY,
+		ConnectionTimeoutInMillis: DEFAULT_CONNECTION_TIMEOUT_IN_MILLIS, // http client timeout
+		RedirectDisabled:          false,
+		DisableKeepAlives:         false,
+	}
+	Signer := &auth.CdsSigner{}
+
+	return NewCdsClient(defaultConf, Signer), nil
+}
+
+func NewCdsClientWithAkSkV1(ak, sk string) (*CdsClient, error) {
+	credentials, err := auth.NewCdsCredentials(ak, sk)
+	if err != nil {
+		return nil, err
+	}
+
+	defaultConf := &CdsClientConfiguration{
+		Endpoint:                  networkEndpoint,
 		Credentials:               credentials,
 		UserAgent:                 DEFAULT_USER_AGENT,
 		Region:                    DEFAULT_REGION,

@@ -19,16 +19,15 @@ package vpc
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	DefaultEndpoint = "http://cdsapi.capitalonline.net"
-	vpcURI          = "/vpc"
+	vpcURI = "/vpc"
 )
 
 type Client struct {
 	*cds.CdsClient
 }
 
-func NewClient(ak, sk string) (*Client, error) { 
-	client, err := cds.NewCdsClientWithAkSk(ak, sk, DefaultEndpoint)
+func NewClient(ak, sk string) (*Client, error) {
+	client, err := cds.NewCdsClientWithAkSkV1(ak, sk)
 	if err != nil {
 		return nil, err
 	}

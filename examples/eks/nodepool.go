@@ -55,7 +55,7 @@ func CreateECSNodePool() {
 				},
 
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
-				Password: "123abc,.;",
+				Password: "n00wfdWLDcxBEK8hedTemm226I",
 
 				// Shell 节点初始化完成后执行脚本命令
 				Shell: "#!/bin/bash\necho 'ECS CPU Node initialization complete'",
@@ -173,16 +173,10 @@ func CreateBMSNodePoolPostPaid() {
 				},
 
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
-				Password: "YourPassword123!",
+				Password: "YourPassword123!YourPassword12",
 
 				// Shell 节点初始化完成后执行脚本命令
 				Shell: "#!/bin/bash\necho 'BMS GPU PostPaid Node initialization complete'",
-
-				// Labels 节点k8s标签
-				Labels: map[string]string{
-					"node-type":    "bms-gpu-rtx-4090",
-					"billing-type": "postpaid",
-				},
 			},
 			Replicas: 1, // 裸金属通常数量较少且昂贵
 		},
@@ -249,21 +243,22 @@ func CreateBMSNodePoolPrePaid() {
 	fmt.Println(string(bytes))
 }
 
-// ListNodePools 查询节点池列表
-func ListNodePools() {
-	ak, sk := "your-ak", "your-sk"
-
+// ListNodePool 查询节点池列表
+func ListNodePool() {
+	ak, sk := "9bd55e4e690911f08df94ecd222a1a90", "48b783acb17483a9e4639a80c25f0b46"
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.ListNodePoolReq{
-		ClusterId: "cluster-xxxxx",
+		ClusterId:  "ef061d2f-e880-48cb-9a27-9f897b6c0d34",
+		NodePoolId: "ca2d2e38-f10d-4df8-b183-28eb0510c81a",
+		Filter:     "nodepool",
 	}
 
 	response, err := eksClient.ListNodePool(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf(">>> response: %+v", response)
+	//fmt.Printf(">>> response: %+v", response)
 
 	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
@@ -272,14 +267,14 @@ func ListNodePools() {
 
 // ScaleNodePool 扩缩容节点池
 func ScaleNodePool() {
-	ak, sk := "your-ak", "your-sk"
+	ak, sk := "9bd55e4e690911f08df94ecd222a1a90", "48b783acb17483a9e4639a80c25f0b46"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.ScalingNodePoolReq{
-		ClusterId:  "cluster-xxxxx",
-		NodePoolId: "nodepool-xxxxx",
-		Replicas:   5, // 扩容到5个节点
+		ClusterId:  "cd91da6b-88da-425c-9cd8-b9186279a6d6",
+		NodePoolId: "c90e6f52-4cd6-420a-bed7-d27951689781",
+		Replicas:   13, // 扩容到13个节点
 	}
 
 	response, err := eksClient.ScalingNodePool(req)

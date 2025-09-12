@@ -19,16 +19,15 @@ package subnet
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	DefaultEndpoint = "http://cdsapi.capitalonline.net"
-	subnetURI          = "/vpc"
+	subnetURI = "/vpc"
 )
 
 type Client struct {
 	*cds.CdsClient
 }
 
-func NewClient(ak, sk string) (*Client, error) { 
-	client, err := cds.NewCdsClientWithAkSk(ak, sk, DefaultEndpoint)
+func NewClient(ak, sk string) (*Client, error) {
+	client, err := cds.NewCdsClientWithAkSkV1(ak, sk)
 	if err != nil {
 		return nil, err
 	}

@@ -1,0 +1,63 @@
+/*
+Copyright 2024.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/capitalonline/cds-cloudos-go-sdk/services/slb"
+)
+
+
+func ListVPCSlb() {
+	// 替换为您的实际访问密钥
+	ak, sk := "your-ak", "your-sk"
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.ListVpcSlbReq{
+		VpcId: "",
+	}
+	response, err := slbClient.ListVpcSlb(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+
+func GetVPCSlbDetail() {
+	// 替换为您的实际访问密钥
+	ak, sk := "your-ak", "your-sk"
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	args := &slb.GetVpcSlbDetailReq{
+		SlbId: "",
+		SlbName: "",
+	}
+	response, err := slbClient.GetVpcSlbDetail(args)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)
+	fmt.Println(response.Data)
+}
+
+
+func main() {
+	ListVPCSlb()
+	// GetVPCSlbDetail()
+}

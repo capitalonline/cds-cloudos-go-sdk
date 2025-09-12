@@ -1,3 +1,18 @@
+/*
+Copyright 2024.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
 import (
@@ -7,7 +22,8 @@ import (
 )
 
 // Getvpc 获取VPC详情
-func Getvpc() {
+func GetVPC() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -24,7 +40,8 @@ func Getvpc() {
 	fmt.Println(response.Data.VPCList)
 }
 // CreateVpc 创建VPC
-func CreateVpc() {
+func CreateVPC() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -53,7 +70,8 @@ func CreateVpc() {
 }
 
 // ListVpcs 查询VPC数据
-func ListVpcs() {
+func ListVPCs() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	vpcClient, _ := vpc.NewClient(ak, sk)
@@ -71,8 +89,9 @@ func ListVpcs() {
 }
 
 
-// DeleteVPC 删除vpc数据
+// DeleteVpc 删除vpc数据
 func DeleteVPC() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	vpcClient, _ := vpc.NewClient(ak, sk)
 	DeleteVpcArgs := &vpc.DeleteVpcReq{
@@ -88,8 +107,8 @@ func DeleteVPC() {
 }
 
 func main() {
-	CreateVpc()
-	// Getvpc()
-	// ListVpcs()
+	// CreateVPC()
+	// GetVPC()
+	ListVPCs()
 	// DeleteVPC()
 }

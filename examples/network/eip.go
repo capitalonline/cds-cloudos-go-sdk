@@ -1,3 +1,18 @@
+/*
+Copyright 2024.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
 import (
@@ -6,8 +21,9 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/eip"
 )
 
-// ListEips 查询eip列表
-func ListEips() {
+// ListEIPs 查询eip列表
+func ListEIPs() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	ListEipArgs := &eip.ListEipsReq{
@@ -22,8 +38,9 @@ func ListEips() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-// GetEip 获取某个eip信息
-func GetEip() {
+// GetEIP 获取某个eip信息
+func GetEIP() {
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -39,8 +56,9 @@ func GetEip() {
 	fmt.Println(response.Data)
 	fmt.Println(response.Data.Total)
 }
-// CreateEip 创建eip
-func CreateEip(){
+// CreateEIP 创建eip
+func CreateEIP(){
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 	EipClient, _ := eip.NewClient(ak, sk)
 	CreateEipArgs := &eip.CreateEIPReq{
@@ -59,8 +77,9 @@ func CreateEip(){
 	fmt.Printf(">>> response: %+v", response)
 	fmt.Println(response.Data)
 }
-// UpdateEip 更新eip带宽或者描述
-func UpdateEip(){
+// UpdateEIP 更新eip带宽或者描述
+func UpdateEIP(){
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 	EipClient, _ := eip.NewClient(ak, sk)
@@ -79,8 +98,9 @@ func UpdateEip(){
 	fmt.Println(response.Data)
 }
 
-// ReleaseEip 删除弹性eip
-func ReleaseEip(){
+// ReleaseEIP删除弹性eip
+func ReleaseEIP(){
+	// 替换为您的实际访问密钥
 	ak, sk := "ak", "sk"
 
 
@@ -100,9 +120,9 @@ func ReleaseEip(){
 }
 
 func main() {
-	// ListEips()
-	// GetEip()
-	// CreateEip()
-	// UpdateEip()
-	ReleaseEip()
+	// ListEIPs()
+	// GetEIP()
+	// CreateEIP()
+	// UpdateEIP()
+	ReleaseEIP()
 }
