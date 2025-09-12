@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/ecs"
-	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 )
 
@@ -21,10 +20,7 @@ func TestEcsExamples(t *testing.T) {
 		// 设置期望的调用
 		mockClient.EXPECT().DescribeRegions().Return(&ecs.DescribeRegionsResult{}, nil)
 
-		// 执行测试
-		assert.NotPanics(t, func() {
-			describeRegions(mockClient)
-		})
+		describeRegions(mockClient)
 	})
 
 	// 测试describeInstanceList函数
@@ -33,9 +29,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().DescribeInstanceList(gomock.Any()).Return(&ecs.DescribeInstanceListResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			describeInstanceList(mockClient)
-		})
+		describeInstanceList(mockClient)
 	})
 
 	// 测试operateInstance函数
@@ -44,9 +38,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().OperateInstance(gomock.Any()).Return(&ecs.OperateInstanceResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			operateInstance(mockClient)
-		})
+		operateInstance(mockClient)
 	})
 
 	// 测试modifyInstanceName函数
@@ -55,9 +47,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().ModifyInstanceName(gomock.Any()).Return(&ecs.ModifyInstanceNameResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			modifyInstanceName(mockClient)
-		})
+		modifyInstanceName(mockClient)
 	})
 
 	// 测试describeInstance函数
@@ -66,9 +56,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().DescribeInstance(gomock.Any()).Return(&ecs.DescribeInstanceResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			describeInstance(mockClient)
-		})
+		describeInstance(mockClient)
 	})
 
 	// 测试describeTaskEvent函数
@@ -77,9 +65,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().DescribeTaskEvent(gomock.Any()).Return(&ecs.DescribeTaskEventResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			describeTaskEvent(mockClient)
-		})
+		describeTaskEvent(mockClient)
 	})
 
 	// 测试describeEcsFamilyInfo函数
@@ -88,9 +74,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().DescribeEcsFamilyInfo(gomock.Any()).Return(&ecs.DescribeEcsFamilyInfoResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			describeEcsFamilyInfo(mockClient)
-		})
+		describeEcsFamilyInfo(mockClient)
 	})
 
 	// 测试changeInstanceConfigure函数
@@ -99,9 +83,7 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().ChangeInstanceConfigure(gomock.Any()).Return(&ecs.ChangeInstanceConfigureResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			changeInstanceConfigure(mockClient)
-		})
+		changeInstanceConfigure(mockClient)
 	})
 
 	// 测试extendDisk函数
@@ -110,8 +92,6 @@ func TestEcsExamples(t *testing.T) {
 		mockClient.EXPECT().ExtendDisk(gomock.Any()).Return(&ecs.ExtendDiskResult{}, nil)
 
 		// 执行测试
-		assert.NotPanics(t, func() {
-			extendDisk(mockClient)
-		})
+		extendDisk(mockClient)
 	})
 }
