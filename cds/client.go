@@ -259,7 +259,6 @@ func NewCdsClientWithAkSkV1(ak, sk, ep string) (*CdsClient, error) {
 	if endpoint != defaultEndpoint {
 		ep = endpoint
 	}
-
 	defaultConf := &CdsClientConfiguration{
 		Endpoint:                  ep,
 		Credentials:               credentials,

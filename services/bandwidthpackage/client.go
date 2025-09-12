@@ -19,6 +19,7 @@ package bandwidthpackage
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
+	DefaultEndpoint = "http://cdsapi.capitalonline.net"
 	BandwidthpackageURI = "/vpc"
 )
 
@@ -27,7 +28,7 @@ type Client struct {
 }
 
 func NewClient(ak, sk string) (*Client, error) {
-	client, err := cds.NewCdsClientWithAkSk(ak, sk)
+	client, err := cds.NewCdsClientWithAkSkV1(ak, sk, DefaultEndpoint)
 	if err != nil {
 		return nil, err
 	}
