@@ -19,13 +19,14 @@ package cds
 import (
 	"bytes"
 	"fmt"
-	"github.com/capitalonline/cds-cloudos-go-sdk/auth"
-	"github.com/capitalonline/cds-cloudos-go-sdk/http"
-	"github.com/capitalonline/cds-cloudos-go-sdk/util/log"
 	"io"
 	"io/ioutil"
 	"os"
 	"time"
+
+	"github.com/capitalonline/cds-cloudos-go-sdk/auth"
+	"github.com/capitalonline/cds-cloudos-go-sdk/http"
+	"github.com/capitalonline/cds-cloudos-go-sdk/util/log"
 )
 
 var (
