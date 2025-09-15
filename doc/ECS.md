@@ -121,11 +121,11 @@
 
 ##### AzInfo
 
-| 参数名                | 类型       | 描述           |
-| --------------------- | ---------- | -------------- |
-| AzId                  | string     | 可用区ID       |
-| AzName                | string     | 可用区名称     |
-| **AvailableZoneCode** | **string** | **可用区代码** |
+| 参数名            | 类型   | 描述       |
+| :---------------- | ------ | ---------- |
+| AzId              | string | 可用区ID   |
+| AzName            | string | 可用区名称 |
+| AvailableZoneCode | string | 可用区代码 |
 
 ### DescribeTaskEvent
 
@@ -133,7 +133,45 @@
 
 #### 参数说明
 
+##### DescribeTaskEventReq
 
+| 参数名  | 类型   | 必填 | 描述   |
+| ------- | ------ | ---- | ------ |
+| EventId | string | 是   | 事件id |
+
+##### DescribeTaskEventResult
+
+| 参数名 | 类型                                   | 描述         |
+| ------ | -------------------------------------- | ------------ |
+| Data   | []*[EventResultData](#EventResultData) | 事件结果数据 |
+
+##### EventResultData
+
+| 参数名             | 类型                             | 描述             |
+| ------------------ | -------------------------------- | ---------------- |
+| EventId            | string                           | 事件ID           |
+| EventStatus        | string                           | 事件状态         |
+| EventStatusDisplay | string                           | 事件状态显示名称 |
+| EventType          | string                           | 事件类型         |
+| EventTypeDisplay   | string                           | 事件类型显示名称 |
+| CreateTime         | string                           | 创建时间         |
+| TaskList           | []*[TaskListInfo](#TaskListInfo) | 任务列表         |
+
+##### TaskListInfo
+
+| 参数名          | 类型 | 描述             |
+| --------------- | ---- | ---------------- |
+| TaskId          |      | 任务ID           |
+| Status          |      | 任务状态         |
+| StatusDisplay   |      | 任务状态显示名称 |
+| ResourceId      |      | 资源ID           |
+| CreateTime      |      | 创建时间         |
+| UpdateTime      |      | 更新时间         |
+| EndTime         |      | 结束时间         |
+| ResourceType    |      | 资源类型         |
+| ResourceDisplay |      | 资源显示名称     |
+| TaskType        |      | 任务类型         |
+| TaskTypeDisplay |      | 任务类型显示名称 |
 
 ### DescribeInstanceList
 
@@ -164,41 +202,54 @@
 
 ##### InstanceSimpleInfo
 
-| 参数                | 类型                                       | 说明                                                       |
-| ------------------- | ------------------------------------------ | ---------------------------------------------------------- |
-| EcsId               | string                                     | 实例ID                                                     |
-| EcsName             | string                                     | 实例名称                                                   |
-| VpcId               | string                                     | VPC ID                                                     |
-| VpcName             | string                                     | VPC名称                                                    |
-| Status              | string                                     | 云服务器状态码，参考 [云服务器状态说明](#云服务器状态说明) |
-| StatusDisplay       | string                                     | 状态显示名称                                               |
-| AzId                | string                                     | 可用区ID                                                   |
-| AzName              | string                                     | 可用区名称                                                 |
-| RegionId            | string                                     | 区域ID                                                     |
-| RegionName          | string                                     | 区域名称                                                   |
-| PrivateNet          | string                                     | 私网ip                                                     |
-| PubNet              | string                                     | 默认出网网关ip                                             |
-| VirtualNet          | list                                       | 其他线路出网网关ip列表                                     |
-| EipInfo             | map[string]*[EipSimpleInfo](EipSimpleInfo) | 公网ip信息                                                 |
-| CreateTime          | string                                     | 创建时间                                                   |
-| EcsFamilyName       | string                                     | 规格族名称                                                 |
-| SpecFamilyId        | string                                     | 规格族ID                                                   |
-| CpuSize             | int                                        | CPU核心数                                                  |
-| RamSize             | int                                        | 内存大小(GB)                                               |
-| IsGpu               | bool                                       | 是否为GPU实例                                              |
-| GpuSize             | int                                        | 显卡数量                                                   |
-| CardName            | string                                     | 显卡型号                                                   |
-| BillingMethod       | string                                     | [计费方式](#billingMethod)                                 |
-| BillingMethodName   | string                                     | 计费方式名称                                               |
-| EndBillTime         | string                                     | 到期时间                                                   |
-| IsAutoRenewal       | string                                     | 到期是否自动续约                                           |
-| OsType              | string                                     | 操作系统类型                                               |
-| OsVersion           | string                                     | 操作系统版本                                               |
-| OsBit               | int                                        | 操作系统位数                                               |
-| ImageName           | string                                     | 镜像名称                                                   |
-| SystemDiskType      | string                                     | 系统盘类型                                                 |
-| SystemDiskSize      | int                                        | 系统盘大小                                                 |
-| NoChargeForShutdown | int                                        | 是否关机不计费： 1是， 0否                                 |
+| 参数                 | 类型                                       | 说明                                                       |
+| -------------------- | ------------------------------------------ | ---------------------------------------------------------- |
+| EcsId                | string                                     | 实例ID                                                     |
+| EcsName              | string                                     | 实例名称                                                   |
+| VpcId                | string                                     | VPC ID                                                     |
+| VpcName              | string                                     | VPC名称                                                    |
+| Status               | string                                     | 云服务器状态码，参考 [云服务器状态说明](#云服务器状态说明) |
+| StatusDisplay        | string                                     | 状态显示名称                                               |
+| AzId                 | string                                     | 可用区ID                                                   |
+| AzName               | string                                     | 可用区名称                                                 |
+| RegionId             | string                                     | 区域ID                                                     |
+| RegionName           | string                                     | 区域名称                                                   |
+| PrivateNet           | string                                     | 私网ip                                                     |
+| PubNet               | string                                     | 默认出网网关ip                                             |
+| VirtualNet           | list                                       | 其他线路出网网关ip列表                                     |
+| EipInfo              | map[string]*[EipSimpleInfo](EipSimpleInfo) | 公网ip信息                                                 |
+| CreateTime           | string                                     | 创建时间                                                   |
+| EcsFamilyName        | string                                     | 规格族名称                                                 |
+| SpecFamilyId         | string                                     | 规格族ID                                                   |
+| CpuSize              | int                                        | CPU核心数                                                  |
+| RamSize              | int                                        | 内存大小(GB)                                               |
+| IsGpu                | bool                                       | 是否为GPU实例                                              |
+| GpuSize              | int                                        | 显卡数量                                                   |
+| CardName             | string                                     | 显卡型号                                                   |
+| BillingMethod        | string                                     | [计费方式](#billingMethod)                                 |
+| BillingMethodName    | string                                     | 计费方式名称                                               |
+| EndBillTime          | string                                     | 到期时间                                                   |
+| IsAutoRenewal        | string                                     | 到期是否自动续约                                           |
+| OsType               | string                                     | 操作系统类型                                               |
+| OsVersion            | string                                     | 操作系统版本                                               |
+| OsBit                | int                                        | 操作系统位数                                               |
+| ImageName            | string                                     | 镜像名称                                                   |
+| SystemDiskType       | string                                     | 系统盘类型                                                 |
+| SystemDiskSize       | int                                        | 系统盘大小                                                 |
+| NoChargeForShutdown  | int                                        | 是否关机不计费： 1是， 0否                                 |
+| BindingPubnetIp      | bool                                       | 是否绑定公网 IP                                            |
+| CustomerId           | string                                     | 客户ID                                                     |
+| EcsGoodsId           | string                                     | 云主机商品/套餐 ID                                         |
+| GpuCardInfo          | *[GpuCardData](#GpuCardData)               | GPU 卡信息                                                 |
+| GpuDriver            | string                                     | GPU 驱动版本信息                                           |
+| IsHaveSnapshot       | bool                                       | 是否有快照                                                 |
+| ProductSource        | string                                     | 产品来源标识                                               |
+| ProductSourceDisplay | string                                     | 产品来源显示名                                             |
+| SecurityGroup        | list                                       | 安全组                                                     |
+| SubnetId             | string                                     | 子网 ID                                                    |
+| SupportGpuDriver     | string                                     | 支持的GPU驱动                                              |
+| SystemDiskFeature    | string                                     | 系统盘特性                                                 |
+| Tag                  | list                                       | 标签                                                       |
 
 ##### EipSimpleInfo
 
@@ -207,13 +258,166 @@
 | ConfName | string | 网络带宽运营商，如电信、移动、联通 |
 | EipIp    | string | EIP地址                            |
 
+##### GpuCardData
+
+| 参数            | 类型   | 说明               |
+| --------------- | ------ | ------------------ |
+| GicBusinessName | string | GPU 型号的名称     |
+| GpuDriver       | string | GPU 驱动版本       |
+| GpuTypeId       | string | GPU 类型 ID        |
+| RealName        | list   | GPU 型号的真实名称 |
+
 ### DescribeInstance
 
 *获取云服务器配置详情* 
 
 #### 参数说明
 
+##### DescribeInstanceReq
 
+| 参数名 | 类型   | 必填 | 描述       |
+| ------ | ------ | ---- | ---------- |
+| EcsId  | string | 是   | 云服务器id |
+
+##### DescribeInstanceResult
+
+| 参数 | 类型                           | 说明         |
+| ---- | ------------------------------ | ------------ |
+| Data | *[InstanceData](#InstanceData) | 实例详细数据 |
+
+##### InstanceData
+
+| 参数                | 类型                                   | 说明             |
+| ------------------- | -------------------------------------- | ---------------- |
+| EcsId               | string                                 | 实例ID           |
+| EcsName             | string                                 | 实例名称         |
+| RegionId            | string                                 | 区域ID           |
+| RegionName          | string                                 | 区域名称         |
+| AzId                | string                                 | 可用区ID         |
+| AzName              | string                                 | 可用区名称       |
+| Status              | string                                 | 实例状态         |
+| StatusDisplay       | string                                 | 实例状态显示名称 |
+| CreateTime          | string                                 | 创建时间         |
+| Duration            | int                                    | 运行时长         |
+| EndBillTime         | string                                 | 计费结束时间     |
+| IsAutoRenewal       | string                                 | 是否自动续费     |
+| TimeZone            | string                                 | 时区             |
+| IsGpu               | bool                                   | 是否为 GPU 实例  |
+| IsToMonth           | int                                    | 是否按月计费     |
+| RealCardName        | string                                 | GPU 实际型号     |
+| SecurityGroup       | list                                   | 安全组           |
+| StockRelease        | bool                                   | 库存释放标志     |
+| Supplier            | string                                 | 实例供应商       |
+| SystemDiskFeature   | string                                 | 系统盘类型       |
+| Tag                 | list                                   | 标签             |
+| NoChargeForShutdown | int                                    | 关机是否收费     |
+| EcsRule             | *[InstanceRuleInfo](#InstanceRuleInfo) | 实例规格信息     |
+| OsInfo              | *[OsInfo](#OsInfo)                     | 操作系统信息     |
+| Disk                | *[DiskInfo](#DiskInfo)                 | 磁盘信息         |
+| Pipe                | *[PipeInfo](#PipeInfo)                 | 网络信息         |
+| BillingInfo         | *[BillingInfo](#BillingInfo)           | 计费信息         |
+
+##### InstanceRuleInfo
+
+| 参数       | 类型   | 说明       |
+| ---------- | ------ | ---------- |
+| Name       | string | 规格名称   |
+| CpuNum     | int    | CPU核心数  |
+| CpuUnit    | string | CPU单位    |
+| Ram        | int    | 内存大小   |
+| Gpu        | int    | GPU数量    |
+| RamUnit    | string | 内存单位   |
+| GpuUnit    | string | GPU单位    |
+| CategoryId | string | 规格类别ID |
+| ConfName   | string | 配置名称   |
+| EcsGoodsId | string | 商品ID     |
+
+##### OsInfo
+
+| 参数      | 类型   | 说明         |
+| --------- | ------ | ------------ |
+| ImageId   | string | 镜像ID       |
+| ImageName | string | 镜像名称     |
+| OsType    | string | 操作系统类型 |
+| Bit       | int    | 操作系统位数 |
+| Version   | string | 操作系统版本 |
+| Unit      | string | 单位         |
+
+##### DiskInfo
+
+| 参数           | 类型                                       | 说明               |
+| -------------- | ------------------------------------------ | ------------------ |
+| SystemDiskConf | *[SystemDiskConfInfo](#SystemDiskConfInfo) | 系统盘配置信息     |
+| DataDiskConf   | []*[DataDiskConfInfo](#DataDiskConfInfo)   | 数据盘配置信息列表 |
+
+##### SystemDiskConfInfo
+
+| 参数                | 类型   | 说明                                   |
+| ------------------- | ------ | -------------------------------------- |
+| ReleaseWithInstance | int    | 是否随实例释放(0:否,1:是)              |
+| DiskType            | string | 磁盘类型(system: 系统盘, data: 数据盘) |
+| Name                | string | 磁盘名称(用户自定义或默认名称)         |
+| Size                | int    | 磁盘大小(GB)                           |
+| DiskIops            | int    | 磁盘IOPS                               |
+| BandMbps            | int    | 磁盘带宽(Mbps)                         |
+| Unit                | string | 单位                                   |
+| DiskId              | string | 磁盘ID                                 |
+| DiskFeature         | string | 磁盘特性                               |
+| DiskName            | string | 磁盘显示名称(例如 SSD云盘)             |
+| EbsGoodsId          | string | 磁盘商品 ID                            |
+| EcsGoodsId          | string | 云主机商品 ID                          |
+| IsFollowDelete      | string | 是否随实例删除(0: 否, 1: 是)           |
+
+##### DataDiskConfInfo
+
+| 参数                | 类型   | 说明                                   |
+| ------------------- | ------ | -------------------------------------- |
+| ReleaseWithInstance | int    | 是否随实例释放(0:否,1:是)              |
+| DiskType            | string | 磁盘类型(system: 系统盘, data: 数据盘) |
+| Name                | string | 磁盘名称(用户自定义或默认名称)         |
+| Size                | int    | 磁盘大小(GB)                           |
+| DiskIops            | int    | 磁盘IOPS                               |
+| BandMbps            | int    | 磁盘带宽(Mbps)                         |
+| Unit                | string | 单位                                   |
+| Id                  | string | 磁盘ID                                 |
+| DiskFeature         | string | 磁盘特性                               |
+| DiskName            | string | 磁盘显示名称(例如 SSD云盘)             |
+| EbsGoodsId          | string | 磁盘商品 ID                            |
+| EcsGoodsId          | string | 云主机商品 ID                          |
+| IsFollowDelete      | string | 是否随实例删除(0: 否, 1: 是)           |
+
+##### PipeInfo
+
+| 参数       | 类型                           | 说明         |
+| ---------- | ------------------------------ | ------------ |
+| VpcName    | string                         | VPC名称      |
+| VpcId      | string                         | VPC ID       |
+| SubnetId   | string                         | 子网ID       |
+| SubnetName | string                         | 子网名称     |
+| CreateTime | string                         | 创建时间     |
+| PrivateNet | string                         | 私网IP       |
+| PubNet     | string                         | 公网IP       |
+| VirtualNet | list                           | 虚拟网络信息 |
+| EipInfo    | map[string]*[EipInfo](EipInfo) | EIP信息      |
+
+##### EipInfo
+
+| 参数          | 类型   | 说明         |
+| ------------- | ------ | ------------ |
+| ConfName      | string | 配置名称     |
+| EipIp         | string | EIP地址      |
+| CurrentUseQos | int    | 当前使用带宽 |
+| BandwidthName | string | 带宽名称     |
+
+##### BillingInfo
+
+| 参数                | 类型   | 说明                       |
+| ------------------- | ------ | -------------------------- |
+| BillingMethod       | string | [计费方式](#billingMethod) |
+| BillingMethodName   | string | 计费方式名称               |
+| BillingStatus       | string | 计费状态                   |
+| BillCycleId         | string | 计费周期ID                 |
+| BillingMethodStatus | string | 计费方式状态               |
 
 ### OperateInstance
 
@@ -251,7 +455,25 @@
 
 #### 参数说明
 
+##### ModifyInstanceNameReq
 
+| 参数名 | 类型   | 必填 | 描述       |
+| ------ | ------ | ---- | ---------- |
+| EcsId  | string | 是   | 实例ID     |
+| Name   | string | 是   | 新实例名称 |
+
+##### ModifyInstanceNameResult
+
+| 参数名 | 类型                                               | 必填             |
+| ------ | -------------------------------------------------- | ---------------- |
+| Data   | *[ModifyInstanceNameData](#ModifyInstanceNameData) | 修改实例名称数据 |
+
+##### ModifyInstanceNameData
+
+| 参数名 | 类型   | 必填     |
+| ------ | ------ | -------- |
+| EcsId  | string | 实例ID   |
+| Name   | string | 实例名称 |
 
 ### DescribeEcsFamilyInfo
 
@@ -259,7 +481,42 @@
 
 #### 参数说明
 
+##### DescribeEcsFamilyInfoReq
 
+| 参数名            | 类型   | 必填 | 描述                                                    |
+| ----------------- | ------ | ---- | ------------------------------------------------------- |
+| AvailableZoneCode | string | 是   | 可用区代码筛选，参考[AzInfo](#AzInfo).AvailableZoneCode |
+| BillingMethod     | string | 是   | [计费方式](#billingMethod)                              |
+
+##### DescribeEcsFamilyInfoResult
+
+| 参数名 | 类型                       | 描述       |
+| ------ | -------------------------- | ---------- |
+| Data   | *[FamilyData](#FamilyData) | 规格族数据 |
+
+##### FamilyData
+
+| 参数名        | 类型                         | 描述              |
+| ------------- | ---------------------------- | ----------------- |
+| EcsFamilyInfo | []*[FamilyInfo](#FamilyInfo) | ECS规格族信息列表 |
+
+##### FamilyInfo
+
+| 参数名        | 类型                              | 描述          |
+| ------------- | --------------------------------- | ------------- |
+| EcsFamilyName | string                            | ECS规格族名称 |
+| SpecList      | []*[SpecListInfo](#[SpecListInfo) | 规格列表      |
+
+##### SpecListInfo
+
+| 参数名           | 类型   | 描述          |
+| ---------------- | ------ | ------------- |
+| GpuShowType      | string | GPU显示类型   |
+| GpuTypeId        | string | GPU类型ID     |
+| Cpu              | int    | CPU核心数     |
+| Ram              | int    | 内存大小(GB)  |
+| Gpu              | int    | GPU数量       |
+| SupportGpuDriver | string | 支持的GPU驱动 |
 
 ### ChangeInstanceConfigure
 
@@ -267,7 +524,22 @@
 
 #### 参数说明
 
+##### ChangeInstanceConfigureReq
 
+| 参数名            | 类型   | 必填 | 描述           |
+| ----------------- | ------ | ---- | -------------- |
+| EcsIds            | list   | 是   | 实例ID列表     |
+| AvailableZoneCode | string | 是   | 可用区代码     |
+| EcsFamilyName     | string | 是   | 实例规格族名称 |
+| Cpu               | int    | 是   | CPU核心数      |
+| Ram               | int    | 是   | 内存大小(GB)   |
+| Gpu               | int    | 否   | GPU数量        |
+
+##### ChangeInstanceConfigureResult
+
+| 参数名 | 类型                         | 描述       |
+| ------ | ---------------------------- | ---------- |
+| Data   | *[EventIdData](#EventIdData) | 事件ID数据 |
 
 ### ExtendDisk
 
@@ -275,9 +547,18 @@
 
 #### 参数说明
 
+##### ExtendDiskReq
 
+| 参数名       | 类型   | 必填 | 描述             |
+| ------------ | ------ | ---- | ---------------- |
+| DiskId       | string | 是   | 磁盘ID           |
+| ExtendedSize | int    | 是   | 扩展后的大小(GB) |
 
+##### ExtendDiskResult
 
+| 参数名 | 类型                         | 描述       |
+| ------ | ---------------------------- | ---------- |
+| Data   | *[EventIdData](#EventIdData) | 事件ID数据 |
 
 
 

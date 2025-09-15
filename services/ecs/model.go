@@ -126,42 +126,60 @@ type InstanceListData struct {
 
 // InstanceSimpleInfo 实例简要信息
 type InstanceSimpleInfo struct {
-	EcsId               string                    `json:"EcsId"`               // 实例ID
-	EcsName             string                    `json:"EcsName"`             // 实例名称
-	VpcId               string                    `json:"VpcId"`               // VPC ID
-	VpcName             string                    `json:"VpcName"`             // VPC名称
-	Status              string                    `json:"Status"`              // 云服务器状态码
-	StatusDisplay       string                    `json:"StatusDisplay"`       // 状态显示名称
-	AzId                string                    `json:"AzId"`                // 可用区ID
-	AzName              string                    `json:"AzName"`              // 可用区名称
-	RegionId            string                    `json:"RegionId"`            // 区域ID
-	RegionName          string                    `json:"RegionName"`          // 区域名称
-	PrivateNet          string                    `json:"PrivateNet"`          // 私网IP
-	PubNet              string                    `json:"PubNet"`              // 默认出网网关ip
-	VirtualNet          []interface{}             `json:"VirtualNet"`          // 虚拟网络信息
-	EipInfo             map[string]*EipSimpleInfo `json:"EipInfo"`             // EIP信息
-	CreateTime          string                    `json:"CreateTime"`          // 创建时间
-	EndBillTime         string                    `json:"EndBillTime"`         // 计费结束时间
-	IsAutoRenewal       string                    `json:"IsAutoRenewal"`       // 是否自动续费
-	IsGpu               bool                      `json:"IsGpu"`               // 是否为GPU实例
-	CardName            string                    `json:"CardName"`            // 显卡型号
-	CpuSize             int                       `json:"CpuSize"`             // CPU核心数
-	RamSize             int                       `json:"RamSize"`             // 内存大小(GB)
-	GpuSize             int                       `json:"GpuSize"`             // GPU数量
-	BillingMethodName   string                    `json:"BillingMethodName"`   // 计费方式名称
-	BillingMethod       string                    `json:"BillingMethod"`       // 计费方式
-	OsType              string                    `json:"OsType"`              // 操作系统类型
-	OsVersion           string                    `json:"OsVersion"`           // 操作系统版本
-	ImageName           string                    `json:"ImageName"`           // 镜像名称
-	OsBit               int                       `json:"OsBit"`               // 操作系统位数
-	CustomerId          string                    `json:"CustomerId"`          // 客户ID
-	SystemDiskType      string                    `json:"SystemDiskType"`      // 系统盘类型
-	SystemDiskFeature   string                    `json:"SystemDiskFeature"`   // 系统盘特性
-	SystemDiskSize      int                       `json:"SystemDiskSize"`      // 系统盘大小(GB)
-	SupportGpuDriver    string                    `json:"SupportGpuDriver"`    // 支持的GPU驱动
-	SpecFamilyId        string                    `json:"SpecFamilyId"`        // 规格族ID
-	EcsFamilyName       string                    `json:"EcsFamilyName"`       // 实例规格族名称
-	NoChargeForShutdown int                       `json:"NoChargeForShutdown"` // 关机是否收费
+	EcsId                string                    `json:"EcsId"`                // 实例ID
+	EcsName              string                    `json:"EcsName"`              // 实例名称
+	VpcId                string                    `json:"VpcId"`                // VPC ID
+	VpcName              string                    `json:"VpcName"`              // VPC名称
+	Status               string                    `json:"Status"`               // 云服务器状态码
+	StatusDisplay        string                    `json:"StatusDisplay"`        // 状态显示名称
+	AzId                 string                    `json:"AzId"`                 // 可用区ID
+	AzName               string                    `json:"AzName"`               // 可用区名称
+	RegionId             string                    `json:"RegionId"`             // 区域ID
+	RegionName           string                    `json:"RegionName"`           // 区域名称
+	PrivateNet           string                    `json:"PrivateNet"`           // 私网IP
+	PubNet               string                    `json:"PubNet"`               // 默认出网网关ip
+	VirtualNet           []interface{}             `json:"VirtualNet"`           // 虚拟网络信息
+	EipInfo              map[string]*EipSimpleInfo `json:"EipInfo"`              // EIP信息
+	CreateTime           string                    `json:"CreateTime"`           // 创建时间
+	SpecFamilyId         string                    `json:"SpecFamilyId"`         // 规格族ID
+	EcsFamilyName        string                    `json:"EcsFamilyName"`        // 实例规格族名称
+	CpuSize              int                       `json:"CpuSize"`              // CPU核心数
+	RamSize              int                       `json:"RamSize"`              // 内存大小(GB)
+	EndBillTime          string                    `json:"EndBillTime"`          // 计费结束时间
+	IsAutoRenewal        string                    `json:"IsAutoRenewal"`        // 是否自动续费
+	IsGpu                bool                      `json:"IsGpu"`                // 是否为GPU实例
+	CardName             string                    `json:"CardName"`             // 显卡型号
+	GpuSize              int                       `json:"GpuSize"`              // GPU数量
+	BillingMethodName    string                    `json:"BillingMethodName"`    // 计费方式名称
+	BillingMethod        string                    `json:"BillingMethod"`        // 计费方式
+	OsType               string                    `json:"OsType"`               // 操作系统类型
+	OsVersion            string                    `json:"OsVersion"`            // 操作系统版本
+	ImageName            string                    `json:"ImageName"`            // 镜像名称
+	OsBit                int                       `json:"OsBit"`                // 操作系统位数
+	SystemDiskType       string                    `json:"SystemDiskType"`       // 系统盘类型
+	SystemDiskSize       int                       `json:"SystemDiskSize"`       // 系统盘大小(GB)
+	NoChargeForShutdown  int                       `json:"NoChargeForShutdown"`  // 关机是否收费
+	CustomerId           string                    `json:"CustomerId"`           // 客户ID
+	SystemDiskFeature    string                    `json:"SystemDiskFeature"`    // 系统盘特性
+	SupportGpuDriver     string                    `json:"SupportGpuDriver"`     // 支持的GPU驱动
+	BindingPubnetIp      bool                      `json:"BindingPubnetIp"`      // 是否绑定公网 IP
+	EcsGoodsId           string                    `json:"EcsGoodsId"`           // 云主机商品/套餐 ID
+	GpuCardInfo          *GpuCardData              `json:"GpuCardInfo"`          // GPU 卡信息
+	GpuDriver            string                    `json:"GpuDriver"`            // GPU 驱动版本信息
+	IsHaveSnapshot       bool                      `json:"IsHaveSnapshot"`       // 是否有快照
+	ProductSource        string                    `json:"ProductSource"`        // 产品来源标识
+	ProductSourceDisplay string                    `json:"ProductSourceDisplay"` // 产品来源显示名
+	SecurityGroup        []interface{}             `json:"SecurityGroup"`        // 安全组
+	SubnetId             string                    `json:"SubnetId"`             // 子网 ID
+	Tag                  []interface{}             `json:"Tag"`                  // 标签
+}
+
+// GpuCardData GPU 卡数据信息
+type GpuCardData struct {
+	GicBusinessName string `json:"GicBusinessName"` // GPU 型号的名称
+	GpuDriver       string `json:"GpuDriver"`       // GPU 驱动版本
+	GpuTypeId       string `json:"GpuTypeId"`       // GPU 类型 ID
+	RealName        string `json:"RealName"`        // GPU 型号的真实名称
 }
 
 // EipSimpleInfo EIP简要信息
@@ -249,20 +267,28 @@ type DescribeInstanceResult struct {
 
 // InstanceData 实例详细数据
 type InstanceData struct {
-	EcsId               string            `json:"EcsId"`               // 实例ID
-	EcsName             string            `json:"EcsName"`             // 实例名称
-	RegionId            string            `json:"RegionId"`            // 区域ID
-	RegionName          string            `json:"RegionName"`          // 区域名称
-	AzId                string            `json:"AzId"`                // 可用区ID
-	AzName              string            `json:"AzName"`              // 可用区名称
-	Status              string            `json:"Status"`              // 实例状态
-	StatusDisplay       string            `json:"StatusDisplay"`       // 实例状态显示名称
-	CreateTime          string            `json:"CreateTime"`          // 创建时间
-	Duration            int               `json:"Duration"`            // 运行时长
-	EndBillTime         string            `json:"EndBillTime"`         // 计费结束时间
-	IsAutoRenewal       string            `json:"IsAutoRenewal"`       // 是否自动续费
-	TimeZone            string            `json:"TimeZone"`            // 时区
-	IsRam               bool              `json:"IsRam"`               // 是否为内存优化型
+	EcsId         string `json:"EcsId"`         // 实例ID
+	EcsName       string `json:"EcsName"`       // 实例名称
+	RegionId      string `json:"RegionId"`      // 区域ID
+	RegionName    string `json:"RegionName"`    // 区域名称
+	AzId          string `json:"AzId"`          // 可用区ID
+	AzName        string `json:"AzName"`        // 可用区名称
+	Status        string `json:"Status"`        // 实例状态
+	StatusDisplay string `json:"StatusDisplay"` // 实例状态显示名称
+	CreateTime    string `json:"CreateTime"`    // 创建时间
+	Duration      int    `json:"Duration"`      // 运行时长
+	EndBillTime   string `json:"EndBillTime"`   // 计费结束时间
+	IsAutoRenewal string `json:"IsAutoRenewal"` // 是否自动续费
+	TimeZone      string `json:"TimeZone"`      // 时区
+	//IsRam               bool              `json:"IsRam"`               // 是否为内存优化型
+	IsGpu               bool              `json:"IsGpu"`               // 是否为 GPU 实例
+	IsToMonth           int               `json:"IsToMonth"`           // 是否按月计费
+	RealCardName        string            `json:"RealCardName"`        // GPU 实际型号
+	SecurityGroup       []interface{}     `json:"SecurityGroup"`       // 安全组
+	StockRelease        bool              `json:"StockRelease"`        // 库存释放标志
+	Supplier            string            `json:"Supplier"`            // 实例供应商
+	SystemDiskFeature   string            `json:"SystemDiskFeature"`   // 系统盘类型
+	Tag                 []interface{}     `json:"Tag"`                 // 标签
 	NoChargeForShutdown int               `json:"NoChargeForShutdown"` // 关机是否收费
 	EcsRule             *InstanceRuleInfo `json:"EcsRule"`             // 实例规格信息
 	OsInfo              *OsInfo           `json:"OsInfo"`              // 操作系统信息
@@ -273,13 +299,16 @@ type InstanceData struct {
 
 // InstanceRuleInfo 实例规格信息
 type InstanceRuleInfo struct {
-	Name    string `json:"Name"`    // 规格名称
-	CpuNum  int    `json:"CpuNum"`  // CPU核心数
-	CpuUnit string `json:"CpuUnit"` // CPU单位
-	Ram     int    `json:"Ram"`     // 内存大小
-	Gpu     int    `json:"Gpu"`     // GPU数量
-	RamUnit string `json:"RamUnit"` // 内存单位
-	GpuUnit string `json:"GpuUnit"` // GPU单位
+	Name       string `json:"Name"`       // 规格名称
+	CpuNum     int    `json:"CpuNum"`     // CPU核心数
+	CpuUnit    string `json:"CpuUnit"`    // CPU单位
+	Ram        int    `json:"Ram"`        // 内存大小
+	Gpu        int    `json:"Gpu"`        // GPU数量
+	RamUnit    string `json:"RamUnit"`    // 内存单位
+	GpuUnit    string `json:"GpuUnit"`    // GPU单位
+	CategoryId string `json:"CategoryId"` // 规格类别ID
+	ConfName   string `json:"ConfName"`   // 配置名称
+	EcsGoodsId string `json:"EcsGoodsId"` // 商品ID
 }
 
 // OsInfo 操作系统信息
@@ -289,6 +318,7 @@ type OsInfo struct {
 	OsType    string `json:"OsType"`    // 操作系统类型
 	Bit       int    `json:"Bit"`       // 操作系统位数
 	Version   string `json:"Version"`   // 操作系统版本
+	Unit      string `json:"Unit"`      // 单位
 }
 
 // DiskInfo 磁盘信息
@@ -300,27 +330,35 @@ type DiskInfo struct {
 // SystemDiskConfInfo 系统盘配置信息
 type SystemDiskConfInfo struct {
 	ReleaseWithInstance int    `json:"ReleaseWithInstance"` // 是否随实例释放(0:否,1:是)
-	DiskType            string `json:"DiskType"`            // 磁盘类型
-	Name                string `json:"Name"`                // 磁盘名称
+	DiskType            string `json:"DiskType"`            // 磁盘类型(system: 系统盘, data: 数据盘)
+	Name                string `json:"Name"`                // 磁盘名称(用户自定义或默认名称)
 	Size                int    `json:"Size"`                // 磁盘大小(GB)
 	DiskIops            int    `json:"DiskIops"`            // 磁盘IOPS
 	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
 	Unit                string `json:"Unit"`                // 单位
 	DiskId              string `json:"DiskId"`              // 磁盘ID
 	DiskFeature         string `json:"DiskFeature"`         // 磁盘特性
+	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
+	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
+	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
+	IsFollowDelete      string `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
 }
 
 // DataDiskConfInfo 数据盘配置信息
 type DataDiskConfInfo struct {
 	ReleaseWithInstance int    `json:"ReleaseWithInstance"` // 是否随实例释放(0:否,1:是)
-	DiskType            string `json:"DiskType"`            // 磁盘类型
-	Name                string `json:"Name"`                // 磁盘名称
+	DiskType            string `json:"DiskType"`            // 磁盘类型(system: 系统盘, data: 数据盘)
+	Name                string `json:"Name"`                // 磁盘名称(用户自定义或默认名称)
 	Size                int    `json:"Size"`                // 磁盘大小(GB)
 	DiskIops            int    `json:"DiskIops"`            // 磁盘IOPS
 	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
 	Unit                string `json:"Unit"`                // 单位
 	Id                  string `json:"Id"`                  // 磁盘ID
 	DiskFeature         string `json:"DiskFeature"`         // 磁盘特性
+	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
+	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
+	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
+	IsFollowDelete      string `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
 }
 
 // PipeInfo 网络信息
@@ -341,14 +379,16 @@ type EipInfo struct {
 	ConfName      string `json:"ConfName"`      // 配置名称
 	EipIp         string `json:"EipIp"`         // EIP地址
 	CurrentUseQos int    `json:"CurrentUseQos"` // 当前使用带宽
+	BandwidthName string `json:"BandwidthName"` // 带宽名称
 }
 
 // BillingInfo 计费信息
 type BillingInfo struct {
-	BillingMethod     string `json:"BillingMethod"`     // 计费方式
-	BillingMethodName string `json:"BillingMethodName"` // 计费方式名称
-	BillingStatus     string `json:"BillingStatus"`     // 计费状态
-	BillCycleId       string `json:"BillCycleId"`       // 计费周期ID
+	BillingMethod       string `json:"BillingMethod"`       // 计费方式
+	BillingMethodName   string `json:"BillingMethodName"`   // 计费方式名称
+	BillingStatus       string `json:"BillingStatus"`       // 计费状态
+	BillCycleId         string `json:"BillCycleId"`         // 计费周期ID
+	BillingMethodStatus string `json:"BillingMethodStatus"` // 计费方式状态
 }
 
 // DescribeTaskEventReq DescribeTaskEvent接口请求参数
