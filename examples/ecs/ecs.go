@@ -158,7 +158,8 @@ func describeEcsFamilyInfo(client ecs.Client) {
 	fmt.Println("=== DescribeEcsFamilyInfo Example ===")
 	// 调用 DescribeEcsFamilyInfo 方法获取ECS规格族信息
 	result, err := client.DescribeEcsFamilyInfo(&ecs.DescribeEcsFamilyInfoReq{
-		AvailableZoneCode: "CN_DEMO", // 替换为实际的可用区代码
+		AvailableZoneCode: "CN_DEMO",                 // 替换为实际的可用区代码
+		BillingMethod:     ecs.OnDemandBillingMethod, //按需计费
 	})
 	if err != nil {
 		log.Fatal("Failed to describe ECS family info:", err)

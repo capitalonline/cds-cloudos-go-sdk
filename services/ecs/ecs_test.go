@@ -42,11 +42,28 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionOperateInstance, func(t *testing.T) {
 		req := &OperateInstanceReq{
-			EcsIds:    []string{"ins-ti1ugucuxix8uo5j"},
-			OpType:    StartUpInstance,
+			EcsIds:    []string{"ins-test000000000000"}, // 替换为实际的实例ID
+			OpType:    StartUpInstance,                  // 开机
 			DeleteEip: 0,
 		}
+		/*
+			// 其他可选操作
+			req := &OperateInstanceReq{
+				EcsIds: []string{"ins-test000000000000"},
+				OpType: ecs.RestartInstance, // 重启
 
+			}
+			req := &OperateInstanceReq{
+				EcsIds: []string{"ins-test000000000000"},
+				OpType: ecs.ShutdownInstance, // 关机
+
+			}
+			req := &OperateInstanceReq{
+				EcsIds: []string{"ins-test000000000000"},
+				OpType: ecs.HardShutdownInstance, // 强制关机
+
+			}
+		*/
 		result, cliErr := cli.OperateInstance(req)
 		if cliErr != nil {
 			t.Error(cliErr)
@@ -59,8 +76,8 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionModifyInstanceName, func(t *testing.T) {
 		req := &ModifyInstanceNameReq{
-			EcsId: "ins-ti1ugucuxix8uo5j",
-			Name:  "yh-test",
+			EcsId: "ins-test000000000000", // 替换为实际的实例ID
+			Name:  "new-instance-name",
 		}
 
 		result, cliErr := cli.ModifyInstanceName(req)
@@ -75,7 +92,7 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionDescribeInstance, func(t *testing.T) {
 		result, cliErr := cli.DescribeInstance(&DescribeInstanceReq{
-			EcsId: "ins-ti1ugucuxix8uo5j",
+			EcsId: "ins-test000000000000", // 替换为实际的实例ID
 		})
 
 		if cliErr != nil {
@@ -89,7 +106,7 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionDescribeTaskEvent, func(t *testing.T) {
 		result, cliErr := cli.DescribeTaskEvent(&DescribeTaskEventReq{
-			EventId: "f7c1dd60-bfff-4bde-a3ef-0d284ace14bc",
+			EventId: "event-uuid-demo", // 替换为实际的事件ID
 		})
 
 		if cliErr != nil {
@@ -103,8 +120,8 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionDescribeEcsFamilyInfo, func(t *testing.T) {
 		result, cliErr := cli.DescribeEcsFamilyInfo(&DescribeEcsFamilyInfoReq{
-			AvailableZoneCode: "CN_SJZ_B",
-			BillingMethod:     OnDemandBillingMethod,
+			AvailableZoneCode: "CN_DEMO",             // 替换为实际的可用区代码
+			BillingMethod:     OnDemandBillingMethod, //按需计费
 		})
 
 		if cliErr != nil {
@@ -118,8 +135,8 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionExtendDisk, func(t *testing.T) {
 		req := &ExtendDiskReq{
-			DiskId:       "disk-wrssau7uain81ogj",
-			ExtendedSize: 72,
+			DiskId:       "disk-test000000000000", // 替换为实际的磁盘ID，可通过 DescribeInstance 方法获取实例磁盘信息
+			ExtendedSize: 72,                      // 扩展后的大小(GB)，必须是8的倍数，且不能小于当前磁盘大小
 		}
 
 		result, cliErr := cli.ExtendDisk(req)
@@ -134,9 +151,9 @@ func TestEcsSdk(t *testing.T) {
 
 	t.Run(ActionChangeInstanceConfigure, func(t *testing.T) {
 		req := &ChangeInstanceConfigureReq{
-			EcsIds:            []string{"ins-dhz8kr4u7ajp5gcc"},
-			AvailableZoneCode: "CN_SJZ_B",
-			EcsFamilyName:     "优化型M2",
+			EcsIds:            []string{"ins-test000000000000"}, // 替换为实际的实例ID
+			AvailableZoneCode: "CN_DEMO",                        // 替换为实际的可用区代码
+			EcsFamilyName:     "优化型M2",                          // 替换为实际的实例规格族名称，可通过DescribeInstance/DescribeEcsFamilyInfo方法获取实例规格组信息
 			Cpu:               2,
 			Ram:               4,
 			Gpu:               0,
