@@ -341,7 +341,7 @@ type SystemDiskConfInfo struct {
 	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
 	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
 	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
-	IsFollowDelete      string `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
+	IsFollowDelete      int    `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
 }
 
 // DataDiskConfInfo 数据盘配置信息
@@ -358,7 +358,7 @@ type DataDiskConfInfo struct {
 	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
 	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
 	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
-	IsFollowDelete      string `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
+	IsFollowDelete      int    `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
 }
 
 // PipeInfo 网络信息
