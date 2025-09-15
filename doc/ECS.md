@@ -245,7 +245,7 @@
 | IsHaveSnapshot       | bool                                       | 是否有快照                                                 |
 | ProductSource        | string                                     | 产品来源标识                                               |
 | ProductSourceDisplay | string                                     | 产品来源显示名                                             |
-| SecurityGroup        | list                                       | 安全组                                                     |
+| SecurityGroup        | []*[SecurityGroupInfo](#SecurityGroupInfo) | 安全组                                                     |
 | SubnetId             | string                                     | 子网 ID                                                    |
 | SupportGpuDriver     | string                                     | 支持的GPU驱动                                              |
 | SystemDiskFeature    | string                                     | 系统盘特性                                                 |
@@ -257,6 +257,16 @@
 | -------- | ------ | ---------------------------------- |
 | ConfName | string | 网络带宽运营商，如电信、移动、联通 |
 | EipIp    | string | EIP地址                            |
+
+##### SecurityGroupInfo
+
+| 参数                | 类型   | 说明                     |
+| ------------------- | ------ | ------------------------ |
+| GroupInterconnected | bool   | 安全组内是否可以实例互通 |
+| Priority            | int    | 优先级                   |
+| SecurityGroupId     | string | 安全组ID                 |
+| SecurityGroupName   | string | 安全组名称               |
+| SecurityGroupType   | string | 安全组类型               |
 
 ##### GpuCardData
 

@@ -281,20 +281,29 @@ type InstanceData struct {
 	IsAutoRenewal string `json:"IsAutoRenewal"` // 是否自动续费
 	TimeZone      string `json:"TimeZone"`      // 时区
 	//IsRam               bool              `json:"IsRam"`               // 是否为内存优化型
-	IsGpu               bool              `json:"IsGpu"`               // 是否为 GPU 实例
-	IsToMonth           int               `json:"IsToMonth"`           // 是否按月计费
-	RealCardName        string            `json:"RealCardName"`        // GPU 实际型号
-	SecurityGroup       []interface{}     `json:"SecurityGroup"`       // 安全组
-	StockRelease        bool              `json:"StockRelease"`        // 库存释放标志
-	Supplier            string            `json:"Supplier"`            // 实例供应商
-	SystemDiskFeature   string            `json:"SystemDiskFeature"`   // 系统盘类型
-	Tag                 []interface{}     `json:"Tag"`                 // 标签
-	NoChargeForShutdown int               `json:"NoChargeForShutdown"` // 关机是否收费
-	EcsRule             *InstanceRuleInfo `json:"EcsRule"`             // 实例规格信息
-	OsInfo              *OsInfo           `json:"OsInfo"`              // 操作系统信息
-	Disk                *DiskInfo         `json:"Disk"`                // 磁盘信息
-	Pipe                *PipeInfo         `json:"Pipe"`                // 网络信息
-	BillingInfo         *BillingInfo      `json:"BillingInfo"`         // 计费信息
+	IsGpu               bool                 `json:"IsGpu"`               // 是否为 GPU 实例
+	IsToMonth           int                  `json:"IsToMonth"`           // 是否按月计费
+	RealCardName        string               `json:"RealCardName"`        // GPU 实际型号
+	SecurityGroup       []*SecurityGroupInfo `json:"SecurityGroup"`       // 安全组
+	StockRelease        bool                 `json:"StockRelease"`        // 库存释放标志
+	Supplier            string               `json:"Supplier"`            // 实例供应商
+	SystemDiskFeature   string               `json:"SystemDiskFeature"`   // 系统盘类型
+	Tag                 []interface{}        `json:"Tag"`                 // 标签
+	NoChargeForShutdown int                  `json:"NoChargeForShutdown"` // 关机是否收费
+	EcsRule             *InstanceRuleInfo    `json:"EcsRule"`             // 实例规格信息
+	OsInfo              *OsInfo              `json:"OsInfo"`              // 操作系统信息
+	Disk                *DiskInfo            `json:"Disk"`                // 磁盘信息
+	Pipe                *PipeInfo            `json:"Pipe"`                // 网络信息
+	BillingInfo         *BillingInfo         `json:"BillingInfo"`         // 计费信息
+}
+
+// SecurityGroup 安全组信息
+type SecurityGroupInfo struct {
+	GroupInterconnected bool   `json:"GroupInterconnected"` // 安全组内是否可以实例互通
+	Priority            int    `json:"Priority"`            // 优先级
+	SecurityGroupId     string `json:"SecurityGroupId"`     // 安全组ID
+	SecurityGroupName   string `json:"SecurityGroupName"`   // 安全组名称
+	SecurityGroupType   string `json:"SecurityGroupType"`   // 安全组类型
 }
 
 // InstanceRuleInfo 实例规格信息
