@@ -176,10 +176,10 @@ type InstanceSimpleInfo struct {
 
 // GpuCardData GPU 卡数据信息
 type GpuCardData struct {
-	GicBusinessName string `json:"GicBusinessName"` // GPU 型号的名称
-	GpuDriver       string `json:"GpuDriver"`       // GPU 驱动版本
-	GpuTypeId       string `json:"GpuTypeId"`       // GPU 类型 ID
-	RealName        string `json:"RealName"`        // GPU 型号的真实名称
+	GicBusinessName string   `json:"GicBusinessName"` // GPU 型号的名称
+	GpuDriver       string   `json:"GpuDriver"`       // GPU 驱动版本
+	GpuTypeId       string   `json:"GpuTypeId"`       // GPU 类型 ID
+	RealName        []string `json:"RealName"`        // GPU 型号的真实名称
 }
 
 // EipSimpleInfo EIP简要信息
