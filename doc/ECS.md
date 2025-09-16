@@ -376,7 +376,7 @@
 | DiskName            | string | 磁盘显示名称(例如 SSD云盘)             |
 | EbsGoodsId          | string | 磁盘商品 ID                            |
 | EcsGoodsId          | string | 云主机商品 ID                          |
-| IsFollowDelete      | string | 是否随实例删除(0: 否, 1: 是)           |
+| IsFollowDelete      | int    | 是否随实例删除(0: 否, 1: 是)           |
 
 ##### DataDiskConfInfo
 
@@ -394,7 +394,7 @@
 | DiskName            | string | 磁盘显示名称(例如 SSD云盘)             |
 | EbsGoodsId          | string | 磁盘商品 ID                            |
 | EcsGoodsId          | string | 云主机商品 ID                          |
-| IsFollowDelete      | string | 是否随实例删除(0: 否, 1: 是)           |
+| IsFollowDelete      | int    | 是否随实例删除(0: 否, 1: 是)           |
 
 ##### PipeInfo
 
@@ -531,6 +531,16 @@
 ### ChangeInstanceConfigure
 
 *更变云服务器规格*
+
+***限制：***
+
+- ***已关机状态下才可以操作***
+- ***不支持跨类型修改实例规格***
+- ***GPU型不支持跨驱动***
+- ***按需计费支持升降配置***
+-  ***包年包月只支持升配置***
+-  ***云盘实例支持跨规格族，本地盘实例不支持跨规格族***
+- ***批量操作要具有一致性***
 
 #### 参数说明
 

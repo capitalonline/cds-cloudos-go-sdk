@@ -297,7 +297,7 @@ type InstanceData struct {
 	BillingInfo         *BillingInfo         `json:"BillingInfo"`         // 计费信息
 }
 
-// SecurityGroup 安全组信息
+// SecurityGroupInfo 安全组信息
 type SecurityGroupInfo struct {
 	GroupInterconnected bool   `json:"GroupInterconnected"` // 安全组内是否可以实例互通
 	Priority            int    `json:"Priority"`            // 优先级
