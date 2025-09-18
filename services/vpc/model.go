@@ -1,12 +1,12 @@
 package vpc
 
-type OpenapiCpmmonPage struct {
-	total int `json:"",omitempty`
+type OpenapiCommonPage struct {
+	total int `json:"Total,omitempty"`
 }
 
 type OpenApiCommonResp struct {
 	Code    interface {} `json:"Code"`
-	Message interface{}  `json:"Message`
+	Message interface{}  `json:"Message"`
 }
 
 type CommonTask struct {
@@ -64,7 +64,7 @@ type VPC struct {
 
 type GetVpcResultData struct {
 	Total   int    `json:"Total"`
-	VPCList []VPC  `json:VPCList`
+	VPCList []VPC  `json:"VPCList"`
 
 }
 
@@ -84,7 +84,7 @@ type ListVpcsReq struct {
 
 type ListVpcsData struct {
 	Total   int `json:"Total"`
-	VPCList []VPC  `json:VPCList`
+	VPCList []VPC  `json:VPCList"`
 }
 type ListVpcsResult struct {
 	Data ListVpcsData `json:"data,omitempty"`
