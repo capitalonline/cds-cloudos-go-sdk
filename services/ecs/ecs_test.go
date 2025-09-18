@@ -204,7 +204,6 @@ func TestTryEcsApi(t *testing.T) {
 	})
 
 	t.Run(ActionCreateInstance, func(t *testing.T) {
-		utcTime := 1
 		result, cliErr := cli.CreateInstance(&CreateInstanceReq{
 			Name:              "gyx-sdk",
 			Password:          "?",
@@ -253,7 +252,6 @@ func TestTryEcsApi(t *testing.T) {
 					//BandwidthConfName: "电信",
 				},
 			},
-			UtcTime: &utcTime,
 			DnsList: &[2]string{
 				"114.114.114.114",
 				"8.8.8.8",

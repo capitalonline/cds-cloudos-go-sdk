@@ -127,6 +127,7 @@ type CreateInstanceReq struct {
 	Password          string                             `json:"Password"`
 	AvailableZoneCode string                             `json:"AvailableZoneCode"`
 	EcsFamilyName     string                             `json:"EcsFamilyName"`
+	UtcTime           int                                `json:"UtcTime"`
 	Cpu               int                                `json:"Cpu"`
 	Ram               int                                `json:"Ram"`
 	Gpu               int                                `json:"Gpu,omitempty"`
@@ -142,8 +143,7 @@ type CreateInstanceReq struct {
 	Duration          int                                `json:"Duration,omitempty"`
 	IsToMonth         *int                               `json:"IsToMonth,omitempty"`
 	DnsList           *[2]string                         `json:"DnsList,omitempty"`
-	PubnetInfo        []*CreateInstancePubnetInfo        `json:"PubnetInfo"`
-	UtcTime           *int                               `json:"UtcTime"`
+	PubnetInfo        []*CreateInstancePubnetInfo        `json:"PubnetInfo,omitempty"`
 	TestAccount       *string                            `json:"TestAccount,omitempty"`
 }
 
