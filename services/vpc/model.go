@@ -56,7 +56,7 @@ type VPC struct {
 	RegionCode    string  `json:"RegionCode"`
 	Status 		  string  `json:"Status"`
 	VPCId 		  string  `json:"VPCId"`
-	VPCNmae 	  string  `json:"VPCNmae"`
+	VPCName 	  string  `json:"VPCNmae"`
 	BandwidthType string `json:"BandwidthType,omitempty"`
 	VPCSegment    string  `json:"VPCSegment"`
 }
