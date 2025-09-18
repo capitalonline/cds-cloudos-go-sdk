@@ -6,6 +6,7 @@ import (
 
 const (
 	ActionDescribeRegions         = "DescribeRegions"
+	ActionCreateInstance          = "CreateInstance"
 	ActionDescribeInstanceList    = "DescribeInstanceList"
 	ActionOperateInstance         = "OperateInstance"
 	ActionModifyInstanceName      = "ModifyInstanceName"
@@ -13,6 +14,7 @@ const (
 	ActionDescribeTaskEvent       = "DescribeEvent"
 	ActionDescribeEcsFamilyInfo   = "DescribeEcsFamilyInfo"
 	ActionChangeInstanceConfigure = "ChangeInstanceConfigure"
+	ActionDescribeImages          = "DescribeImages"
 )
 
 const (
@@ -22,6 +24,9 @@ const (
 type (
 	operate       string
 	billingMethod string
+
+	diskFeature   string
+	bandwidthType string
 )
 
 const (
@@ -46,6 +51,17 @@ const (
 	MonthlyBillingMethod  billingMethod = "1" // 包月
 )
 
+const (
+	LocalDiskFeature diskFeature = "local"
+	SsdDiskFeature   diskFeature = "ssd"
+)
+
+const (
+	Bandwidth      bandwidthType = "Bandwidth"
+	BandwidthMonth bandwidthType = "BandwidthMonth"
+	Traffic        bandwidthType = "Traffic"
+)
+
 var (
 	actionKey        = "Action"
 	azCodeKey        = "AvailableZoneCode"
@@ -55,6 +71,7 @@ var (
 	idKey            = "EcsId"
 	eventKey         = "EventId"
 	billingMethodKey = "BillingMethod"
+	imageIdsKey      = "ImageIds"
 )
 
 // OpenApiCommonResp 开放API通用响应结构
@@ -103,6 +120,68 @@ type AzInfo struct {
 // EventIdData 事件ID数据
 type EventIdData struct {
 	EventId string `json:"EventId"` // 事件ID
+}
+
+type CreateInstanceReq struct {
+	Name              string                             `json:"Name"`
+	Password          string                             `json:"Password"`
+	AvailableZoneCode string                             `json:"AvailableZoneCode"`
+	EcsFamilyName     string                             `json:"EcsFamilyName"`
+	Cpu               int                                `json:"Cpu"`
+	Ram               int                                `json:"Ram"`
+	Gpu               int                                `json:"Gpu,omitempty"`
+	Number            int                                `json:"Number"`
+	BillingMethod     billingMethod                      `json:"BillingMethod"`
+	ImageId           string                             `json:"ImageId"`
+	SystemDisk        *CreateInstanceDiskData            `json:"SystemDisk"`
+	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk"`
+	VpcInfo           *CreateInstanceVpcInfo             `json:"VpcInfo"`
+	SubnetInfo        *CreateInstanceSubnetInfo          `json:"SubnetInfo"`
+	SecurityGroups    []*CreateInstanceSecurityGroupData `json:"SecurityGroups,omitempty"`
+	StartNumber       int                                `json:"StartNumber,omitempty"`
+	Duration          int                                `json:"Duration,omitempty"`
+	IsToMonth         *int                               `json:"IsToMonth,omitempty"`
+	DnsList           *[2]string                         `json:"DnsList,omitempty"`
+	PubnetInfo        []*CreateInstancePubnetInfo        `json:"PubnetInfo"`
+	UtcTime           *int                               `json:"UtcTime"`
+	TestAccount       *string                            `json:"TestAccount,omitempty"`
+}
+
+type CreateInstanceDiskData struct {
+	DiskFeature         diskFeature `json:"DiskFeature"`
+	Size                int         `json:"Size"`
+	SnapshotId          string      `json:"SnapshotId,omitempty"`
+	ReleaseWithInstance int         `json:"ReleaseWithInstance,omitempty"`
+}
+
+type CreateInstanceVpcInfo struct {
+	VpcId string `json:"VpcId"`
+}
+
+type CreateInstanceSubnetInfo struct {
+	SubnetId string `json:"SubnetId"`
+}
+
+type CreateInstanceSecurityGroupData struct {
+	SecurityGroupId string `json:"SecurityGroupId"`
+}
+
+type CreateInstancePubnetInfo struct {
+	SubnetId          string        `json:"SubnetId"`
+	BandwidthConfName string        `json:"BandwidthConfName"`
+	EipIds            []string      `json:"EipIds,omitempty"`
+	BandwidthType     bandwidthType `json:"BandwidthType,omitempty"`
+	Qos               int           `json:"Qos,omitempty"`
+}
+
+type CreateInstanceResult struct {
+	OpenApiCommonResp
+	Data *CreateInstanceEvent `json:"Data"`
+}
+
+type CreateInstanceEvent struct {
+	EventId  string   `json:"EventId"`
+	EcsIdSet []string `json:"EcsIdSet"`
 }
 
 // DescribeInstanceListReq DescribeInstanceList接口请求参数
@@ -521,6 +600,40 @@ func (req *ChangeInstanceConfigureReq) check() error {
 type ChangeInstanceConfigureResult struct {
 	OpenApiCommonResp
 	Data *EventIdData `json:"Data"` // 事件ID数据
+}
+
+type DescribeImagesReq struct {
+	AvailableZoneCode string   `json:"AvailableZoneCode"` // 可用区代码
+	ImageIds          []string `json:"ImageIds"`
+}
+
+type DescribeImagesResult struct {
+	OpenApiCommonResp
+	Data *ImageList `json:"Data"` // 事件ID数据
+}
+
+type ImageList struct {
+	ImageList []*ImageInfo `json:"ImageList"`
+}
+
+type ImageInfo struct {
+	AvailableZoneCode string   `json:"AvailableZoneCode"`
+	AzId              string   `json:"AzId"`
+	AzName            string   `json:"AzName"`
+	CreateTime        string   `json:"CreateTime"`
+	ImageId           string   `json:"ImageId"`
+	ImageName         string   `json:"ImageName"`
+	IsOptimized       int      `json:"IsOptimized"`
+	OsBit             int      `json:"OsBit"`
+	OsSize            int      `json:"OsSize"`
+	OsType            string   `json:"OsType"`
+	OsVersion         string   `json:"OsVersion"`
+	Status            string   `json:"Status"`
+	StatusDisplay     string   `json:"StatusDisplay"`
+	SupportGpuDriver  string   `json:"SupportGpuDriver"`
+	SupportType       []string `json:"SupportType"`
+	TemplateType      string   `json:"TemplateType"`
+	Username          string   `json:"Username"`
 }
 
 // ExtendDiskReq ExtendDisk接口请求参数

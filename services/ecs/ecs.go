@@ -1,6 +1,7 @@
 package ecs
 
 import (
+	"encoding/json"
 	"strings"
 
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
@@ -11,9 +12,23 @@ func (c *client) DescribeRegions() (result *DescribeRegionsResult, err error) {
 	result = new(DescribeRegionsResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeRegions).
+		WithResult(result).Do()
+
+	return
+}
+
+func (c *client) CreateInstance(req *CreateInstanceReq) (result *CreateInstanceResult, err error) {
+
+	result = new(CreateInstanceResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(ecsV1Route).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionCreateInstance).
+		WithBody(req).
 		WithResult(result).Do()
 
 	return
@@ -23,7 +38,7 @@ func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *Des
 	result = new(DescribeInstanceListResult)
 
 	op := cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeInstanceList)
 
@@ -56,7 +71,7 @@ func (c *client) OperateInstance(req *OperateInstanceReq) (result *OperateInstan
 	result = new(OperateInstanceResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.POST).
 		WithQueryParam(actionKey, ActionOperateInstance).
 		WithBody(req).
@@ -73,7 +88,7 @@ func (c *client) ModifyInstanceName(req *ModifyInstanceNameReq) (result *ModifyI
 	result = new(ModifyInstanceNameResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.POST).
 		WithQueryParam(actionKey, ActionModifyInstanceName).
 		WithBody(req).
@@ -90,7 +105,7 @@ func (c *client) DescribeInstance(req *DescribeInstanceReq) (result *DescribeIns
 	result = new(DescribeInstanceResult)
 
 	op := cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeInstance).
 		WithQueryParam(idKey, req.EcsId)
@@ -108,7 +123,7 @@ func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (result *DescribeT
 	result = new(DescribeTaskEventResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeTaskEvent).
 		WithQueryParam(eventKey, req.EventId).
@@ -126,7 +141,7 @@ func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *D
 	result = new(DescribeEcsFamilyInfoResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeEcsFamilyInfo).
 		WithQueryParam(azCodeKey, req.AvailableZoneCode).
@@ -145,11 +160,34 @@ func (c *client) ChangeInstanceConfigure(req *ChangeInstanceConfigureReq) (resul
 	result = new(ChangeInstanceConfigureResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ecsRoute).
+		WithURI(ecsV1Route).
 		WithMethod(http.POST).
 		WithQueryParam(actionKey, ActionChangeInstanceConfigure).
 		WithBody(req).
 		WithResult(result).Do()
+
+	return
+}
+
+func (c *client) DescribeImages(req *DescribeImagesReq) (result *DescribeImagesResult, err error) {
+
+	result = new(DescribeImagesResult)
+
+	op := cds.NewRequestBuilder(c).
+		WithURI(ecsV1Route1).
+		WithMethod(http.GET).
+		WithQueryParam(actionKey, ActionDescribeImages)
+
+	if req.AvailableZoneCode != "" {
+		op = op.WithQueryParam(azCodeKey, req.AvailableZoneCode)
+	}
+
+	if len(req.ImageIds) != 0 {
+		idsB, _ := json.Marshal(req.ImageIds)
+		op = op.WithQueryParam(imageIdsKey, string(idsB))
+	}
+
+	err = op.WithResult(&result).Do()
 
 	return
 }
@@ -162,7 +200,7 @@ func (c *client) ExtendDisk(req *ExtendDiskReq) (result *ExtendDiskResult, err e
 	result = new(ExtendDiskResult)
 
 	err = cds.NewRequestBuilder(c).
-		WithURI(c.ebsRoute).
+		WithURI(ebsV1Route).
 		WithMethod(http.POST).
 		WithQueryParam(actionKey, ActionExtendDisk).
 		WithBody(req).

@@ -21,28 +21,29 @@ import (
 )
 
 const (
-	ecsRoute = "/ecs/v1"
-	ebsRoute = "/ebs/v1"
+	ecsV1Route  = "/ecs/v1"
+	ecsV1Route1 = "/ecs/v1.1"
+	ebsV1Route  = "/ebs/v1"
 )
 
 type Client interface {
 	DescribeRegions() (*DescribeRegionsResult, error)
 	DescribeTaskEvent(*DescribeTaskEventReq) (*DescribeTaskEventResult, error)
 
+	CreateInstance(*CreateInstanceReq) (*CreateInstanceResult, error)
 	DescribeInstanceList(*DescribeInstanceListReq) (*DescribeInstanceListResult, error)
 	DescribeInstance(*DescribeInstanceReq) (*DescribeInstanceResult, error)
 	OperateInstance(*OperateInstanceReq) (*OperateInstanceResult, error)
 	ModifyInstanceName(*ModifyInstanceNameReq) (*ModifyInstanceNameResult, error)
 	DescribeEcsFamilyInfo(*DescribeEcsFamilyInfoReq) (*DescribeEcsFamilyInfoResult, error)
 	ChangeInstanceConfigure(*ChangeInstanceConfigureReq) (*ChangeInstanceConfigureResult, error)
+	DescribeImages(*DescribeImagesReq) (*DescribeImagesResult, error)
 
 	ExtendDisk(*ExtendDiskReq) (*ExtendDiskResult, error)
 }
 
 type client struct {
 	*cds.CdsClient
-	ecsRoute string
-	ebsRoute string
 }
 
 func NewClient(ak, sk string) (Client, error) {
@@ -54,7 +55,5 @@ func NewClient(ak, sk string) (Client, error) {
 	cli.Config.Retry = cds.NewNoRetryPolicy()
 	return &client{
 		CdsClient: cli,
-		ecsRoute:  ecsRoute,
-		ebsRoute:  ebsRoute,
 	}, nil
 }

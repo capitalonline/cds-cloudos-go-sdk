@@ -54,6 +54,21 @@ func (mr *MockClientMockRecorder) ChangeInstanceConfigure(arg0 any) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ChangeInstanceConfigure", reflect.TypeOf((*MockClient)(nil).ChangeInstanceConfigure), arg0)
 }
 
+// CreateInstance mocks base method.
+func (m *MockClient) CreateInstance(arg0 *CreateInstanceReq) (*CreateInstanceResult, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateInstance", arg0)
+	ret0, _ := ret[0].(*CreateInstanceResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateInstance indicates an expected call of CreateInstance.
+func (mr *MockClientMockRecorder) CreateInstance(arg0 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInstance", reflect.TypeOf((*MockClient)(nil).CreateInstance), arg0)
+}
+
 // DescribeEcsFamilyInfo mocks base method.
 func (m *MockClient) DescribeEcsFamilyInfo(arg0 *DescribeEcsFamilyInfoReq) (*DescribeEcsFamilyInfoResult, error) {
 	m.ctrl.T.Helper()
@@ -67,6 +82,21 @@ func (m *MockClient) DescribeEcsFamilyInfo(arg0 *DescribeEcsFamilyInfoReq) (*Des
 func (mr *MockClientMockRecorder) DescribeEcsFamilyInfo(arg0 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEcsFamilyInfo", reflect.TypeOf((*MockClient)(nil).DescribeEcsFamilyInfo), arg0)
+}
+
+// DescribeImages mocks base method.
+func (m *MockClient) DescribeImages(arg0 *DescribeImagesReq) (*DescribeImagesResult, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeImages", arg0)
+	ret0, _ := ret[0].(*DescribeImagesResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeImages indicates an expected call of DescribeImages.
+func (mr *MockClientMockRecorder) DescribeImages(arg0 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeImages", reflect.TypeOf((*MockClient)(nil).DescribeImages), arg0)
 }
 
 // DescribeInstance mocks base method.
