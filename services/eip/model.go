@@ -16,13 +16,13 @@ limitations under the License.
 
 package eip
 
-type OpenapiCpmmonPage struct {
-	total int `json:"",omitempty`
+type OpenapiCommonPage struct {
+	total int `json:"Total,omitempty"`
 }
 
 type OpenApiCommonResp struct {
 	Code    interface {} `json:"Code"`
-	Message interface{}  `json:"Message`
+	Message interface{}  `json:"Message"`
 }
 
 type CommonTask struct {
