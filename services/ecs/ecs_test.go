@@ -192,8 +192,8 @@ func TestTryEcsApi(t *testing.T) {
 
 	t.Run(ActionDescribeImages, func(t *testing.T) {
 		result, cliErr := cli.DescribeImages(&DescribeImagesReq{
-			AvailableZoneCode: "CN_Qingyang_A",
-			// ImageIds:          []string{"03da2f06-3f05-11ed-8af8-4ed77faeff5c", "100a00e0-2dac-11ed-8213-166089155703"},
+			AvailableZoneCode: "CN_DEMO", // 替换为实际的可用区代码
+			// ImageIds:          []string{"test0000-0000-0000-0000-000000000000", "test0000-0000-0000-0000-000000000001"}, // 替换为实际的镜像id
 		})
 		if cliErr != nil {
 			t.Error(cliErr)
@@ -204,58 +204,58 @@ func TestTryEcsApi(t *testing.T) {
 	})
 
 	t.Run(ActionCreateInstance, func(t *testing.T) {
+		i := 1
+		k := 0
 		result, cliErr := cli.CreateInstance(&CreateInstanceReq{
-			Name:              "gyx-sdk",
-			Password:          "?",
-			AvailableZoneCode: "CN_Qingyang_A",
-			EcsFamilyName:     "CPU计算型C11",
-			Cpu:               1,
+			AvailableZoneCode: "CN_DEMO", // 替换为实际的可用区代码
+			EcsFamilyName:     "优化型M6",
+			Cpu:               2,
 			Ram:               2,
 			Gpu:               0,
 			Number:            1,
-			BillingMethod:     OnDemandBillingMethod,
-			ImageId:           "Ubuntu 20.04 64位", // e3f773a2-04e2-11ee-a517-721322f4191b
+			BillingMethod:     MonthlyBillingMethod,
+			Password:          "？",
+			ImageId:           "test0000-0000-0000-0000-000000000000", // 替换为实际的镜像id
 			SystemDisk: &CreateInstanceDiskData{
 				DiskFeature: SsdDiskFeature,
 				Size:        40,
 			},
-			DataDisk: []*CreateInstanceDiskData{
-				{
-					DiskFeature:         SsdDiskFeature,
-					Size:                24,
-					ReleaseWithInstance: 1,
-				},
-				{
-					DiskFeature:         SsdDiskFeature,
-					Size:                24,
-					ReleaseWithInstance: 1,
-				},
-			},
-			VpcInfo: &CreateInstanceVpcInfo{VpcId: "1bff6b5c-8d20-11f0-b8d1-2e07174785c2"},
+			VpcInfo: &CreateInstanceVpcInfo{VpcId: "test0000-0000-0000-0000-000000000000"}, // 替换为实际的Vpc id
 			SubnetInfo: &CreateInstanceSubnetInfo{
-				SubnetId: "1c04dbb4-8d20-11f0-b8d1-2e07174785c2",
+				SubnetId: "test0000-0000-0000-0000-000000000000", // 替换为实际的子网id
 			},
-			SecurityGroups: []*CreateInstanceSecurityGroupData{
-				{
-					SecurityGroupId: "sg-ktfyeeuncopjswm0",
-				},
-			},
-			StartNumber: 0,
-			Duration:    0,
 			PubnetInfo: []*CreateInstancePubnetInfo{
 				{
-					SubnetId: "1c04dbb4-8d20-11f0-b8d1-2e07174785c2",
-					EipIds:   []string{"367db260-9467-11f0-a7be-c2aae808f99f"},
+					SubnetId: "test0000-0000-0000-0000-000000000000",           // 替换为实际的子网id
+					EipIds:   []string{"test0000-0000-0000-0000-000000000000"}, // 替换为实际的弹性公网id
 
 					//BandwidthType:     Bandwidth,
 					//Qos:               5,
 					//BandwidthConfName: "电信",
 				},
 			},
+			Name:          "yh",
+			StartNumber:   0,
+			Duration:      24,
+			IsToMonth:     &i,
+			IsAutoRenewal: &i,
+			UtcTime:       0,
+			DataDisk: []*CreateInstanceDiskData{
+				{
+					DiskFeature:         SsdDiskFeature,
+					Size:                24,
+					ReleaseWithInstance: &k,
+				},
+			},
 			DnsList: &[2]string{
 				"114.114.114.114",
 				"8.8.8.8",
 			},
+			// SecurityGroups: []*CreateInstanceSecurityGroupData{
+			// 	{
+			// 		SecurityGroupId: "sg-0000000000000000",  // 替换为实际的安全组id
+			// 	},
+			// },
 		})
 		if cliErr != nil {
 			t.Error(cliErr)
@@ -264,4 +264,43 @@ func TestTryEcsApi(t *testing.T) {
 		data, _ := json.MarshalIndent(result, "", "  ")
 		t.Logf("%s", string(data))
 	})
+
+	t.Run(ActionDeleteInstance, func(t *testing.T) {
+		result, cliErr := cli.DeleteInstance(&DeleteInstanceReq{
+			EcsIds:    []string{"ins-0000000000000000"}, // 替换为实际的实例id
+			DeleteEip: 0,
+		})
+		if cliErr != nil {
+			t.Error(cliErr)
+			return
+		}
+		data, _ := json.MarshalIndent(result, "", "  ")
+		t.Logf("%s", string(data))
+	})
+
+	t.Run(ActionModifyInstancePassword, func(t *testing.T) {
+		result, cliErr := cli.ModifyInstancePassword(&ModifyInstancePasswordReq{
+			EcsIds:   []string{"ins-0000000000000000"}, // 替换为实际的实例id
+			Password: "？",
+		})
+		if cliErr != nil {
+			t.Error(cliErr)
+			return
+		}
+		data, _ := json.MarshalIndent(result, "", "  ")
+		t.Logf("%s", string(data))
+	})
+
+	t.Run(ActionDescribeInstanceStatus, func(t *testing.T) {
+		result, cliErr := cli.DescribeInstanceStatus(&DescribeInstanceStatusReq{
+			EcsIds: []string{"ins-0000000000000000"}, // 替换为实际的实例id
+		})
+		if cliErr != nil {
+			t.Error(cliErr)
+			return
+		}
+		data, _ := json.MarshalIndent(result, "", "  ")
+		t.Logf("%s", string(data))
+	})
+
 }

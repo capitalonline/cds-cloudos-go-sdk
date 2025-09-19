@@ -31,6 +31,9 @@ type Client interface {
 	DescribeTaskEvent(*DescribeTaskEventReq) (*DescribeTaskEventResult, error)
 
 	CreateInstance(*CreateInstanceReq) (*CreateInstanceResult, error)
+	DeleteInstance(*DeleteInstanceReq) (*DeleteInstanceResult, error)
+	ModifyInstancePassword(*ModifyInstancePasswordReq) (*ModifyInstancePasswordResult, error)
+	DescribeInstanceStatus(*DescribeInstanceStatusReq) (*DescribeInstanceStatusResult, error)
 	DescribeInstanceList(*DescribeInstanceListReq) (*DescribeInstanceListResult, error)
 	DescribeInstance(*DescribeInstanceReq) (*DescribeInstanceResult, error)
 	OperateInstance(*OperateInstanceReq) (*OperateInstanceResult, error)

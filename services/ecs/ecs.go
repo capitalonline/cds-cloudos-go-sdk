@@ -34,6 +34,48 @@ func (c *client) CreateInstance(req *CreateInstanceReq) (result *CreateInstanceR
 	return
 }
 
+func (c *client) DeleteInstance(req *DeleteInstanceReq) (result *DeleteInstanceResult, err error) {
+
+	result = new(DeleteInstanceResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(ecsV1Route).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionDeleteInstance).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
+}
+
+func (c *client) ModifyInstancePassword(req *ModifyInstancePasswordReq) (result *ModifyInstancePasswordResult, err error) {
+
+	result = new(ModifyInstancePasswordResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(ecsV1Route).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionModifyInstancePassword).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
+}
+
+func (c *client) DescribeInstanceStatus(req *DescribeInstanceStatusReq) (result *DescribeInstanceStatusResult, err error) {
+
+	result = new(DescribeInstanceStatusResult)
+
+	err = cds.NewRequestBuilder(c).
+		WithURI(ecsV1Route).
+		WithMethod(http.POST).
+		WithQueryParam(actionKey, ActionDescribeInstanceStatus).
+		WithBody(req).
+		WithResult(result).Do()
+
+	return
+}
+
 func (c *client) DescribeInstanceList(req *DescribeInstanceListReq) (result *DescribeInstanceListResult, err error) {
 	result = new(DescribeInstanceListResult)
 

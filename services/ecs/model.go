@@ -7,6 +7,9 @@ import (
 const (
 	ActionDescribeRegions         = "DescribeRegions"
 	ActionCreateInstance          = "CreateInstance"
+	ActionDeleteInstance          = "DeleteInstance"
+	ActionModifyInstancePassword  = "ModifyInstancePassword"
+	ActionDescribeInstanceStatus  = "DescribeInstanceStatus"
 	ActionDescribeInstanceList    = "DescribeInstanceList"
 	ActionOperateInstance         = "OperateInstance"
 	ActionModifyInstanceName      = "ModifyInstanceName"
@@ -57,9 +60,9 @@ const (
 )
 
 const (
-	Bandwidth      bandwidthType = "Bandwidth"
-	BandwidthMonth bandwidthType = "BandwidthMonth"
-	Traffic        bandwidthType = "Traffic"
+	Bandwidth      bandwidthType = "Bandwidth"      // 固定带宽
+	BandwidthMonth bandwidthType = "BandwidthMonth" // 固定带宽包月
+	Traffic        bandwidthType = "Traffic"        // 流量按需
 )
 
 var (
@@ -122,66 +125,283 @@ type EventIdData struct {
 	EventId string `json:"EventId"` // 事件ID
 }
 
+// CreateInstanceReq CreateInstance接口请求参数
 type CreateInstanceReq struct {
-	Name              string                             `json:"Name"`
-	Password          string                             `json:"Password"`
-	AvailableZoneCode string                             `json:"AvailableZoneCode"`
-	EcsFamilyName     string                             `json:"EcsFamilyName"`
-	UtcTime           int                                `json:"UtcTime"`
-	Cpu               int                                `json:"Cpu"`
-	Ram               int                                `json:"Ram"`
-	Gpu               int                                `json:"Gpu,omitempty"`
-	Number            int                                `json:"Number"`
-	BillingMethod     billingMethod                      `json:"BillingMethod"`
-	ImageId           string                             `json:"ImageId"`
-	SystemDisk        *CreateInstanceDiskData            `json:"SystemDisk"`
-	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk"`
-	VpcInfo           *CreateInstanceVpcInfo             `json:"VpcInfo"`
-	SubnetInfo        *CreateInstanceSubnetInfo          `json:"SubnetInfo"`
-	SecurityGroups    []*CreateInstanceSecurityGroupData `json:"SecurityGroups,omitempty"`
-	StartNumber       int                                `json:"StartNumber,omitempty"`
-	Duration          int                                `json:"Duration,omitempty"`
-	IsToMonth         *int                               `json:"IsToMonth,omitempty"`
-	DnsList           *[2]string                         `json:"DnsList,omitempty"`
-	PubnetInfo        []*CreateInstancePubnetInfo        `json:"PubnetInfo,omitempty"`
-	TestAccount       *string                            `json:"TestAccount,omitempty"`
+	Name              string                             `json:"Name"`                     // 云服务器名,不传自动赋予（自动命名规则：ecs-创建日期）
+	Password          string                             `json:"Password"`                 // 登录密码
+	AvailableZoneCode string                             `json:"AvailableZoneCode"`        // 可用区代码
+	EcsFamilyName     string                             `json:"EcsFamilyName"`            // 规格族名称
+	UtcTime           int                                `json:"UtcTime"`                  // 是否utc时间，1:是  0:否 默认为0（UTC+8，上海时间）
+	Cpu               int                                `json:"Cpu"`                      // Cpu
+	Ram               int                                `json:"Ram"`                      // 内存
+	Gpu               int                                `json:"Gpu,omitempty"`            // 显卡数量，默认为0
+	Number            int                                `json:"Number"`                   // 购买数量，默认为1（默认批量最大值为100台）
+	BillingMethod     billingMethod                      `json:"BillingMethod"`            // 计费方式："0": 按需  "1":包年包月
+	ImageId           string                             `json:"ImageId"`                  // 镜像id或者镜像名称
+	SystemDisk        *CreateInstanceDiskData            `json:"SystemDisk"`               // 系统盘信息
+	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk"`                 // 数据盘信息
+	VpcInfo           *CreateInstanceVpcInfo             `json:"VpcInfo"`                  // vpc信息
+	SubnetInfo        *CreateInstanceSubnetInfo          `json:"SubnetInfo"`               // 私有网络信息
+	SecurityGroups    []*CreateInstanceSecurityGroupData `json:"SecurityGroups,omitempty"` // 安全组列表，安全组优先级按顺序由高到低
+	StartNumber       int                                `json:"StartNumber,omitempty"`    // 云服务器名称编号起始数字，不需要服务器编号可不传
+	Duration          int                                `json:"Duration,omitempty"`       // 只在包月算价时有意义，以月份为单位，一年值为12，大于一年要输入12的整数倍，最大值36(3年)
+	IsToMonth         *int                               `json:"IsToMonth,omitempty"`      // 包月是否到月底 1:是  0:否 默认为1。
+	DnsList           *[2]string                         `json:"DnsList,omitempty"`        // dns 解析 需要两个元素  [主dns，从dns]，不选采用默认通用DNS
+	PubnetInfo        []*CreateInstancePubnetInfo        `json:"PubnetInfo,omitempty"`     // 公有网络信息,支持新分配公网IP和绑定已有的公网IP
+	TestAccount       *string                            `json:"TestAccount,omitempty"`    // 测试账户名称
+	IsAutoRenewal     *int                               `json:"IsAutoRenewal,omitempty"`  // 是否自动续约，包月时需传。1:是  0:否 默认为1
 }
 
+func (req *CreateInstanceReq) check() error {
+	// 必填参数检查
+	if req.AvailableZoneCode == "" {
+		return fmt.Errorf("field AvailableZoneCode is required")
+	}
+	if req.EcsFamilyName == "" {
+		return fmt.Errorf("field EcsFamilyName is required")
+	}
+	if req.Cpu <= 0 {
+		return fmt.Errorf("field Cpu must be > 0")
+	}
+	if req.Ram <= 0 {
+		return fmt.Errorf("field Ram must be > 0")
+	}
+	if req.BillingMethod != MonthlyBillingMethod && req.BillingMethod != OnDemandBillingMethod {
+		return fmt.Errorf("field BillingMethod must be '0' or '1'")
+	}
+	if req.Password == "" {
+		return fmt.Errorf("field Password is required")
+	}
+	if req.ImageId == "" {
+		return fmt.Errorf("field ImageId is required")
+	}
+	if req.SystemDisk == nil {
+		return fmt.Errorf("field SystemDisk is required")
+	}
+	if err := req.SystemDisk.check(true, req.BillingMethod); err != nil {
+		return fmt.Errorf("invalid SystemDisk: %v", err)
+	}
+	if req.VpcInfo == nil {
+		return fmt.Errorf("field VpcInfo is required")
+	}
+	if req.SubnetInfo == nil {
+		return fmt.Errorf("field SubnetInfo is required")
+	}
+	// 可选字段检查
+	if req.Gpu < 0 {
+		req.Gpu = 0
+	}
+	if req.Number <= 0 {
+		req.Number = 1 // 默认值 1
+	}
+	if req.Number > 100 {
+		return fmt.Errorf("field Number maximum value is 100")
+	}
+	if req.SubnetInfo == nil || req.SubnetInfo.SubnetId == "" {
+		return fmt.Errorf("field SubnetInfo.SubnetId is required")
+	}
+	for i, p := range req.PubnetInfo {
+		if err := p.check(req.Number, req.BillingMethod); err != nil {
+			return fmt.Errorf("invalid PubnetInfo[%d]: %v", i, err)
+		}
+	}
+	if req.BillingMethod == "1" { // 包年包月
+		if req.Duration > 36 {
+			return fmt.Errorf("field Duration maximum value is 36")
+		}
+		if req.Duration > 12 && req.Duration%12 != 0 {
+			return fmt.Errorf("field Duration must be a multiple of 8 when greater than 12")
+		}
+	}
+	for i, d := range req.DataDisk {
+		if err := d.check(false, req.BillingMethod); err != nil {
+			return fmt.Errorf("invalid DataDisk[%d]: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// CreateInstanceDiskData 系统盘信息
 type CreateInstanceDiskData struct {
-	DiskFeature         diskFeature `json:"DiskFeature"`
-	Size                int         `json:"Size"`
-	SnapshotId          string      `json:"SnapshotId,omitempty"`
-	ReleaseWithInstance int         `json:"ReleaseWithInstance,omitempty"`
+	DiskFeature         diskFeature `json:"DiskFeature"`                   // 盘类型:本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
+	Size                int         `json:"Size"`                          // 磁盘大小，单位为 GB
+	SnapshotId          string      `json:"SnapshotId,omitempty"`          // 创建磁盘时使用的快照 ID
+	ReleaseWithInstance *int        `json:"ReleaseWithInstance,omitempty"` // 磁盘是否随实例释放
 }
 
+func (d *CreateInstanceDiskData) check(isSystemDisk bool, BillingMethod billingMethod) error {
+	if d.DiskFeature == "" {
+		return fmt.Errorf("field DiskFeature is required")
+	}
+
+	if d.Size <= 0 {
+		return fmt.Errorf("field Size must be > 0")
+	}
+
+	if isSystemDisk {
+		// 系统盘不能传 SnapshotId 和 ReleaseWithInstance
+		if d.SnapshotId != "" {
+			return fmt.Errorf("field SnapshotId is not allowed in SystemDisk")
+		}
+	} else {
+		if BillingMethod == MonthlyBillingMethod {
+			if d.ReleaseWithInstance != nil && *d.ReleaseWithInstance != 0 {
+				return fmt.Errorf("MonthlyBillingMethod do not support ReleaseWithInstance")
+			}
+		}
+	}
+	return nil
+}
+
+// CreateInstanceVpcInfo vpc信息
 type CreateInstanceVpcInfo struct {
-	VpcId string `json:"VpcId"`
+	VpcId string `json:"VpcId"` // 私有网络id
 }
 
+// CreateInstanceSubnetInfo 私有网络信息
 type CreateInstanceSubnetInfo struct {
-	SubnetId string `json:"SubnetId"`
+	SubnetId  string   `json:"SubnetId"`            // 子网id
+	IpAddress []string `json:"IpAddress,omitempty"` // 指定私网IP列表,列表中的IP个数与创建云主机个数一致
 }
 
+// CreateInstanceSecurityGroupData 安全组列表
 type CreateInstanceSecurityGroupData struct {
-	SecurityGroupId string `json:"SecurityGroupId"`
+	SecurityGroupId string `json:"SecurityGroupId"` // 安全组id
 }
 
+// CreateInstancePubnetInfo 公有网络信息
 type CreateInstancePubnetInfo struct {
-	SubnetId          string        `json:"SubnetId"`
-	BandwidthConfName string        `json:"BandwidthConfName"`
-	EipIds            []string      `json:"EipIds,omitempty"`
-	BandwidthType     bandwidthType `json:"BandwidthType,omitempty"`
-	Qos               int           `json:"Qos,omitempty"`
+	SubnetId          string        `json:"SubnetId"`                // 子网id;若使用虚拟出网网关IP绑定公网IP则传虚拟出网网关id
+	BandwidthConfName string        `json:"BandwidthConfName"`       // 带宽线路名称.使用新创建的vpp网络需要指定线路名称.例如：电信、联通. 带宽线路名称参考VPCBandWidthBillingScheme获取
+	IpType            string        `json:"IpType"`                  // 若使用虚拟出网网关必填.默认出网网关:"default_gateway",虚拟网关：”virtual”
+	EipIds            []string      `json:"EipIds,omitempty"`        // 选填,绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
+	BandwidthType     bandwidthType `json:"BandwidthType,omitempty"` // 带宽类型;若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填.固定带宽:”Bandwidth”,固定带宽包月:”BandwidthMonth”,流量按需: “Traffic”（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"）
+	Qos               int           `json:"Qos,omitempty"`           // 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写
 }
 
+func (p *CreateInstancePubnetInfo) check(instanceCount int, billingMethod billingMethod) error {
+	if p.SubnetId == "" {
+		return fmt.Errorf("field SubnetId is required")
+	}
+
+	if len(p.EipIds) > 0 {
+		// 绑定已有公网IP
+		if len(p.EipIds) != instanceCount {
+			return fmt.Errorf("field EipIds must contain %d elements", instanceCount)
+		}
+
+	} else {
+		// 新分配公网IP
+		if p.BandwidthType == "" {
+			return fmt.Errorf("field BandwidthType is required when assigning new public IP")
+		}
+
+		switch p.BandwidthType {
+		case "Bandwidth":
+			if p.Qos <= 0 {
+				return fmt.Errorf("field Qos must be > 0 when BandwidthType=Bandwidth")
+			}
+		case "BandwidthMonth":
+			if billingMethod != MonthlyBillingMethod { // 包年包月
+				return fmt.Errorf("field BandwidthType=BandwidthMonth is only valid for yearly/monthly billing")
+			}
+		case "Traffic":
+		default:
+			return fmt.Errorf("field BandwidthType has invalid value: %s", p.BandwidthType)
+		}
+	}
+
+	return nil
+}
+
+// CreateInstanceResult CreateInstance接口响应结果
 type CreateInstanceResult struct {
 	OpenApiCommonResp
-	Data *CreateInstanceEvent `json:"Data"`
+	Data *CreateInstanceEvent `json:"Data"` // 创建实例id信息
 }
 
+// CreateInstanceEvent 创建实例id信息
 type CreateInstanceEvent struct {
-	EventId  string   `json:"EventId"`
-	EcsIdSet []string `json:"EcsIdSet"`
+	EventId  string   `json:"EventId"`  // 事件id
+	EcsIdSet []string `json:"EcsIdSet"` // 创建的资源id列表
+}
+
+// DeleteInstanceReq DeleteInstance接口请求参数
+type DeleteInstanceReq struct {
+	EcsIds    []string `json:"EcsIds"`              // 云服务器id列表
+	DeleteEip int      `json:"DeleteEip,omitempty"` // 1:解绑并删除服务器绑定的EIP，0:解绑EIP  默认为0
+}
+
+func (req *DeleteInstanceReq) check() error {
+	if len(req.EcsIds) == 0 {
+		return fmt.Errorf("field EcsIds is required")
+	}
+
+	if req.DeleteEip != 0 && req.DeleteEip != 1 {
+		return fmt.Errorf("field DeleteEip must be 0 or 1")
+	}
+
+	return nil
+}
+
+// DeleteInstanceResult DeleteInstance接口响应结果
+type DeleteInstanceResult struct {
+	OpenApiCommonResp
+	Data *EventIdData `json:"Data"` // 事件ID数据
+}
+
+// ModifyInstancePasswordReq ModifyInstancePassword接口请求参数
+type ModifyInstancePasswordReq struct {
+	EcsIds   []string `json:"EcsIds"`   // 云服务器id列表
+	Password string   `json:"Password"` // 新密码
+}
+
+func (req *ModifyInstancePasswordReq) check() error {
+	if len(req.EcsIds) == 0 {
+		return fmt.Errorf("field EcsIds is required")
+	}
+
+	if req.Password == "" {
+		return fmt.Errorf("field Password is required")
+	}
+
+	return nil
+}
+
+// ModifyInstancePasswordResult ModifyInstancePassword接口响应结果
+type ModifyInstancePasswordResult struct {
+	OpenApiCommonResp
+	Data *EventIdData `json:"Data"` // 事件ID数据
+}
+
+// DescribeInstanceStatusReq DescribeInstanceStatus接口请求参数
+type DescribeInstanceStatusReq struct {
+	EcsIds []string `json:"EcsIds"` // 云服务器列表
+}
+
+func (req *DescribeInstanceStatusReq) check() error {
+	if len(req.EcsIds) == 0 {
+		return fmt.Errorf("field EcsIds is required")
+	}
+
+	return nil
+}
+
+// DescribeInstanceStatusResult DescribeInstanceStatus接口响应结果
+type DescribeInstanceStatusResult struct {
+	OpenApiCommonResp
+	Data *InstanceEcsStatusInfo `json:"Data"` // 云服务器状态信息
+}
+
+// InstanceEcsStatusInfo 云服务器状态字典
+type InstanceEcsStatusInfo struct {
+	EcsStatus map[string]*InstanceEcsStatusData `json:"EcsStatus"` // 云服务器状态字典，key为实例id
+}
+
+// InstanceEcsStatusData 云服务器状态信息
+type InstanceEcsStatusData struct {
+	Status        string `json:"Status"`        // 状态码
+	StatusDisplay string `json:"StatusDisplay"` // 状态
 }
 
 // DescribeInstanceListReq DescribeInstanceList接口请求参数
@@ -239,7 +459,7 @@ type InstanceSimpleInfo struct {
 	SystemDiskSize       int                       `json:"SystemDiskSize"`       // 系统盘大小(GB)
 	NoChargeForShutdown  int                       `json:"NoChargeForShutdown"`  // 关机是否收费
 	CustomerId           string                    `json:"CustomerId"`           // 客户ID
-	SystemDiskFeature    string                    `json:"SystemDiskFeature"`    // 系统盘特性
+	SystemDiskFeature    string                    `json:"SystemDiskFeature"`    // 系统盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
 	SupportGpuDriver     string                    `json:"SupportGpuDriver"`     // 支持的GPU驱动
 	BindingPubnetIp      bool                      `json:"BindingPubnetIp"`      // 是否绑定公网 IP
 	EcsGoodsId           string                    `json:"EcsGoodsId"`           // 云主机商品/套餐 ID
@@ -366,7 +586,7 @@ type InstanceData struct {
 	SecurityGroup       []*SecurityGroupInfo `json:"SecurityGroup"`       // 安全组
 	StockRelease        bool                 `json:"StockRelease"`        // 库存释放标志
 	Supplier            string               `json:"Supplier"`            // 实例供应商
-	SystemDiskFeature   string               `json:"SystemDiskFeature"`   // 系统盘类型
+	SystemDiskFeature   string               `json:"SystemDiskFeature"`   // 系统盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
 	Tag                 []interface{}        `json:"Tag"`                 // 标签
 	NoChargeForShutdown int                  `json:"NoChargeForShutdown"` // 关机是否收费
 	EcsRule             *InstanceRuleInfo    `json:"EcsRule"`             // 实例规格信息
@@ -425,7 +645,7 @@ type SystemDiskConfInfo struct {
 	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
 	Unit                string `json:"Unit"`                // 单位
 	DiskId              string `json:"DiskId"`              // 磁盘ID
-	DiskFeature         string `json:"DiskFeature"`         // 磁盘特性
+	DiskFeature         string `json:"DiskFeature"`         // 磁盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
 	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
 	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
 	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
@@ -442,7 +662,7 @@ type DataDiskConfInfo struct {
 	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
 	Unit                string `json:"Unit"`                // 单位
 	Id                  string `json:"Id"`                  // 磁盘ID
-	DiskFeature         string `json:"DiskFeature"`         // 磁盘特性
+	DiskFeature         string `json:"DiskFeature"`         // 磁盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
 	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
 	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
 	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
@@ -479,7 +699,7 @@ type BillingInfo struct {
 	BillingMethodStatus string `json:"BillingMethodStatus"` // 计费方式状态
 }
 
-// DescribeTaskEventReq DescribeTaskEvent接口请求参数
+// DescribeTaskEventDescribeTaskEventReq DescribeTaskEvent接口请求参数
 type DescribeTaskEventReq struct {
 	EventId string `json:"EventId"` // 事件ID
 }
@@ -532,6 +752,9 @@ type DescribeEcsFamilyInfoReq struct {
 func (req *DescribeEcsFamilyInfoReq) check() error {
 	if req.AvailableZoneCode == "" {
 		return fmt.Errorf("field AvailableZoneCode is required")
+	}
+	if req.BillingMethod == "" {
+		return fmt.Errorf("field BillingMethod is required")
 	}
 	if req.BillingMethod != MonthlyBillingMethod {
 		req.BillingMethod = OnDemandBillingMethod
