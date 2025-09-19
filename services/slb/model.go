@@ -1,12 +1,12 @@
 package slb
 
 type OpenapiCommonPage struct {
-	total int `json:"Total,omitempty"`
+	Total int `json:"Total,omitempty"`
 }
 
 type OpenApiCommonResp struct {
-	Code    interface {} `json:"Code"`
-	Message interface{}  `json:"Message"`
+	Code    interface{} `json:"Code"`
+	Message interface{} `json:"Message"`
 }
 
 type CommonTask struct {
@@ -18,11 +18,11 @@ type ListVpcSlbReq struct {
 }
 
 type Slb struct {
-	SlbId string `json:"SlbId"`
-	SlbName string `json:"SlbName"`
-	BandwidthId string `json:"BandwidthId,omitempty"`
-    EipList []string `json:"EipList,omitempty"`
-	LanVipList []string `json:"LanVipList,omitempty"`
+	SlbId       string   `json:"SlbId"`
+	SlbName     string   `json:"SlbName"`
+	BandwidthId string   `json:"BandwidthId,omitempty"`
+	EipList     []string `json:"EipList,omitempty"`
+	LanVipList  []string `json:"LanVipList,omitempty"`
 }
 
 type ListVpcSlbResult struct {
@@ -33,18 +33,17 @@ type ListVpcSlbResult struct {
 }
 
 type GetVpcSlbDetailReq struct {
-	SlbId string `json:"SlbId"`
+	SlbId   string `json:"SlbId"`
 	SlbName string `json:"SlbName"`
 }
 
-
 type SlbResultData struct {
-	SlbId string `json:"SlbId"`
-	SlbName string `json:"SlbName"`
-	SlbStatus string `json:"SlbStatus"`
-	BandwidthId string `json:"BandwidthId"`
-	BandwidthName string `json:"BandwidthName"`
-    VipList []map[string]interface{} `json:"VipList,omitempty"`
+	SlbId         string                   `json:"SlbId"`
+	SlbName       string                   `json:"SlbName"`
+	SlbStatus     string                   `json:"SlbStatus"`
+	BandwidthId   string                   `json:"BandwidthId"`
+	BandwidthName string                   `json:"BandwidthName"`
+	VipList       []map[string]interface{} `json:"VipList,omitempty"`
 }
 
 type GetVpcSlbResult struct {
