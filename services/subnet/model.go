@@ -41,7 +41,7 @@ type CreateSubnetResult struct {
 
 
 type ListSubnetsReq struct {
-	Keyword           string `json:"PageNumber,omitempty"`
+	Keyword           string `json:"Keyword,omitempty"`
 	RegionCode        string `json:"RegionCode"`
 	PageNumber        int    `json:"PageNumber,omitempty"`
 	VPCId             string `json:"VPCId,omitempty"`
