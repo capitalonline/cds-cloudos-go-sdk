@@ -111,7 +111,9 @@ func (c *client) DescribeTaskEvent(req *DescribeTaskEventReq) (result *DescribeT
 		WithURI(c.ecsRoute).
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeTaskEvent).
-		WithQueryParam(eventKey, req.EventId).Do()
+		WithQueryParam(eventKey, req.EventId).
+		WithResult(result).
+		Do()
 
 	return
 }
@@ -128,7 +130,9 @@ func (c *client) DescribeEcsFamilyInfo(req *DescribeEcsFamilyInfoReq) (result *D
 		WithMethod(http.GET).
 		WithQueryParam(actionKey, ActionDescribeEcsFamilyInfo).
 		WithQueryParam(azCodeKey, req.AvailableZoneCode).
-		WithQueryParam(billingMethodKey, string(req.BillingMethod)).Do()
+		WithQueryParam(billingMethodKey, string(req.BillingMethod)).
+		WithResult(result).
+		Do()
 
 	return
 }

@@ -109,6 +109,6 @@ func DeleteVPC() {
 func main() {
 	// CreateVPC()
 	// GetVPC()
-	// ListVPCs()
+	ListVPCs()
 	// DeleteVPC()
 }

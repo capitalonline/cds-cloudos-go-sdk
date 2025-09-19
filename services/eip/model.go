@@ -16,13 +16,13 @@ limitations under the License.
 
 package eip
 
-type OpenapiCpmmonPage struct {
-	total int `json:"",omitempty`
+type OpenapiCommonPage struct {
+	Total int `json:"Total,omitempty"`
 }
 
 type OpenApiCommonResp struct {
-	Code    interface {} `json:"Code"`
-	Message interface{}  `json:"Message`
+	Code    interface{} `json:"Code"`
+	Message interface{} `json:"Message"`
 }
 
 type CommonTask struct {
@@ -30,14 +30,14 @@ type CommonTask struct {
 }
 
 type CreateEIPReq struct {
-	RegionCode        string `json:"RegionCode"`
-    BandwidthType     string `json:"BandwidthType"`
-    BillScheme        string `json:"BillScheme"`
-    Qos               int    `json:"Qos"`
-	Size              int    `json:"Size"`
-    Description       string `json:"Description"`
-	SubjectId         string `json:"SubjectId"`
-	ProjectId         int `json:"ProjectId"`
+	RegionCode    string `json:"RegionCode"`
+	BandwidthType string `json:"BandwidthType"`
+	BillScheme    string `json:"BillScheme"`
+	Qos           int    `json:"Qos"`
+	Size          int    `json:"Size"`
+	Description   string `json:"Description"`
+	SubjectId     string `json:"SubjectId"`
+	ProjectId     int    `json:"ProjectId"`
 }
 
 type CreateEipResData struct {
@@ -45,15 +45,13 @@ type CreateEipResData struct {
 	IP    string `json:"IP"`
 }
 
-
 type CreateEIPResult struct {
-	Data []CreateEipResData     `json:"data,omitempty"`
+	Data []CreateEipResData `json:"data,omitempty"`
 	OpenApiCommonResp
 }
 
-
 type GetEipReq struct {
-	Keyword  string `json:"Keyword"`
+	Keyword string `json:"Keyword"`
 }
 
 type BandwidthInfo struct {
@@ -73,24 +71,22 @@ type BindResourceInfo struct {
 }
 
 type Eip struct {
-	AvailableZoneCode string          `json:"AvailableZoneCode"`
-	CreateTime        string          `json:"CreateTime"`
-	Description       string          `json:"Description"`
-	IP                string          `json:"IP"`
-	Id                string          `json:"Id"`
-	IsBind            bool            `json:"IsBind"`
-	RegionCode        string          `json:"RegionCode"`
-	Status            string          `json:"Status"`
-	BandwidthInfo     BandwidthInfo   `json:"BandwidthInfo"`
+	AvailableZoneCode string           `json:"AvailableZoneCode"`
+	CreateTime        string           `json:"CreateTime"`
+	Description       string           `json:"Description"`
+	IP                string           `json:"IP"`
+	Id                string           `json:"Id"`
+	IsBind            bool             `json:"IsBind"`
+	RegionCode        string           `json:"RegionCode"`
+	Status            string           `json:"Status"`
+	BandwidthInfo     BandwidthInfo    `json:"BandwidthInfo"`
 	BindResourceInfo  BindResourceInfo `json:"BindResourceInfo"`
 }
 
-
 type GetEipData struct {
-	Total   int      `json:"Total"`
+	Total   int   `json:"Total"`
 	EIPList []Eip `json:"EIPList"`
 }
-
 
 type GetEipResult struct {
 	Data GetEipData `json:"data,omitempty"`
@@ -103,38 +99,33 @@ type ListEipsReq struct {
 	AvailableZoneCode string `json:"AvailableZoneCode,omitempty"`
 }
 
-
 type ListEipsData struct {
-	Total   int      `json:"Total"`
+	Total   int   `json:"Total"`
 	EIPList []Eip `json:"EIPList"`
 }
-
 
 type ListEipsResult struct {
 	Data ListEipsData `json:"data,omitempty"`
 	OpenApiCommonResp
-
 }
 
-
 type ReleaseEipReq struct {
-	EIPId  string `json:"EIPId"`
+	EIPId string `json:"EIPId"`
 }
 
 type ReleaseEipResult struct {
-	Data    map[string]interface{} `json:"Data"`
+	Data map[string]interface{} `json:"Data"`
 	OpenApiCommonResp
 }
 
 type UpdateEIPReq struct {
-	EIPId  string `json:"EIPId"`
-	Qos               int    `json:"Qos,omitempty"`
-    Description       string `json:"Description,omitempty"`
+	EIPId       string `json:"EIPId"`
+	Qos         int    `json:"Qos,omitempty"`
+	Description string `json:"Description,omitempty"`
 }
 
-
 type UpdateEIPResult struct {
-	Data    map[string]interface{} `json:"Data"`
+	Data map[string]interface{} `json:"Data"`
 	OpenApiCommonResp
 	CommonTask
 }

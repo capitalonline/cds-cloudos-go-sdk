@@ -25,16 +25,25 @@ type (
 )
 
 const (
-	ShutdownInstance     operate = "shutdown_ecs"
-	StartUpInstance      operate = "start_up_ecs"
-	RestartInstance      operate = "restart_ecs"
-	HardShutdownInstance operate = "hard_shutdown_ecs"
-	FreeShutdownInstance operate = "free_shutdown_ecs"
+	ShutdownInstance     operate = "shutdown_ecs"      // 关机操作
+	StartUpInstance      operate = "start_up_ecs"      // 开机操作
+	RestartInstance      operate = "restart_ecs"       // 重启操作
+	HardShutdownInstance operate = "hard_shutdown_ecs" // 强制关机操作
+
+	/*
+		FreeShutdownInstance 参数说明：
+		仅按需计费的云盘实例支持关机不计费，再开机公网IP可能会变化；
+		若批量操作关机：支持关机不收费的实例，关机后停止 CPU、内存、GPU和公网收费；
+		不支持关机不收费的实例，正常关机，继续收费；
+		不计费关机期间不支持除开机、删除、定制镜像外的操作。
+		注意：目前关机不计费白名单开放，若需要请联系商务。
+	*/
+	FreeShutdownInstance operate = "free_shutdown_ecs" // 关机不计费
 )
 
 const (
-	OnDemandBillingMethod billingMethod = "0"
-	MonthlyBillingMethod  billingMethod = "1"
+	OnDemandBillingMethod billingMethod = "0" // 按需计费
+	MonthlyBillingMethod  billingMethod = "1" // 包月
 )
 
 var (
@@ -48,111 +57,142 @@ var (
 	billingMethodKey = "BillingMethod"
 )
 
+// OpenApiCommonResp 开放API通用响应结构
 type OpenApiCommonResp struct {
-	Code      string `json:"Code"`
-	Message   string `json:"Msg"`
-	RequestId string `json:"RequestId"`
+	Code      string `json:"Code"`      // 响应码
+	Message   string `json:"Msg"`       // 响应消息
+	RequestId string `json:"RequestId"` // 请求ID
 	CommonOpenApiPage
 }
 
+// CommonOpenApiPage 通用分页信息
 type CommonOpenApiPage struct {
-	TotalCount int `json:"TotalCount,omitempty"`
-	PageIndex  int `json:"PageIndex,omitempty"`
-	PageSize   int `json:"PageSize,omitempty"`
+	TotalCount int `json:"TotalCount,omitempty"` // 总记录数
+	PageIndex  int `json:"PageIndex,omitempty"`  // 当前页码
+	PageSize   int `json:"PageSize,omitempty"`   // 每页记录数
 }
 
+// DescribeRegionsResult DescribeRegions接口响应结果
 type DescribeRegionsResult struct {
 	OpenApiCommonResp
-	Data []*RegionGroup `json:"Data"`
+	Data []*RegionGroup `json:"Data"` // 区域组列表
 }
 
+// RegionGroup 区域组信息
 type RegionGroup struct {
-	RegionGroupId   string        `json:"RegionGroupId"`
-	RegionGroupName string        `json:"RegionGroupName"`
-	RegionList      []*RegionInfo `json:"RegionList"`
+	RegionGroupId   string        `json:"RegionGroupId"`   // 区域组ID
+	RegionGroupName string        `json:"RegionGroupName"` // 区域组名称
+	RegionList      []*RegionInfo `json:"RegionList"`      // 区域列表
 }
 
+// RegionInfo 区域信息
 type RegionInfo struct {
-	RegionId   string    `json:"RegionId"`
-	RegionName string    `json:"RegionName"`
-	AzList     []*AzInfo `json:"AzList"`
-	RegionCode string    `json:"RegionCode"`
+	RegionId   string    `json:"RegionId"`   // 区域ID
+	RegionName string    `json:"RegionName"` // 区域名称
+	AzList     []*AzInfo `json:"AzList"`     // 可用区列表
+	RegionCode string    `json:"RegionCode"` // 区域代码
 }
 
+// AzInfo 可用区信息
 type AzInfo struct {
-	AzId              string `json:"AzId"`
-	AzName            string `json:"AzName"`
-	AvailableZoneCode string `json:"AvailableZoneCode"`
+	AzId              string `json:"AzId"`              // 可用区ID
+	AzName            string `json:"AzName"`            // 可用区名称
+	AvailableZoneCode string `json:"AvailableZoneCode"` // 可用区代码
 }
 
+// EventIdData 事件ID数据
 type EventIdData struct {
-	EventId string `json:"EventId"`
+	EventId string `json:"EventId"` // 事件ID
 }
 
+// DescribeInstanceListReq DescribeInstanceList接口请求参数
 type DescribeInstanceListReq struct {
-	AvailableZoneCode string   `json:"AvailableZoneCode"`
-	VpcId             string   `json:"VpcId"`
-	SearchInfo        string   `json:"SearchInfo"`
-	Ids               []string `json:"EcsIds"`
+	AvailableZoneCode string   `json:"AvailableZoneCode"` // 可用区代码
+	VpcId             string   `json:"VpcId"`             // VPC ID
+	SearchInfo        string   `json:"SearchInfo"`        // 搜索信息（实例ID/实例名称/私网IP）
+	Ids               []string `json:"EcsIds"`            // 实例ID列表
 }
 
+// DescribeInstanceListResult DescribeInstanceList接口响应结果
 type DescribeInstanceListResult struct {
 	OpenApiCommonResp
-	Data *InstanceListData `json:"Data"`
+	Data *InstanceListData `json:"Data"` // 实例列表数据
 }
 
+// InstanceListData 实例列表数据
 type InstanceListData struct {
-	EcsList []*InstanceSimpleInfo `json:"EcsList"`
+	EcsList []*InstanceSimpleInfo `json:"EcsList"` // 实例简基础息列表
 }
 
+// InstanceSimpleInfo 实例简要信息
 type InstanceSimpleInfo struct {
-	EcsId               string                    `json:"EcsId"`
-	EcsName             string                    `json:"EcsName"`
-	VpcId               string                    `json:"VpcId"`
-	VpcName             string                    `json:"VpcName"`
-	Status              string                    `json:"Status"`
-	StatusDisplay       string                    `json:"StatusDisplay"`
-	AzId                string                    `json:"AzId"`
-	AzName              string                    `json:"AzName"`
-	RegionId            string                    `json:"RegionId"`
-	RegionName          string                    `json:"RegionName"`
-	PrivateNet          string                    `json:"PrivateNet"`
-	PubNet              string                    `json:"PubNet"`
-	VirtualNet          []interface{}             `json:"VirtualNet"`
-	EipInfo             map[string]*EipSimpleInfo `json:"EipInfo"`
-	CreateTime          string                    `json:"CreateTime"`
-	EndBillTime         string                    `json:"EndBillTime"`
-	IsAutoRenewal       string                    `json:"IsAutoRenewal"`
-	IsGpu               bool                      `json:"IsGpu"`
-	CardName            string                    `json:"CardName"`
-	CpuSize             int                       `json:"CpuSize"`
-	RamSize             int                       `json:"RamSize"`
-	GpuSize             int                       `json:"GpuSize"`
-	BillingMethodName   string                    `json:"BillingMethodName"`
-	BillingMethod       string                    `json:"BillingMethod"`
-	OsType              string                    `json:"OsType"`
-	OsVersion           string                    `json:"OsVersion"`
-	ImageName           string                    `json:"ImageName"`
-	OsBit               int                       `json:"OsBit"`
-	CustomerId          string                    `json:"CustomerId"`
-	SystemDiskType      string                    `json:"SystemDiskType"`
-	SystemDiskFeature   string                    `json:"SystemDiskFeature"`
-	SystemDiskSize      int                       `json:"SystemDiskSize"`
-	SupportGpuDriver    string                    `json:"SupportGpuDriver"`
-	SpecFamilyId        string                    `json:"SpecFamilyId"`
-	EcsFamilyName       string                    `json:"EcsFamilyName"`
-	NoChargeForShutdown int                       `json:"NoChargeForShutdown"`
+	EcsId                string                    `json:"EcsId"`                // 实例ID
+	EcsName              string                    `json:"EcsName"`              // 实例名称
+	VpcId                string                    `json:"VpcId"`                // VPC ID
+	VpcName              string                    `json:"VpcName"`              // VPC名称
+	Status               string                    `json:"Status"`               // 云服务器状态码
+	StatusDisplay        string                    `json:"StatusDisplay"`        // 状态显示名称
+	AzId                 string                    `json:"AzId"`                 // 可用区ID
+	AzName               string                    `json:"AzName"`               // 可用区名称
+	RegionId             string                    `json:"RegionId"`             // 区域ID
+	RegionName           string                    `json:"RegionName"`           // 区域名称
+	PrivateNet           string                    `json:"PrivateNet"`           // 私网IP
+	PubNet               string                    `json:"PubNet"`               // 默认出网网关ip
+	VirtualNet           []interface{}             `json:"VirtualNet"`           // 虚拟网络信息
+	EipInfo              map[string]*EipSimpleInfo `json:"EipInfo"`              // EIP信息
+	CreateTime           string                    `json:"CreateTime"`           // 创建时间
+	SpecFamilyId         string                    `json:"SpecFamilyId"`         // 规格族ID
+	EcsFamilyName        string                    `json:"EcsFamilyName"`        // 实例规格族名称
+	CpuSize              int                       `json:"CpuSize"`              // CPU核心数
+	RamSize              int                       `json:"RamSize"`              // 内存大小(GB)
+	EndBillTime          string                    `json:"EndBillTime"`          // 计费结束时间
+	IsAutoRenewal        string                    `json:"IsAutoRenewal"`        // 是否自动续费
+	IsGpu                bool                      `json:"IsGpu"`                // 是否为GPU实例
+	CardName             string                    `json:"CardName"`             // 显卡型号
+	GpuSize              int                       `json:"GpuSize"`              // GPU数量
+	BillingMethodName    string                    `json:"BillingMethodName"`    // 计费方式名称
+	BillingMethod        string                    `json:"BillingMethod"`        // 计费方式
+	OsType               string                    `json:"OsType"`               // 操作系统类型
+	OsVersion            string                    `json:"OsVersion"`            // 操作系统版本
+	ImageName            string                    `json:"ImageName"`            // 镜像名称
+	OsBit                int                       `json:"OsBit"`                // 操作系统位数
+	SystemDiskType       string                    `json:"SystemDiskType"`       // 系统盘类型
+	SystemDiskSize       int                       `json:"SystemDiskSize"`       // 系统盘大小(GB)
+	NoChargeForShutdown  int                       `json:"NoChargeForShutdown"`  // 关机是否收费
+	CustomerId           string                    `json:"CustomerId"`           // 客户ID
+	SystemDiskFeature    string                    `json:"SystemDiskFeature"`    // 系统盘特性
+	SupportGpuDriver     string                    `json:"SupportGpuDriver"`     // 支持的GPU驱动
+	BindingPubnetIp      bool                      `json:"BindingPubnetIp"`      // 是否绑定公网 IP
+	EcsGoodsId           string                    `json:"EcsGoodsId"`           // 云主机商品/套餐 ID
+	GpuCardInfo          *GpuCardData              `json:"GpuCardInfo"`          // GPU 卡信息
+	GpuDriver            string                    `json:"GpuDriver"`            // GPU 驱动版本信息
+	IsHaveSnapshot       bool                      `json:"IsHaveSnapshot"`       // 是否有快照
+	ProductSource        string                    `json:"ProductSource"`        // 产品来源标识
+	ProductSourceDisplay string                    `json:"ProductSourceDisplay"` // 产品来源显示名
+	SecurityGroup        []interface{}             `json:"SecurityGroup"`        // 安全组
+	SubnetId             string                    `json:"SubnetId"`             // 子网 ID
+	Tag                  []interface{}             `json:"Tag"`                  // 标签
 }
 
+// GpuCardData GPU 卡数据信息
+type GpuCardData struct {
+	GicBusinessName string   `json:"GicBusinessName"` // GPU 型号的名称
+	GpuDriver       string   `json:"GpuDriver"`       // GPU 驱动版本
+	GpuTypeId       string   `json:"GpuTypeId"`       // GPU 类型 ID
+	RealName        []string `json:"RealName"`        // GPU 型号的真实名称
+}
+
+// EipSimpleInfo EIP简要信息
 type EipSimpleInfo struct {
-	ConfName string `json:"ConfName"`
-	EipIp    string `json:"EipIp"`
+	ConfName string `json:"ConfName"` // 网络带宽运营商
+	EipIp    string `json:"EipIp"`    // EIP地址
 }
 
+// OperateInstanceReq OperateInstance接口请求参数
 type OperateInstanceReq struct {
-	EcsIds    []string `json:"EcsIds"`
-	OpType    operate  `json:"OpType"`
-	DeleteEip int      `json:"DeleteEip"`
+	EcsIds    []string `json:"EcsIds"`    // 实例ID列表
+	OpType    operate  `json:"OpType"`    // 操作类型
+	DeleteEip int      `json:"DeleteEip"` // 公网释放选项，仅在关机不计费情况生效(0:保留公网IP,1:释放公网IP)
 }
 
 func (req *OperateInstanceReq) check() error {
@@ -173,14 +213,16 @@ func (req *OperateInstanceReq) check() error {
 	return nil
 }
 
+// OperateInstanceResult OperateInstance接口响应结果
 type OperateInstanceResult struct {
 	OpenApiCommonResp
-	Data *EventIdData `json:"Data"`
+	Data *EventIdData `json:"Data"` // 事件ID数据
 }
 
+// ModifyInstanceNameReq ModifyInstanceName接口请求参数
 type ModifyInstanceNameReq struct {
-	EcsId string `json:"EcsId"`
-	Name  string `json:"Name"`
+	EcsId string `json:"EcsId"` // 实例ID
+	Name  string `json:"Name"`  // 新实例名称
 }
 
 func (req *ModifyInstanceNameReq) check() error {
@@ -193,18 +235,21 @@ func (req *ModifyInstanceNameReq) check() error {
 	return nil
 }
 
+// ModifyInstanceNameResult ModifyInstanceName接口响应结果
 type ModifyInstanceNameResult struct {
 	OpenApiCommonResp
-	Data *ModifyInstanceNameData `json:"Data"`
+	Data *ModifyInstanceNameData `json:"Data"` // 修改实例名称数据
 }
 
+// ModifyInstanceNameData 修改实例名称数据
 type ModifyInstanceNameData struct {
-	EcsId string `json:"EcsId"`
-	Name  string `json:"Name"`
+	EcsId string `json:"EcsId"` // 实例ID
+	Name  string `json:"Name"`  // 实例名称
 }
 
+// DescribeInstanceReq DescribeInstance接口请求参数
 type DescribeInstanceReq struct {
-	EcsId string `json:"EcsId"`
+	EcsId string `json:"EcsId"` // 实例ID
 }
 
 func (req *DescribeInstanceReq) check() error {
@@ -214,106 +259,150 @@ func (req *DescribeInstanceReq) check() error {
 	return nil
 }
 
+// DescribeInstanceResult DescribeInstance接口响应结果
 type DescribeInstanceResult struct {
 	OpenApiCommonResp
-	Data *InstanceData `json:"Data"`
+	Data *InstanceData `json:"Data"` // 实例详细数据
 }
 
+// InstanceData 实例详细数据
 type InstanceData struct {
-	EcsId               string            `json:"EcsId"`
-	EcsName             string            `json:"EcsName"`
-	RegionId            string            `json:"RegionId"`
-	RegionName          string            `json:"RegionName"`
-	AzId                string            `json:"AzId"`
-	AzName              string            `json:"AzName"`
-	Status              string            `json:"Status"`
-	StatusDisplay       string            `json:"StatusDisplay"`
-	CreateTime          string            `json:"CreateTime"`
-	Duration            int               `json:"Duration"`
-	EndBillTime         string            `json:"EndBillTime"`
-	IsAutoRenewal       string            `json:"IsAutoRenewal"`
-	TimeZone            string            `json:"TimeZone"`
-	IsRam               bool              `json:"IsRam"`
-	NoChargeForShutdown int               `json:"NoChargeForShutdown"`
-	EcsRule             *InstanceRuleInfo `json:"EcsRule"`
-	OsInfo              *OsInfo           `json:"OsInfo"`
-	Disk                *DiskInfo         `json:"Disk"`
-	Pipe                *PipeInfo         `json:"Pipe"`
-	BillingInfo         *BillingInfo      `json:"BillingInfo"`
+	EcsId         string `json:"EcsId"`         // 实例ID
+	EcsName       string `json:"EcsName"`       // 实例名称
+	RegionId      string `json:"RegionId"`      // 区域ID
+	RegionName    string `json:"RegionName"`    // 区域名称
+	AzId          string `json:"AzId"`          // 可用区ID
+	AzName        string `json:"AzName"`        // 可用区名称
+	Status        string `json:"Status"`        // 实例状态
+	StatusDisplay string `json:"StatusDisplay"` // 实例状态显示名称
+	CreateTime    string `json:"CreateTime"`    // 创建时间
+	Duration      int    `json:"Duration"`      // 运行时长
+	EndBillTime   string `json:"EndBillTime"`   // 计费结束时间
+	IsAutoRenewal string `json:"IsAutoRenewal"` // 是否自动续费
+	TimeZone      string `json:"TimeZone"`      // 时区
+	//IsRam               bool              `json:"IsRam"`               // 是否为内存优化型
+	IsGpu               bool                 `json:"IsGpu"`               // 是否为 GPU 实例
+	IsToMonth           int                  `json:"IsToMonth"`           // 是否按月计费
+	RealCardName        string               `json:"RealCardName"`        // GPU 实际型号
+	SecurityGroup       []*SecurityGroupInfo `json:"SecurityGroup"`       // 安全组
+	StockRelease        bool                 `json:"StockRelease"`        // 库存释放标志
+	Supplier            string               `json:"Supplier"`            // 实例供应商
+	SystemDiskFeature   string               `json:"SystemDiskFeature"`   // 系统盘类型
+	Tag                 []interface{}        `json:"Tag"`                 // 标签
+	NoChargeForShutdown int                  `json:"NoChargeForShutdown"` // 关机是否收费
+	EcsRule             *InstanceRuleInfo    `json:"EcsRule"`             // 实例规格信息
+	OsInfo              *OsInfo              `json:"OsInfo"`              // 操作系统信息
+	Disk                *DiskInfo            `json:"Disk"`                // 磁盘信息
+	Pipe                *PipeInfo            `json:"Pipe"`                // 网络信息
+	BillingInfo         *BillingInfo         `json:"BillingInfo"`         // 计费信息
 }
 
+// SecurityGroupInfo 安全组信息
+type SecurityGroupInfo struct {
+	GroupInterconnected bool   `json:"GroupInterconnected"` // 安全组内是否可以实例互通
+	Priority            int    `json:"Priority"`            // 优先级
+	SecurityGroupId     string `json:"SecurityGroupId"`     // 安全组ID
+	SecurityGroupName   string `json:"SecurityGroupName"`   // 安全组名称
+	SecurityGroupType   string `json:"SecurityGroupType"`   // 安全组类型
+}
+
+// InstanceRuleInfo 实例规格信息
 type InstanceRuleInfo struct {
-	Name    string `json:"Name"`
-	CpuNum  int    `json:"CpuNum"`
-	CpuUnit string `json:"CpuUnit"`
-	Ram     int    `json:"Ram"`
-	Gpu     int    `json:"Gpu"`
-	RamUnit string `json:"RamUnit"`
-	GpuUnit string `json:"GpuUnit"`
+	Name       string `json:"Name"`       // 规格名称
+	CpuNum     int    `json:"CpuNum"`     // CPU核心数
+	CpuUnit    string `json:"CpuUnit"`    // CPU单位
+	Ram        int    `json:"Ram"`        // 内存大小
+	Gpu        int    `json:"Gpu"`        // GPU数量
+	RamUnit    string `json:"RamUnit"`    // 内存单位
+	GpuUnit    string `json:"GpuUnit"`    // GPU单位
+	CategoryId string `json:"CategoryId"` // 规格类别ID
+	ConfName   string `json:"ConfName"`   // 配置名称
+	EcsGoodsId string `json:"EcsGoodsId"` // 商品ID
 }
 
+// OsInfo 操作系统信息
 type OsInfo struct {
-	ImageId   string `json:"ImageId"`
-	ImageName string `json:"ImageName"`
-	OsType    string `json:"OsType"`
-	Bit       int    `json:"Bit"`
-	Version   string `json:"Version"`
+	ImageId   string `json:"ImageId"`   // 镜像ID
+	ImageName string `json:"ImageName"` // 镜像名称
+	OsType    string `json:"OsType"`    // 操作系统类型
+	Bit       int    `json:"Bit"`       // 操作系统位数
+	Version   string `json:"Version"`   // 操作系统版本
+	Unit      string `json:"Unit"`      // 单位
 }
 
+// DiskInfo 磁盘信息
 type DiskInfo struct {
-	SystemDiskConf *SystemDiskConfInfo `json:"SystemDiskConf"`
-	DataDiskConf   []*DataDiskConfInfo `json:"DataDiskConf"`
+	SystemDiskConf *SystemDiskConfInfo `json:"SystemDiskConf"` // 系统盘配置信息
+	DataDiskConf   []*DataDiskConfInfo `json:"DataDiskConf"`   // 数据盘配置信息列表
 }
+
+// SystemDiskConfInfo 系统盘配置信息
 type SystemDiskConfInfo struct {
-	ReleaseWithInstance int    `json:"ReleaseWithInstance"`
-	DiskType            string `json:"DiskType"`
-	Name                string `json:"Name"`
-	Size                int    `json:"Size"`
-	DiskIops            int    `json:"DiskIops"`
-	BandMbps            int    `json:"BandMbps"`
-	Unit                string `json:"Unit"`
-	DiskId              string `json:"DiskId"`
-	DiskFeature         string `json:"DiskFeature"`
+	ReleaseWithInstance int    `json:"ReleaseWithInstance"` // 是否随实例释放(0:否,1:是)
+	DiskType            string `json:"DiskType"`            // 磁盘类型(system: 系统盘, data: 数据盘)
+	Name                string `json:"Name"`                // 磁盘名称(用户自定义或默认名称)
+	Size                int    `json:"Size"`                // 磁盘大小(GB)
+	DiskIops            int    `json:"DiskIops"`            // 磁盘IOPS
+	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
+	Unit                string `json:"Unit"`                // 单位
+	DiskId              string `json:"DiskId"`              // 磁盘ID
+	DiskFeature         string `json:"DiskFeature"`         // 磁盘特性
+	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
+	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
+	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
+	IsFollowDelete      int    `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
 }
 
+// DataDiskConfInfo 数据盘配置信息
 type DataDiskConfInfo struct {
-	ReleaseWithInstance int    `json:"ReleaseWithInstance"`
-	DiskType            string `json:"DiskType"`
-	Name                string `json:"Name"`
-	Size                int    `json:"Size"`
-	DiskIops            int    `json:"DiskIops"`
-	BandMbps            int    `json:"BandMbps"`
-	Unit                string `json:"Unit"`
-	Id                  string `json:"Id"`
-	DiskFeature         string `json:"DiskFeature"`
+	ReleaseWithInstance int    `json:"ReleaseWithInstance"` // 是否随实例释放(0:否,1:是)
+	DiskType            string `json:"DiskType"`            // 磁盘类型(system: 系统盘, data: 数据盘)
+	Name                string `json:"Name"`                // 磁盘名称(用户自定义或默认名称)
+	Size                int    `json:"Size"`                // 磁盘大小(GB)
+	DiskIops            int    `json:"DiskIops"`            // 磁盘IOPS
+	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
+	Unit                string `json:"Unit"`                // 单位
+	Id                  string `json:"Id"`                  // 磁盘ID
+	DiskFeature         string `json:"DiskFeature"`         // 磁盘特性
+	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
+	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
+	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
+	IsFollowDelete      int    `json:"IsFollowDelete"`      // 是否随实例删除(0: 否, 1: 是)
 }
 
+// PipeInfo 网络信息
 type PipeInfo struct {
-	VpcName    string              `json:"VpcName"`
-	VpcId      string              `json:"VpcId"`
-	SubnetId   string              `json:"SubnetId"`
-	SubnetName string              `json:"SubnetName"`
-	CreateTime string              `json:"CreateTime"`
-	PrivateNet string              `json:"PrivateNet"`
-	PubNet     string              `json:"PubNet"`
-	VirtualNet []interface{}       `json:"VirtualNet"`
-	EipInfo    map[string]*EipInfo `json:"EipInfo"`
+	VpcName    string              `json:"VpcName"`    // VPC名称
+	VpcId      string              `json:"VpcId"`      // VPC ID
+	SubnetId   string              `json:"SubnetId"`   // 子网ID
+	SubnetName string              `json:"SubnetName"` // 子网名称
+	CreateTime string              `json:"CreateTime"` // 创建时间
+	PrivateNet string              `json:"PrivateNet"` // 私网IP
+	PubNet     string              `json:"PubNet"`     // 公网IP
+	VirtualNet []interface{}       `json:"VirtualNet"` // 虚拟网络信息
+	EipInfo    map[string]*EipInfo `json:"EipInfo"`    // EIP信息
 }
 
+// EipInfo EIP信息
 type EipInfo struct {
-	ConfName      string `json:"ConfName"`
-	EipIp         string `json:"EipIp"`
-	CurrentUseQos int    `json:"CurrentUseQos"`
+	ConfName      string `json:"ConfName"`      // 配置名称
+	EipIp         string `json:"EipIp"`         // EIP地址
+	CurrentUseQos int    `json:"CurrentUseQos"` // 当前使用带宽
+	BandwidthName string `json:"BandwidthName"` // 带宽名称
 }
 
+// BillingInfo 计费信息
 type BillingInfo struct {
-	BillingMethod     string `json:"BillingMethod"`
-	BillingMethodName string `json:"BillingMethodName"`
-	BillingStatus     string `json:"BillingStatus"`
-	BillCycleId       string `json:"BillCycleId"`
+	BillingMethod       string `json:"BillingMethod"`       // 计费方式
+	BillingMethodName   string `json:"BillingMethodName"`   // 计费方式名称
+	BillingStatus       string `json:"BillingStatus"`       // 计费状态
+	BillCycleId         string `json:"BillCycleId"`         // 计费周期ID
+	BillingMethodStatus string `json:"BillingMethodStatus"` // 计费方式状态
 }
+
+// DescribeTaskEventReq DescribeTaskEvent接口请求参数
 type DescribeTaskEventReq struct {
-	EventId string `json:"EventId"`
+	EventId string `json:"EventId"` // 事件ID
 }
 
 func (req *DescribeTaskEventReq) check() error {
@@ -323,38 +412,42 @@ func (req *DescribeTaskEventReq) check() error {
 	return nil
 }
 
+// DescribeTaskEventResult DescribeTaskEvent接口响应结果
 type DescribeTaskEventResult struct {
 	OpenApiCommonResp
-	Data *EventResultData `json:"Data"`
+	Data *EventResultData `json:"Data"` // 事件结果数据
 }
 
+// EventResultData 事件结果数据
 type EventResultData struct {
-	EventId            string          `json:"EventId"`
-	EventStatus        string          `json:"EventStatus"`
-	EventStatusDisplay string          `json:"EventStatusDisplay"`
-	EventType          string          `json:"EventType"`
-	EventTypeDisplay   string          `json:"EventTypeDisplay"`
-	CreateTime         string          `json:"CreateTime"`
-	TaskList           []*TaskListInfo `json:"TaskList"`
+	EventId            string          `json:"EventId"`            // 事件ID
+	EventStatus        string          `json:"EventStatus"`        // 事件状态
+	EventStatusDisplay string          `json:"EventStatusDisplay"` // 事件状态显示名称
+	EventType          string          `json:"EventType"`          // 事件类型
+	EventTypeDisplay   string          `json:"EventTypeDisplay"`   // 事件类型显示名称
+	CreateTime         string          `json:"CreateTime"`         // 创建时间
+	TaskList           []*TaskListInfo `json:"TaskList"`           // 任务列表
 }
 
+// TaskListInfo 任务列表信息
 type TaskListInfo struct {
-	TaskId          string `json:"TaskId"`
-	Status          string `json:"Status"`
-	StatusDisplay   string `json:"StatusDisplay"`
-	ResourceId      string `json:"ResourceId"`
-	CreateTime      string `json:"CreateTime"`
-	UpdateTime      string `json:"UpdateTime"`
-	EndTime         string `json:"EndTime"`
-	ResourceType    string `json:"ResourceType"`
-	ResourceDisplay string `json:"ResourceDisplay"`
-	TaskType        string `json:"TaskType"`
-	TaskTypeDisplay string `json:"TaskTypeDisplay"`
+	TaskId          string `json:"TaskId"`          // 任务ID
+	Status          string `json:"Status"`          // 任务状态
+	StatusDisplay   string `json:"StatusDisplay"`   // 任务状态显示名称
+	ResourceId      string `json:"ResourceId"`      // 资源ID
+	CreateTime      string `json:"CreateTime"`      // 创建时间
+	UpdateTime      string `json:"UpdateTime"`      // 更新时间
+	EndTime         string `json:"EndTime"`         // 结束时间
+	ResourceType    string `json:"ResourceType"`    // 资源类型
+	ResourceDisplay string `json:"ResourceDisplay"` // 资源显示名称
+	TaskType        string `json:"TaskType"`        // 任务类型
+	TaskTypeDisplay string `json:"TaskTypeDisplay"` // 任务类型显示名称
 }
 
+// DescribeEcsFamilyInfoReq DescribeEcsFamilyInfo接口请求参数
 type DescribeEcsFamilyInfoReq struct {
-	AvailableZoneCode string        `json:"AvailableZoneCode"`
-	BillingMethod     billingMethod `json:"BillingMethod"`
+	AvailableZoneCode string        `json:"AvailableZoneCode"` // 可用区代码
+	BillingMethod     billingMethod `json:"BillingMethod"`     // 计费方式
 }
 
 func (req *DescribeEcsFamilyInfoReq) check() error {
@@ -367,35 +460,41 @@ func (req *DescribeEcsFamilyInfoReq) check() error {
 	return nil
 }
 
+// DescribeEcsFamilyInfoResult DescribeEcsFamilyInfo接口响应结果
 type DescribeEcsFamilyInfoResult struct {
 	OpenApiCommonResp
-	Data FamilyData `json:"Data"`
+	Data FamilyData `json:"Data"` // 规格族数据
 }
 
+// FamilyData 规格族数据
 type FamilyData struct {
-	EcsFamilyInfo []*FamilyInfo `json:"EcsFamilyInfo"`
+	EcsFamilyInfo []*FamilyInfo `json:"EcsFamilyInfo"` // ECS规格族信息列表
 }
 
+// FamilyInfo 规格族信息
 type FamilyInfo struct {
-	EcsFamilyName string          `json:"EcsFamilyName"`
-	SpecList      []*SpecListInfo `json:"SpecList"`
+	EcsFamilyName string          `json:"EcsFamilyName"` // ECS规格族名称
+	SpecList      []*SpecListInfo `json:"SpecList"`      // 规格列表
 }
 
+// SpecListInfo 规格列表信息
 type SpecListInfo struct {
-	GpuShowType      string `json:"GpuShowType"`
-	GpuTypeId        string `json:"GpuTypeId"`
-	Cpu              int    `json:"Cpu"`
-	Ram              int    `json:"Ram"`
-	Gpu              int    `json:"Gpu"`
-	SupportGpuDriver string `json:"SupportGpuDriver"`
+	GpuShowType      string `json:"GpuShowType"`      // GPU显示类型
+	GpuTypeId        string `json:"GpuTypeId"`        // GPU类型ID
+	Cpu              int    `json:"Cpu"`              // CPU核心数
+	Ram              int    `json:"Ram"`              // 内存大小(GB)
+	Gpu              int    `json:"Gpu"`              // GPU数量
+	SupportGpuDriver string `json:"SupportGpuDriver"` // 支持的GPU驱动
 }
+
+// ChangeInstanceConfigureReq ChangeInstanceConfigure接口请求参数
 type ChangeInstanceConfigureReq struct {
-	EcsIds            []string `json:"EcsIds"`
-	AvailableZoneCode string   `json:"AvailableZoneCode"`
-	EcsFamilyName     string   `json:"EcsFamilyName"`
-	Cpu               int      `json:"Cpu"`
-	Ram               int      `json:"Ram"`
-	Gpu               int      `json:"Gpu"`
+	EcsIds            []string `json:"EcsIds"`            // 实例ID列表
+	AvailableZoneCode string   `json:"AvailableZoneCode"` // 可用区代码
+	EcsFamilyName     string   `json:"EcsFamilyName"`     // 实例规格族名称
+	Cpu               int      `json:"Cpu"`               // CPU核心数
+	Ram               int      `json:"Ram"`               // 内存大小(GB)
+	Gpu               int      `json:"Gpu"`               // GPU数量
 }
 
 func (req *ChangeInstanceConfigureReq) check() error {
@@ -418,14 +517,16 @@ func (req *ChangeInstanceConfigureReq) check() error {
 	return nil
 }
 
+// ChangeInstanceConfigureResult ChangeInstanceConfigure接口响应结果
 type ChangeInstanceConfigureResult struct {
 	OpenApiCommonResp
-	Data *EventIdData `json:"Data"`
+	Data *EventIdData `json:"Data"` // 事件ID数据
 }
 
+// ExtendDiskReq ExtendDisk接口请求参数
 type ExtendDiskReq struct {
-	DiskId       string `json:"DiskId"`
-	ExtendedSize int    `json:"ExtendedSize"`
+	DiskId       string `json:"DiskId"`       // 磁盘ID
+	ExtendedSize int    `json:"ExtendedSize"` // 扩展后的大小(GB)
 }
 
 func (req *ExtendDiskReq) check() error {
@@ -439,7 +540,8 @@ func (req *ExtendDiskReq) check() error {
 	return nil
 }
 
+// ExtendDiskResult ExtendDisk接口响应结果
 type ExtendDiskResult struct {
 	OpenApiCommonResp
-	Data *EventIdData `json:"Data"`
+	Data *EventIdData `json:"Data"` // 事件ID数据
 }

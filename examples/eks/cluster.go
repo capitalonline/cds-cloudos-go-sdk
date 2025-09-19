@@ -239,10 +239,7 @@ func AddClusterSubnet() {
 	params := eks.AddClusterSubnetReq{
 		// 集群ID
 		ClusterId: "861deabe-832d-4266-ade5-4aa411104a68",
-		SubnetList: []eks.ClusterSubnet{{
-			// 需要使用的子网的ID
-			SubnetId: "cc2ff5e6-74f2-11f0-bd15-0a6c401afcb2",
-		}},
+		SubnetIds: []string{"cc2ff5e6-74f2-11f0-bd15-0a6c401afcb2", "cc2ff5e6-74f2-11f0-bd15-0a6c401afcb3"},
 	}
 	response, err := eksClient.AddClusterSubnet(&params)
 	if err != nil {
