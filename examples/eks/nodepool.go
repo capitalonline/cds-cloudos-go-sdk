@@ -9,7 +9,7 @@ import (
 
 // CreateECSNodePool 创建 ECS-CPU云主机 节点池（按需付费）
 func CreateECSNodePool() {
-	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
+	ak, sk := "your-ak", "your-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
@@ -17,7 +17,7 @@ func CreateECSNodePool() {
 		ClusterId: "d83c9968-5950-478f-b657-bd63ce869206",
 		VpcId:     "29b1a746-874a-11f0-a3b8-ce9cb1dc408c",
 		Config: eks.NodePoolConfiguration{
-			PoolName: "ecs-cpu-node-pool-0909-A",
+			PoolName: "ecs-cpu-node-pool-01",
 			NodeType: eks.NodePoolNodeTypeECS,
 			// SubjectId 测试金项目ID; 如果没有申请默认不传或传0; 如需申请请联系销售
 			SubjectId: 0,
@@ -43,7 +43,7 @@ func CreateECSNodePool() {
 					},
 				},
 				//OsImageName 实例镜像名称，根据您的k8s版本，CPU/GPU实例类型按需选择
-				OsImageName: "Ubuntu22.04-CPU-1.26",
+				OsImageName: eks.EcsUbuntu2204K8s13014Cpu,
 
 				// SubnetIds VPC子网ID,支持多选，必须是同一可用区
 				SubnetIds: []string{"29b72338-874a-11f0-a3b8-ce9cb1dc408c"},
@@ -55,7 +55,7 @@ func CreateECSNodePool() {
 				},
 
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
-				Password: "n00wfdWLDcxBEK8hedTemm226I",
+				Password: "YourPassword12",
 
 				// Shell 节点初始化完成后执行脚本命令
 				Shell: "#!/bin/bash\necho 'ECS CPU Node initialization complete'",
@@ -77,7 +77,6 @@ func CreateECSNodePool() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -135,14 +134,13 @@ func CreateECSGPUNodePool() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
 // CreateBMSNodePoolPostPaid 创建 BMS-GPU裸金属 节点池（按需付费）
 func CreateBMSNodePoolPostPaid() {
-	ak, sk := "a37e2b425ee411ef97433293ad7453f8", "57324ec8f5eb3f44750a66da2baed989"
+	ak, sk := "your-ak", "your-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
@@ -173,10 +171,10 @@ func CreateBMSNodePoolPostPaid() {
 				},
 
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
-				Password: "YourPassword123!YourPassword12",
+				Password: "YourPassword123!",
 
 				// Shell 节点初始化完成后执行脚本命令
-				Shell: "#!/bin/bash\necho 'BMS GPU PostPaid Node initialization complete'",
+				Shell: "",
 			},
 			Replicas: 1, // 裸金属通常数量较少且昂贵
 		},
@@ -188,7 +186,6 @@ func CreateBMSNodePoolPostPaid() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -238,29 +235,27 @@ func CreateBMSNodePoolPrePaid() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
 // ListNodePool 查询节点池列表
 func ListNodePool() {
-	ak, sk := "9bd55e4e690911f08df94ecd222a1a90", "48b783acb17483a9e4639a80c25f0b46"
+	ak, sk := "your-ak", "your-sk"
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.ListNodePoolReq{
 		ClusterId:  "ef061d2f-e880-48cb-9a27-9f897b6c0d34",
 		NodePoolId: "ca2d2e38-f10d-4df8-b183-28eb0510c81a",
-		Filter:     "nodepool",
+		Filter:     "nodePool",
 	}
 
 	response, err := eksClient.ListNodePool(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -283,7 +278,6 @@ func ScaleNodePool() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -295,8 +289,8 @@ func DeleteNodePool() {
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.DeleteNodePoolReq{
-		ClusterId:  "cluster-xxxxx",
-		NodePoolId: "nodepool-xxxxx",
+		ClusterId:  "clusterId",
+		NodePoolId: "nodePoolId",
 	}
 
 	response, err := eksClient.DeleteNodePool(req)
@@ -305,11 +299,6 @@ func DeleteNodePool() {
 	}
 	fmt.Printf(">>> response: %+v", response)
 
-	fmt.Println(response.RequestId)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
-}
-
-func main() {
-	CreateECSNodePool()
 }

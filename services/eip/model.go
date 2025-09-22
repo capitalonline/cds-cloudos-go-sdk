@@ -94,7 +94,7 @@ type GetEipResult struct {
 }
 
 type ListEipsReq struct {
-	Keyword           string `json:"PageNumber,omitempty"`
+	Keyword           string `json:"Keyword,omitempty"`
 	RegionCode        string `json:"RegionCode"`
 	AvailableZoneCode string `json:"AvailableZoneCode,omitempty"`
 }

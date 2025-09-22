@@ -35,7 +35,57 @@
 
 ### 代码示例
 
+#### 使用示例
+
 [查看示例代码](../examples/ecs/ecs.go)
+
+#### mock示例
+
+安装代码mock代码工具：
+
+```bash
+go install go.uber.org/mock/mockgen@latest
+```
+
+生成mock代码参考：
+
+```
+mockgen -source=cds-cloudos-go-sdk/services/ecs/ecs.go -destination=cds-cloudos-go-sdk/services/ecs/mockgen.go -package=mock
+```
+
+代码使用参考：
+
+`````go
+package main
+
+import (
+	"testing"
+    
+	"self/mock"
+    
+	"go.uber.org/mock/gomock"
+)
+
+func TestEcsExamples(t *testing.T) {
+	// 创建GoMock控制器
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	// 创建mock客户端
+	mockClient := mock.NewMockClient(ctrl)
+
+	// 测试describeRegions函数
+	t.Run("TestDescribeRegions", func(t *testing.T) {
+		// 设置期望的调用
+		mockClient.EXPECT().DescribeRegions().Return(&ecs.DescribeRegionsResult{}, nil)
+
+		// 执行测试
+		describeRegions(mockClient)
+	})
+}
+`````
+
+
 
 
 ### 公共参数
@@ -315,6 +365,8 @@
 | ---- | ---------------------------- | ---------- |
 | Data | *[EventIdData](#EventIdData) | 事件ID数据 |
 
+***注：若提示需要验证码，可前往[首云-综合管理-设置](https://c2.capitalonline.net/portal/webapps/setUp)禁用重置密码验证***
+
 ### DescribeInstanceList
 
 *获取云服务器列表*
@@ -439,35 +491,35 @@
 
 ##### InstanceData
 
-| 参数                | 类型                                   | 说明             |
-| ------------------- | -------------------------------------- | ---------------- |
-| EcsId               | string                                 | 实例ID           |
-| EcsName             | string                                 | 实例名称         |
-| RegionId            | string                                 | 区域ID           |
-| RegionName          | string                                 | 区域名称         |
-| AzId                | string                                 | 可用区ID         |
-| AzName              | string                                 | 可用区名称       |
-| Status              | string                                 | 实例状态         |
-| StatusDisplay       | string                                 | 实例状态显示名称 |
-| CreateTime          | string                                 | 创建时间         |
-| Duration            | int                                    | 运行时长         |
-| EndBillTime         | string                                 | 计费结束时间     |
-| IsAutoRenewal       | string                                 | 是否自动续费     |
-| TimeZone            | string                                 | 时区             |
-| IsGpu               | bool                                   | 是否为 GPU 实例  |
-| IsToMonth           | int                                    | 是否按月计费     |
-| RealCardName        | string                                 | GPU 实际型号     |
-| SecurityGroup       | list                                   | 安全组           |
-| StockRelease        | bool                                   | 库存释放标志     |
-| Supplier            | string                                 | 实例供应商       |
-| SystemDiskFeature   | string                                 | 系统盘类型       |
-| Tag                 | list                                   | 标签             |
-| NoChargeForShutdown | int                                    | 关机是否收费     |
-| EcsRule             | *[InstanceRuleInfo](#InstanceRuleInfo) | 实例规格信息     |
-| OsInfo              | *[OsInfo](#OsInfo)                     | 操作系统信息     |
-| Disk                | *[DiskInfo](#DiskInfo)                 | 磁盘信息         |
-| Pipe                | *[PipeInfo](#PipeInfo)                 | 网络信息         |
-| BillingInfo         | *[BillingInfo](#BillingInfo)           | 计费信息         |
+| 参数                | 类型                                   | 说明                                                       |
+| ------------------- | -------------------------------------- | ---------------------------------------------------------- |
+| EcsId               | string                                 | 实例ID                                                     |
+| EcsName             | string                                 | 实例名称                                                   |
+| RegionId            | string                                 | 区域ID                                                     |
+| RegionName          | string                                 | 区域名称                                                   |
+| AzId                | string                                 | 可用区ID                                                   |
+| AzName              | string                                 | 可用区名称                                                 |
+| Status              | string                                 | 云服务器状态码，参考 [云服务器状态说明](#云服务器状态说明) |
+| StatusDisplay       | string                                 | 实例状态显示名称                                           |
+| CreateTime          | string                                 | 创建时间                                                   |
+| Duration            | int                                    | 运行时长                                                   |
+| EndBillTime         | string                                 | 计费结束时间                                               |
+| IsAutoRenewal       | string                                 | 是否自动续费                                               |
+| TimeZone            | string                                 | 时区                                                       |
+| IsGpu               | bool                                   | 是否为 GPU 实例                                            |
+| IsToMonth           | int                                    | 是否按月计费                                               |
+| RealCardName        | string                                 | GPU 实际型号                                               |
+| SecurityGroup       | list                                   | 安全组                                                     |
+| StockRelease        | bool                                   | 库存释放标志                                               |
+| Supplier            | string                                 | 实例供应商                                                 |
+| SystemDiskFeature   | string                                 | 系统盘类型                                                 |
+| Tag                 | list                                   | 标签                                                       |
+| NoChargeForShutdown | int                                    | 关机是否收费                                               |
+| EcsRule             | *[InstanceRuleInfo](#InstanceRuleInfo) | 实例规格信息                                               |
+| OsInfo              | *[OsInfo](#OsInfo)                     | 操作系统信息                                               |
+| Disk                | *[DiskInfo](#DiskInfo)                 | 磁盘信息                                                   |
+| Pipe                | *[PipeInfo](#PipeInfo)                 | 网络信息                                                   |
+| BillingInfo         | *[BillingInfo](#BillingInfo)           | 计费信息                                                   |
 
 ##### InstanceRuleInfo
 
@@ -597,10 +649,10 @@
 
 ##### InstanceEcsStatusData
 
-| 参数名        | 类型   | 描述   |
-| ------------- | ------ | ------ |
-| Status        | string | 状态码 |
-| StatusDisplay | string | 状态   |
+| 参数名        | 类型   | 描述                                                       |
+| ------------- | ------ | ---------------------------------------------------------- |
+| Status        | string | 云服务器状态码，参考 [云服务器状态说明](#云服务器状态说明) |
+| StatusDisplay | string | 状态中文描述                                               |
 
 ### OperateInstance
 
@@ -610,13 +662,13 @@
 
 ##### OperateInstanceReq
 
-| 参数名    | 类型                           | 必填 | 描述                                                         |
-| --------- | ------------------------------ | ---- | ------------------------------------------------------------ |
-| EcsIds    | string                         | 是   | 实例ID列表                                                   |
-| OpType    | [operate](#operate-云主机操作) | 是   | [云服务器操作](#operate-云服务器操作)                        |
-| DeleteEip | int                            | 否   | 公网释放选项，仅在关机不计费情况生效(0:保留公网IP,1:释放公网IP) |
+| 参数名    | 类型                | 必填 | 描述                                                         |
+| --------- | ------------------- | ---- | ------------------------------------------------------------ |
+| EcsIds    | string              | 是   | 实例ID列表                                                   |
+| OpType    | [operate](#operate) | 是   | [云服务器操作](#operate)                                     |
+| DeleteEip | int                 | 否   | 公网释放选项，仅在关机不计费情况生效(0:保留公网IP,1:释放公网IP) |
 
-##### operate-云服务器操作
+##### operate
 
 | 常量名               | 类型   | 值                | 描述                                                         |
 | -------------------- | ------ | ----------------- | ------------------------------------------------------------ |
