@@ -825,38 +825,42 @@ type ChangeInstanceConfigureResult struct {
 	Data *EventIdData `json:"Data"` // 事件ID数据
 }
 
+// DescribeImagesReq DescribeImages接口请求参数
 type DescribeImagesReq struct {
 	AvailableZoneCode string   `json:"AvailableZoneCode"` // 可用区代码
-	ImageIds          []string `json:"ImageIds"`
+	ImageIds          []string `json:"ImageIds"`          // 镜像id列表
 }
 
+// DescribeImagesResult DescribeImages接口响应结果
 type DescribeImagesResult struct {
 	OpenApiCommonResp
-	Data *ImageList `json:"Data"` // 事件ID数据
+	Data *ImageList `json:"Data"` // 镜像列表
 }
 
+// ImageList 镜像列表
 type ImageList struct {
-	ImageList []*ImageInfo `json:"ImageList"`
+	ImageList []*ImageInfo `json:"ImageList"` // 镜像信息
 }
 
+// ImageInfo 镜像信息
 type ImageInfo struct {
-	AvailableZoneCode string   `json:"AvailableZoneCode"`
-	AzId              string   `json:"AzId"`
-	AzName            string   `json:"AzName"`
-	CreateTime        string   `json:"CreateTime"`
-	ImageId           string   `json:"ImageId"`
-	ImageName         string   `json:"ImageName"`
-	IsOptimized       int      `json:"IsOptimized"`
-	OsBit             int      `json:"OsBit"`
-	OsSize            int      `json:"OsSize"`
-	OsType            string   `json:"OsType"`
-	OsVersion         string   `json:"OsVersion"`
-	Status            string   `json:"Status"`
-	StatusDisplay     string   `json:"StatusDisplay"`
-	SupportGpuDriver  string   `json:"SupportGpuDriver"`
-	SupportType       []string `json:"SupportType"`
-	TemplateType      string   `json:"TemplateType"`
-	Username          string   `json:"Username"`
+	AvailableZoneCode string   `json:"AvailableZoneCode"` // 可用区code
+	AzId              string   `json:"AzId"`              // 可用区ID
+	AzName            string   `json:"AzName"`            // 可用区名称
+	CreateTime        string   `json:"CreateTime"`        // 创建时间
+	ImageId           string   `json:"ImageId"`           // 镜像id
+	ImageName         string   `json:"ImageName"`         // 镜像名称
+	IsOptimized       int      `json:"IsOptimized"`       // 镜像是否开启优化选项，1为开启，0为不开启
+	OsBit             int      `json:"OsBit"`             // 系统位数
+	OsSize            int      `json:"OsSize"`            // 镜像容量(GB)
+	OsType            string   `json:"OsType"`            // 镜像类型
+	OsVersion         string   `json:"OsVersion"`         // 镜像版本
+	Status            string   `json:"Status"`            // 镜像状态code
+	StatusDisplay     string   `json:"StatusDisplay"`     // 镜像状态中文
+	SupportGpuDriver  string   `json:"SupportGpuDriver"`  // 支持的GPU驱动类型
+	SupportType       []string `json:"SupportType"`       // 支持类型
+	TemplateType      string   `json:"TemplateType"`      // 公共镜像为public，私有镜像为private
+	Username          string   `json:"Username"`          // 用户名称
 }
 
 // ExtendDiskReq ExtendDisk接口请求参数

@@ -69,6 +69,23 @@
 | OnDemandBillingMethod | string | "0"  | 按需计费 |
 | MonthlyBillingMethod  | string | "1"  | 包月     |
 
+#### DiskFeature
+
+| 常量名           | 类型   | 值      | 描述    |
+| ---------------- | ------ | ------- | ------- |
+| LocalDiskFeature | string | "local" | 本地盘  |
+| SsdDiskFeature   | string | "ssd"   | ssd云盘 |
+
+#### bandwidthType
+
+| 常量名         | 类型   | 值               | 描述         |
+| -------------- | ------ | ---------------- | ------------ |
+| Bandwidth      | string | "Bandwidth"      | 固定带宽     |
+| BandwidthMonth | string | "BandwidthMonth" | 固定带宽包月 |
+| Traffic        | string | "Traffic"        | 流量按需     |
+
+
+
 ## SDK接口列表
 
 - [x] ECS弹性GPU云服务器
@@ -76,14 +93,18 @@
     - [x] 公共
         - [x] [DescribeRegions：获取可用区信息](#DescribeRegions)
         - [x] [DescribeTaskEvent：获取任务事件信息](#DescribeTaskEvent)
-
-    - [X] GPU云服务器相关
-        - [X] [DescribeInstanceList：获取云服务器列表](#DescribeInstanceList)
-        - [X] [DescribeInstance：获取云服务器详情 ](#DescribeInstance)
+    - [x] GPU云服务器相关
+        - [x] [CreateInstance：创建云服务器](#CreateInstance)
+        - [x] [DeleteInstance：删除云服务器](#DeleteInstance)
+        - [x] [ModifyInstancePassword：更改云服务器密码](#ModifyInstancePassword)
+        - [x] [DescribeInstanceList：获取云服务器列表](#DescribeInstanceList)
+        - [x] [DescribeInstance：获取云服务器详情 ](#DescribeInstance)
+        - [x] [DescribeInstanceStatus：批量获取云服务器状态](#DescribeInstanceStatus)
         - [X] [OperateInstance：操作云服务器](#OperateInstance)
         - [X] [ModifyInstanceName：修改云服务器名称](#ModifyInstanceName)
         - [X] [DescribeEcsFamilyInfo：获取规格信息](#DescribeEcsFamilyInfo)
-        - [X] [ChangeInstanceConfigure：更变云服务器规格](#ChangeInstanceConfigure)
+        - [x] [ChangeInstanceConfigure：更变云服务器规格](#ChangeInstanceConfigure)
+        - [x] [DescribeImages：获取镜像信息](#DescribeImages)
     - [X] 云盘相关
         - [x] [ExtendDisk：云盘扩容](#ExtendDisk)
 
@@ -156,19 +177,143 @@
 
 ##### TaskListInfo
 
-| 参数名          | 类型 | 描述             |
-| --------------- | ---- | ---------------- |
-| TaskId          |      | 任务ID           |
-| Status          |      | 任务状态         |
-| StatusDisplay   |      | 任务状态显示名称 |
-| ResourceId      |      | 资源ID           |
-| CreateTime      |      | 创建时间         |
-| UpdateTime      |      | 更新时间         |
-| EndTime         |      | 结束时间         |
-| ResourceType    |      | 资源类型         |
-| ResourceDisplay |      | 资源显示名称     |
-| TaskType        |      | 任务类型         |
-| TaskTypeDisplay |      | 任务类型显示名称 |
+| 参数名          | 类型   | 描述             |
+| --------------- | ------ | ---------------- |
+| TaskId          | string | 任务ID           |
+| Status          | string | 任务状态         |
+| StatusDisplay   | string | 任务状态显示名称 |
+| ResourceId      | string | 资源ID           |
+| CreateTime      | string | 创建时间         |
+| UpdateTime      | string | 更新时间         |
+| EndTime         | string | 结束时间         |
+| ResourceType    | string | 资源类型         |
+| ResourceDisplay | string | 资源显示名称     |
+| TaskType        | string | 任务类型         |
+| TaskTypeDisplay | string | 任务类型显示名称 |
+
+### CreateInstance
+
+创建云服务器
+
+#### 参数说明
+
+##### CreateInstanceReq
+
+| 参数名            | 类型                                                         | 必填 | 描述                                                         |
+| ----------------- | ------------------------------------------------------------ | ---- | ------------------------------------------------------------ |
+| Name              | string                                                       | 否   | 云服务器名,不传自动赋予（自动命名规则：ecs-创建日期）        |
+| Password          | string                                                       | 是   | 登录密码                                                     |
+| AvailableZoneCode | string                                                       | 是   | 可用区代码筛选，参考[AzInfo](#AzInfo).AvailableZoneCode      |
+| EcsFamilyName     | string                                                       | 是   | 规格族名称,参考[FamilyInfo](#FamilyInfo).EcsFamilyName       |
+| UtcTime           | int                                                          | 否   | 是否utc时间，1:是  0:否 默认为0（UTC+8，上海时间）           |
+| Cpu               | int                                                          | 是   | Cpu                                                          |
+| Ram               | int                                                          | 是   | 内存                                                         |
+| Gpu               | int                                                          | 否   | 显卡数量，默认为0                                            |
+| Number            | int                                                          | 否   | 购买数量，默认为1（默认批量最大值为100台）                   |
+| BillingMethod     | string                                                       | 是   | [计费方式](#billingMethod)                                   |
+| ImageId           | string                                                       | 是   | 镜像id或者镜像名称，参考[ImageInfo](#ImageInfo).ImageId或者[ImageInfo](#ImageInfo).ImageName |
+| SystemDisk        | *[CreateInstanceDiskData](#CreateInstanceDiskData)           | 是   | 系统盘信息                                                   |
+| DataDisk          | []*[CreateInstanceDiskData](#CreateInstanceDiskData)         | 否   | 数据盘信息，仅支持云盘                                       |
+| VpcInfo           | *[CreateInstanceVpcInfo](#CreateInstanceVpcInfo)             | 是   | vpc信息                                                      |
+| SubnetInfo        | *[CreateInstanceSubnetInfo](#CreateInstanceSubnetInfo)       | 是   | 私有网络信息                                                 |
+| SecurityGroups    | []*[CreateInstanceSecurityGroupData](#CreateInstanceSecurityGroupData) | 否   | 安全组列表，安全组优先级按顺序由高到低                       |
+| StartNumber       | int                                                          | 否   | 云服务器名称编号起始数字，不需要服务器编号可不传             |
+| Duration          | int                                                          | 否   | 只在包月算价时有意义，以月份为单位，一年值为12，大于一年要输入12的整数倍，最大值36(3年) |
+| IsToMonth         | int                                                          | 否   | 包月是否到月底 1:是  0:否 默认为1                            |
+| DnsList           | list                                                         | 否   | dns 解析 需要两个元素  [主dns，从dns]，不选采用默认通用DNS   |
+| PubnetInfo        | *[CreateInstancePubnetInfo](#CreateInstancePubnetInfo)       | 否   | 支持新分配公网IP和绑定已有的公网IP                           |
+| TestAccount       | string                                                       | 否   | 测试账户名称                                                 |
+| IsAutoRenewal     | int                                                          | 否   | 是否自动续约，包月时需传。1:是  0:否 默认为1                 |
+
+##### CreateInstanceDiskData
+
+| 参数名              | 类型   | 必填 | 描述                                                         |
+| ------------------- | ------ | ---- | ------------------------------------------------------------ |
+| DiskFeature         | string | 是   | [盘类型](#DiskFeature)                                       |
+| Size                | int    | 是   | 盘大小                                                       |
+| SnapshotId          | string | 否   | 快照id,通过此快照创建数据盘                                  |
+| ReleaseWithInstance | int    | 否   | 是否随实例删除:1:随实例删除,0:不随实例删除.不传默认随实例删除 |
+
+##### CreateInstanceVpcInfo
+
+| 参数名 | 类型   | 必填 | 描述       |
+| ------ | ------ | ---- | ---------- |
+| VpcId  | string | 是   | 私有网络id |
+
+##### CreateInstanceSubnetInfo
+
+| 参数名    | 类型   | 必填 | 描述                                              |
+| --------- | ------ | ---- | ------------------------------------------------- |
+| SubnetId  | string | 是   | 子网id                                            |
+| IpAddress | list   | 否   | 指定私网IP列表,列表中的IP个数与创建云主机个数一致 |
+
+##### CreateInstanceSecurityGroupData
+
+| 参数名          | 类型   | 必填 | 描述            |
+| --------------- | ------ | ---- | --------------- |
+| SecurityGroupId | string | 是   | SecurityGroupId |
+
+##### CreateInstancePubnetInfo
+
+| 参数名            | 类型   | 必填 | 描述                                                         |
+| ----------------- | ------ | ---- | ------------------------------------------------------------ |
+| SubnetId          | string | 是   | 子网id;若使用虚拟出网网关IP绑定公网IP则传虚拟出网网关id      |
+| BandwidthConfName | string | 否   | 带宽线路名称.使用新创建的vpp网络需要指定线路名称.例如：电信、联通 |
+| IpType            | string | 否   | 若使用虚拟出网网关必填.默认出网网关:"default_gateway",虚拟网关：”virtual” |
+| EipIds            | string | 否   | 绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致 |
+| BandwidthType     | string | 否   | [带宽类型](#bandwidthType)，若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"） |
+| Qos               | int    | 否   | 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写            |
+
+##### CreateInstanceResult
+
+| 参数 | 类型                                         | 说明           |
+| ---- | -------------------------------------------- | -------------- |
+| Data | *[CreateInstanceEvent](#CreateInstanceEvent) | 创建实例id信息 |
+
+##### CreateInstanceEvent
+
+| 参数     | 类型   | 说明             |
+| -------- | ------ | ---------------- |
+| EventId  | string | 事件id           |
+| EcsIdSet | list   | 创建的资源id列表 |
+
+### DeleteInstance
+
+删除云服务器
+
+#### 参数说明
+
+##### DeleteInstanceReq
+
+| 参数名    | 类型 | 必填 | 描述                                            |
+| --------- | ---- | ---- | ----------------------------------------------- |
+| EcsIds    | list | 是   | 云服务器id列表                                  |
+| DeleteEip | int  | 否   | 1:解绑并删除服务器绑定的EIP，0:解绑EIP  默认为0 |
+
+##### DeleteInstanceResult
+
+| 参数 | 类型                         | 说明       |
+| ---- | ---------------------------- | ---------- |
+| Data | *[EventIdData](#EventIdData) | 事件ID数据 |
+
+### ModifyInstancePassword
+
+更改云服务器密码
+
+#### 参数说明
+
+##### ModifyInstancePasswordReq
+
+| 参数名   | 类型   | 必填 | 描述           |
+| -------- | ------ | ---- | -------------- |
+| EcsIds   | list   | 是   | 云服务器id列表 |
+| Password | string | 是   | 新密码         |
+
+##### ModifyInstancePasswordResult
+
+| 参数 | 类型                         | 说明       |
+| ---- | ---------------------------- | ---------- |
+| Data | *[EventIdData](#EventIdData) | 事件ID数据 |
 
 ### DescribeInstanceList
 
@@ -426,6 +571,37 @@
 | BillCycleId         | string | 计费周期ID                 |
 | BillingMethodStatus | string | 计费方式状态               |
 
+### DescribeInstanceStatus
+
+批量获取云服务器状态
+
+#### 参数说明
+
+##### DescribeInstanceStatusReq
+
+| 参数名 | 类型 | 必填 | 描述         |
+| ------ | ---- | ---- | ------------ |
+| EcsIds | list | 是   | 云服务器列表 |
+
+##### DescribeInstanceStatusResult
+
+| 参数名 | 类型                                             | 描述             |
+| ------ | ------------------------------------------------ | ---------------- |
+| Data   | *[InstanceEcsStatusInfo](#InstanceEcsStatusInfo) | 云服务器状态信息 |
+
+##### InstanceEcsStatusInfo
+
+| 参数名    | 类型                                                        | 描述                          |
+| --------- | ----------------------------------------------------------- | ----------------------------- |
+| EcsStatus | map[string]*[InstanceEcsStatusData](#InstanceEcsStatusData) | 云服务器状态字典，key为实例id |
+
+##### InstanceEcsStatusData
+
+| 参数名        | 类型   | 描述   |
+| ------------- | ------ | ------ |
+| Status        | string | 状态码 |
+| StatusDisplay | string | 状态   |
+
 ### OperateInstance
 
 *批量操作云服务器：开机、关机、重启*
@@ -543,20 +719,67 @@
 
 ##### ChangeInstanceConfigureReq
 
-| 参数名            | 类型   | 必填 | 描述           |
-| ----------------- | ------ | ---- | -------------- |
-| EcsIds            | list   | 是   | 实例ID列表     |
-| AvailableZoneCode | string | 是   | 可用区代码     |
-| EcsFamilyName     | string | 是   | 实例规格族名称 |
-| Cpu               | int    | 是   | CPU核心数      |
-| Ram               | int    | 是   | 内存大小(GB)   |
-| Gpu               | int    | 否   | GPU数量        |
+| 参数名            | 类型   | 必填 | 描述                                                       |
+| ----------------- | ------ | ---- | ---------------------------------------------------------- |
+| EcsIds            | list   | 是   | 实例ID列表                                                 |
+| AvailableZoneCode | string | 是   | 可用区代码                                                 |
+| EcsFamilyName     | string | 是   | 实例规格族名称,参考[FamilyInfo](#FamilyInfo).EcsFamilyName |
+| Cpu               | int    | 是   | CPU核心数                                                  |
+| Ram               | int    | 是   | 内存大小(GB)                                               |
+| Gpu               | int    | 否   | GPU数量                                                    |
 
 ##### ChangeInstanceConfigureResult
 
 | 参数名 | 类型                         | 描述       |
 | ------ | ---------------------------- | ---------- |
 | Data   | *[EventIdData](#EventIdData) | 事件ID数据 |
+
+### DescribeImages
+
+获取镜像信息
+
+#### 参数说明
+
+##### DescribeImagesReq
+
+| 参数名            | 类型   | 必填 | 描述                                                |
+| ----------------- | ------ | ---- | --------------------------------------------------- |
+| AvailableZoneCode | string | 否   | 可用区代码，参考[AzInfo](#AzInfo).AvailableZoneCode |
+| ImageIds          | list   | 否   | 镜像id列表                                          |
+
+##### DescribeImagesResult
+
+| 参数名 | 类型                     | 描述     |
+| ------ | ------------------------ | -------- |
+| Data   | *[ImageList](#ImageList) | 镜像列表 |
+
+##### ImageList
+
+| 参数名    | 类型                       | 描述     |
+| --------- | -------------------------- | -------- |
+| ImageList | []*[ImageInfo](#ImageInfo) | 镜像信息 |
+
+##### ImageInfo
+
+| 参数名            | 类型   | 描述                                     |
+| ----------------- | ------ | ---------------------------------------- |
+| AvailableZoneCode | string | 可用区code                               |
+| AzId              | string | 可用区ID                                 |
+| AzName            | string | 可用区名称                               |
+| CreateTime        | string | 创建时间                                 |
+| ImageId           | string | 镜像id                                   |
+| ImageName         | string | 镜像名称                                 |
+| IsOptimized       | int    | 镜像是否开启优化选项，1为开启，0为不开启 |
+| OsBit             | int    | 系统位数                                 |
+| OsSize            | int    | 镜像容量(GB)                             |
+| OsType            | string | 镜像类型                                 |
+| OsVersion         | string | 镜像版本                                 |
+| Status            | string | 镜像状态code                             |
+| StatusDisplay     | string | 镜像状态中文                             |
+| SupportGpuDriver  | string | 支持的GPU驱动类型                        |
+| SupportType       | list   | 支持类型                                 |
+| TemplateType      | string | 公共镜像为public，私有镜像为private      |
+| Username          | string | 用户名称                                 |
 
 ### ExtendDisk
 
