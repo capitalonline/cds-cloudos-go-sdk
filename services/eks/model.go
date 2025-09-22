@@ -578,6 +578,7 @@ const (
 
 // ECS、BMS支持的操作系统镜像
 const (
+	EcsUbuntu2204K8s12615Cpu         = "Ubuntu22.04-CPU-1.26"
 	EcsUbuntu2204K8s13014Cpu         = "Ubuntu22.04-CPU-1.30.14"
 	EcsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26"
 	EcsUbuntu2204K8s12615GpuRtxA5000 = "Ubuntu22.04-GPU-Datacenter-1.26"
