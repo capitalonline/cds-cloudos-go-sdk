@@ -28,7 +28,7 @@ type (
 	operate       string
 	billingMethod string
 
-	diskFeature   string
+	DiskFeature   string
 	bandwidthType string
 )
 
@@ -55,8 +55,8 @@ const (
 )
 
 const (
-	LocalDiskFeature diskFeature = "local"
-	SsdDiskFeature   diskFeature = "ssd"
+	LocalDiskFeature DiskFeature = "local"
+	SsdDiskFeature   DiskFeature = "ssd"
 )
 
 const (
@@ -223,7 +223,7 @@ func (req *CreateInstanceReq) check() error {
 
 // CreateInstanceDiskData 系统盘信息
 type CreateInstanceDiskData struct {
-	DiskFeature         diskFeature `json:"DiskFeature"`                   // 盘类型:本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
+	DiskFeature         DiskFeature `json:"DiskFeature"`                   // 盘类型:本地盘:"local", 云盘:"ssd"
 	Size                int         `json:"Size"`                          // 磁盘大小，单位为 GB
 	SnapshotId          string      `json:"SnapshotId,omitempty"`          // 创建磁盘时使用的快照 ID
 	ReleaseWithInstance *int        `json:"ReleaseWithInstance,omitempty"` // 磁盘是否随实例释放
@@ -297,15 +297,15 @@ func (p *CreateInstancePubnetInfo) check(instanceCount int, billingMethod billin
 		}
 
 		switch p.BandwidthType {
-		case "Bandwidth":
+		case Bandwidth:
 			if p.Qos <= 0 {
 				return fmt.Errorf("field Qos must be > 0 when BandwidthType=Bandwidth")
 			}
-		case "BandwidthMonth":
+		case BandwidthMonth:
 			if billingMethod != MonthlyBillingMethod { // 包年包月
 				return fmt.Errorf("field BandwidthType=BandwidthMonth is only valid for yearly/monthly billing")
 			}
-		case "Traffic":
+		case Traffic:
 		default:
 			return fmt.Errorf("field BandwidthType has invalid value: %s", p.BandwidthType)
 		}
@@ -459,7 +459,7 @@ type InstanceSimpleInfo struct {
 	SystemDiskSize       int                       `json:"SystemDiskSize"`       // 系统盘大小(GB)
 	NoChargeForShutdown  int                       `json:"NoChargeForShutdown"`  // 关机是否收费
 	CustomerId           string                    `json:"CustomerId"`           // 客户ID
-	SystemDiskFeature    string                    `json:"SystemDiskFeature"`    // 系统盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
+	SystemDiskFeature    string                    `json:"SystemDiskFeature"`    // 系统盘类型，本地盘:"local", 云盘:"ssd"
 	SupportGpuDriver     string                    `json:"SupportGpuDriver"`     // 支持的GPU驱动
 	BindingPubnetIp      bool                      `json:"BindingPubnetIp"`      // 是否绑定公网 IP
 	EcsGoodsId           string                    `json:"EcsGoodsId"`           // 云主机商品/套餐 ID
@@ -586,7 +586,7 @@ type InstanceData struct {
 	SecurityGroup       []*SecurityGroupInfo `json:"SecurityGroup"`       // 安全组
 	StockRelease        bool                 `json:"StockRelease"`        // 库存释放标志
 	Supplier            string               `json:"Supplier"`            // 实例供应商
-	SystemDiskFeature   string               `json:"SystemDiskFeature"`   // 系统盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
+	SystemDiskFeature   string               `json:"SystemDiskFeature"`   // 系统盘类型，本地盘:"local", 云盘:"ssd"
 	Tag                 []interface{}        `json:"Tag"`                 // 标签
 	NoChargeForShutdown int                  `json:"NoChargeForShutdown"` // 关机是否收费
 	EcsRule             *InstanceRuleInfo    `json:"EcsRule"`             // 实例规格信息
@@ -645,7 +645,7 @@ type SystemDiskConfInfo struct {
 	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
 	Unit                string `json:"Unit"`                // 单位
 	DiskId              string `json:"DiskId"`              // 磁盘ID
-	DiskFeature         string `json:"DiskFeature"`         // 磁盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
+	DiskFeature         string `json:"DiskFeature"`         // 磁盘类型，本地盘:"local", 云盘:"ssd"
 	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
 	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
 	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
@@ -662,7 +662,7 @@ type DataDiskConfInfo struct {
 	BandMbps            int    `json:"BandMbps"`            // 磁盘带宽(Mbps)
 	Unit                string `json:"Unit"`                // 单位
 	Id                  string `json:"Id"`                  // 磁盘ID
-	DiskFeature         string `json:"DiskFeature"`         // 磁盘类型，本地盘:"local", 云盘:"ssd"，SSD极速云盘PL1: essd_pl1,SSD极速云盘PL2:essd_pl2
+	DiskFeature         string `json:"DiskFeature"`         // 磁盘类型，本地盘:"local", 云盘:"ssd"
 	DiskName            string `json:"DiskName"`            // 磁盘显示名称(例如“SSD云盘”)
 	EbsGoodsId          string `json:"EbsGoodsId"`          // 磁盘商品 ID
 	EcsGoodsId          string `json:"EcsGoodsId"`          // 云主机商品 ID
@@ -699,7 +699,7 @@ type BillingInfo struct {
 	BillingMethodStatus string `json:"BillingMethodStatus"` // 计费方式状态
 }
 
-// DescribeTaskEventDescribeTaskEventReq DescribeTaskEvent接口请求参数
+// DescribeTaskEventReq DescribeTaskEvent 接口请求参数
 type DescribeTaskEventReq struct {
 	EventId string `json:"EventId"` // 事件ID
 }
