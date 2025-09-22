@@ -35,7 +35,57 @@
 
 ### 代码示例
 
+#### 使用示例
+
 [查看示例代码](../examples/ecs/ecs.go)
+
+#### mock示例
+
+安装代码mock代码工具：
+
+```bash
+go install go.uber.org/mock/mockgen@latest
+```
+
+生成mock代码参考：
+
+```
+mockgen -source=cds-cloudos-go-sdk/services/ecs/ecs.go -destination=cds-cloudos-go-sdk/services/ecs/mockgen.go -package=mock
+```
+
+代码使用参考：
+
+`````go
+package main
+
+import (
+	"testing"
+    
+	"self/mock"
+    
+	"go.uber.org/mock/gomock"
+)
+
+func TestEcsExamples(t *testing.T) {
+	// 创建GoMock控制器
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	// 创建mock客户端
+	mockClient := mock.NewMockClient(ctrl)
+
+	// 测试describeRegions函数
+	t.Run("TestDescribeRegions", func(t *testing.T) {
+		// 设置期望的调用
+		mockClient.EXPECT().DescribeRegions().Return(&ecs.DescribeRegionsResult{}, nil)
+
+		// 执行测试
+		describeRegions(mockClient)
+	})
+}
+`````
+
+
 
 
 ### 公共参数
