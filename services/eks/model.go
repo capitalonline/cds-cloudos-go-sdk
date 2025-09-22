@@ -358,21 +358,41 @@ type DeleteNodesData struct {
 }
 
 type CreateClusterReq struct {
-	ClusterName    string                `json:"ClusterName"`
-	VpcId          string                `json:"VpcId"`
-	Cni            CniInfo               `json:"Cni"`
-	K8sVersion     string                `json:"K8sVersion"`
-	RuntimeType    string                `json:"RuntimeType"`
-	NatId          string                `json:"NatId"`
-	SourceEip      string                `json:"SourceEip"`
-	DestinationEip string                `json:"DestinationEip"`
-	Password       string                `json:"Password"`
-	SlbId          string                `json:"SlbId"`
-	Ak             string                `json:"Ak"`
-	Sk             string                `json:"Sk"`
-	MasterNumber   int                   `json:"MasterNumber"`
-	MasterConfig   NodePoolNodeConfig    `json:"MasterConfig"`
-	NodePoolConfig NodePoolConfiguration `json:"NodePoolConfig"`
+	ClusterName    string                             `json:"ClusterName"`
+	VpcId          string                             `json:"VpcId"`
+	Cni            CniInfo                            `json:"Cni"`
+	K8sVersion     string                             `json:"K8sVersion"`
+	RuntimeType    string                             `json:"RuntimeType"`
+	NatId          string                             `json:"NatId"`
+	SourceEip      string                             `json:"SourceEip"`
+	DestinationEip string                             `json:"DestinationEip"`
+	Password       string                             `json:"Password"`
+	SlbId          string                             `json:"SlbId"`
+	Ak             string                             `json:"Ak"`
+	Sk             string                             `json:"Sk"`
+	MasterNumber   int                                `json:"MasterNumber"`
+	MasterConfig   CreateClusterNodeConfig            `json:"MasterConfig"`
+	NodePoolConfig CreateClusterNodePoolConfiguration `json:"NodePoolConfig"`
+}
+
+// 创建集群节点配置
+type CreateClusterNodeConfig struct {
+	BillingSpec     NodePoolBillingSpec `json:"BillingSpec"`     // 计费配置
+	DataDisk        []NodePoolDiskInfo  `json:"DataVolumes"`     // 数据卷配置
+	OsImageName     string              `json:"OsImageName"`     // 操作系统镜像名称
+	SubnetIds       []string            `json:"SubnetIds"`       // 子网ID列表
+	InstanceTypeIds []string            `json:"InstanceTypeIds"` // 实例类型ID列表
+	Shell           string              `json:"ExecCommand"`     // 节点初始化脚本
+	Labels          map[string]string   `json:"Labels"`          // 节点标签
+}
+
+// 创建集群节点池配置
+type CreateClusterNodePoolConfiguration struct {
+	PoolName   string                  `json:"Name"`       // 节点池名称
+	NodeType   string                  `json:"NodeType"`   // 节点类型：ecs / bms
+	SubjectId  int                     `json:"SubjectId"`  // 主体ID
+	NodeConfig CreateClusterNodeConfig `json:"NodeConfig"` // 节点配置
+	Replicas   int                     `json:"Replicas"`   // 节点数量
 }
 
 type NodePoolDiskInfo struct {
@@ -578,6 +598,7 @@ const (
 
 // ECS、BMS支持的操作系统镜像
 const (
+	EcsUbuntu2204K8s12615Cpu         = "Ubuntu22.04-CPU-1.26"
 	EcsUbuntu2204K8s13014Cpu         = "Ubuntu22.04-CPU-1.30.14"
 	EcsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26"
 	EcsUbuntu2204K8s12615GpuRtxA5000 = "Ubuntu22.04-GPU-Datacenter-1.26"

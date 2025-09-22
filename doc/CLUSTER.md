@@ -50,7 +50,7 @@ req := eks.CreateClusterReq{
     // 集群主节点的数量,当前支持3,5,7
     MasterNumber: eks.MasterNumber3,
     // 集群主节点的配置信息
-    MasterConfig: eks.NodePoolNodeConfig{
+    MasterConfig: eks.CreateClusterNodeConfig{
         // 主节点规格
         InstanceTypeIds: []string{eks.EcsCpuC11Compute2XLarge},
         // 主节点付费方式
@@ -83,7 +83,7 @@ req := eks.CreateClusterReq{
         Labels: map[string]string{},
     },
     // 节点池配置信息
-    NodePoolConfig: eks.NodePoolConfiguration{
+    NodePoolConfig: eks.CreateClusterNodePoolConfiguration{
         // 节点池名称,长度为1-26个字符，只能包含数字、字母和"-"，且首尾只能是字母或数字
         PoolName: "node-pool-1",
         // 节点池类型,目前支持ecs和bms
@@ -91,7 +91,7 @@ req := eks.CreateClusterReq{
         // 节点池使用的测试金ID
         SubjectId: 0,
         // 节点池所使用的节点配置信息
-        NodeConfig: eks.NodePoolNodeConfig{
+        NodeConfig: eks.CreateClusterNodeConfig{
             // 节点规格
             InstanceTypeIds: []string{eks.EcsCpuC11Compute2XLarge},
             // 付费方式
