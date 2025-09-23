@@ -73,66 +73,117 @@ func describeInstanceList(client ecs.Client) {
 	fmt.Println(string(data))
 }
 
-func createInstance(client ecs.Client) {
-	fmt.Println("=== CreateInstance Example ===")
-	// 调用 CreateInstance 方法获取实例列表
+func createInstanceOnDemand(client ecs.Client) {
+	fmt.Println("=== CreateInstance OnDemand Example ===")
+	// 创建按需计费实例
 	i := 1
-	test_account := "test"
-	result, err := client.CreateInstance(&ecs.CreateInstanceReq{
-		Name:              "",                                     // 云服务器名,不传自动赋予（自动命名规则：ecs-创建日期），可选
-		Password:          "",                                     // 登录密码,密码为8-30个字符，且同时包含三项（大写字母、小写字母、数字、()`~!@#$%^&*-+=_|{}[]:;,.?/中的特殊字符）
-		AvailableZoneCode: "",                                     // 可用区代码筛选
-		EcsFamilyName:     "",                                     // 规格族名称
-		UtcTime:           0,                                      // 是否utc时间，1:是  0:否 默认为0（UTC+8，上海时间）
-		Cpu:               1,                                      // Cpu
-		Ram:               2,                                      // 内存
-		Gpu:               0,                                      // 显卡数量，可选，默认为0
-		Number:            1,                                      // 购买数量，可选，默认为1（默认批量最大值为100台）
-		BillingMethod:     ecs.OnDemandBillingMethod,              //按需计费
-		ImageId:           "test0000-0000-0000-0000-000000000000", // 替换为实际的镜像id或者镜像名称
+	req := &ecs.CreateInstanceReq{
+		Name:              "test",                    // 云服务器名,不传自动赋予（自动命名规则：ecs-创建日期），可选
+		Password:          "1234#qwer",               // 登录密码,密码为8-30个字符，且同时包含三项（大写字母、小写字母、数字、()`~!@#$%^&*-+=_|{}[]:;,.?/中的特殊字符）
+		AvailableZoneCode: "CN_DEMO",                 // 可用区代码
+		EcsFamilyName:     "优化型M6",                   // 规格族名称
+		UtcTime:           0,                         // 是否utc时间，1:是  0:否 默认为0（UTC+8，上海时间）
+		Cpu:               2,                         // Cpu
+		Ram:               4,                         // 内存
+		Gpu:               0,                         // 显卡数量，可选，默认为0
+		Number:            1,                         // 购买数量，可选，默认为1（默认批量最大值为100台）
+		BillingMethod:     ecs.OnDemandBillingMethod, //按需计费
+		ImageId:           "Ubuntu 20.04 64位",        // 替换为实际的镜像id或者镜像名称
 		SystemDisk: &ecs.CreateInstanceDiskData{
-			DiskFeature: ecs.LocalDiskFeature, // 盘类型，本地盘
-			Size:        20,                   // 盘大小
+			DiskFeature: ecs.SsdDiskFeature, // 盘类型，云盘
+			Size:        24,                 // 盘大小
 		}, // 系统盘信息
 		DataDisk: []*ecs.CreateInstanceDiskData{
 			{
 				DiskFeature:         ecs.SsdDiskFeature, // 盘类型，云盘
-				Size:                20,                 // 盘大小
+				Size:                40,                 // 盘大小
 				SnapshotId:          "",
 				ReleaseWithInstance: &i, // 是否随实例删除:1:随实例删除,0:不随实例删除.不传默认随实例删除
 			},
 		}, // 数据盘信息，仅支持云盘，可选
 		VpcInfo: &ecs.CreateInstanceVpcInfo{
-			VpcId: "", // 私有网络id
+			VpcId: "vpc-id", // 私有网络id
 		}, // vpc信息
 		SubnetInfo: &ecs.CreateInstanceSubnetInfo{
-			SubnetId:  "",           // 子网id
-			IpAddress: []string{""}, // 指定私网IP列表,列表中的IP个数与创建云主机个数一致
+			SubnetId: "subnet-id", // 子网id
+			// IpAddress: []string{""}, // 指定私网IP列表,列表中的IP个数与创建云主机个数一致
 		}, // 私有网络信息
-		SecurityGroups: []*ecs.CreateInstanceSecurityGroupData{
-			{
-				SecurityGroupId: "", // SecurityGroupId
-			},
-		}, // 安全组列表，安全组优先级按顺序由高到低，可选
-		StartNumber: 0,  // 云服务器名称编号起始数字，可选，不需要服务器编号可不传
-		Duration:    3,  // 只在包月算价时有意义，以月份为单位，一年值为12，大于一年要输入12的整数倍，最大值36(3年)，可选
-		IsToMonth:   &i, // 包月是否到月底，可选 1:是  0:否 默认为1
+		SecurityGroups: nil, // 安全组列表，安全组优先级按顺序由高到低，可选
+		StartNumber:    0,   // 云服务器名称编号起始数字，可选，不需要服务器编号可不传
 		DnsList: &[2]string{
 			"114.114.114.114",
 			"8.8.8.8",
 		}, // dns 解析，可选 需要两个元素  [主dns，从dns]，不选采用默认通用DNS
 		PubnetInfo: []*ecs.CreateInstancePubnetInfo{
 			{
-				SubnetId:          "",
-				BandwidthConfName: "电信", // 带宽线路名称.使用新创建的vpp网络需要指定线路名称.例如：电信、联通
-				// IpType:            "",  // 若使用虚拟出网网关必填.默认出网网关:"default_gateway",虚拟网关：”virtual”
-				// EipIds:            []string{""},  // 绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
-				BandwidthType: ecs.Bandwidth, // 带宽类型，若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"）
-				Qos:           5,             // 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写},
-			}, // 子网id;若使用虚拟出网网关IP绑定公网IP则传虚拟出网网关id
+				SubnetId:          "subnet-id",   // 子网id
+				BandwidthConfName: "电信",          // 带宽线路名称，例如：电信、联通
+				BandwidthType:     ecs.Bandwidth, // 带宽类型，若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"）
+				Qos:               5,             // 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写},
+			},
 		}, // 支持新分配公网IP和绑定已有的公网IP，可选
-		TestAccount:   &test_account, // 测试账户名称，可选
-		IsAutoRenewal: &i,            // 是否自动续约，包月时需传。1:是  0:否 默认为1
+		TestAccount: nil, // 测试金账户，可不填
+	}
+
+	result, err := client.CreateInstance(req)
+	if err != nil {
+		log.Fatal("Failed to describe instance list:", err)
+	}
+
+	data, _ := json.MarshalIndent(result, "", "  ")
+	fmt.Println(string(data))
+}
+
+func createInstanceMonthly(client ecs.Client) {
+	fmt.Println("=== CreateInstance Monthly Example ===")
+	// 创建包月计费实例
+	i := 1
+	result, err := client.CreateInstance(&ecs.CreateInstanceReq{
+		Name:              "test",                   // 云服务器名,不传自动赋予（自动命名规则：ecs-创建日期），可选
+		Password:          "1234#qwer",              // 登录密码,密码为8-30个字符，且同时包含三项（大写字母、小写字母、数字、()`~!@#$%^&*-+=_|{}[]:;,.?/中的特殊字符）
+		AvailableZoneCode: "CN_DEMO",                // 可用区代码
+		EcsFamilyName:     "优化型M6",                  // 规格族名称
+		UtcTime:           0,                        // 是否utc时间，1:是  0:否 默认为0（UTC+8，上海时间）
+		Cpu:               1,                        // Cpu
+		Ram:               2,                        // 内存
+		Gpu:               0,                        // 显卡数量，可选，默认为0
+		Number:            1,                        // 购买数量，可选，默认为1（默认批量最大值为100台）
+		BillingMethod:     ecs.MonthlyBillingMethod, // 包月计费
+		ImageId:           "Ubuntu 20.04 64位",       // 替换为实际的镜像id或者镜像名称
+		SystemDisk: &ecs.CreateInstanceDiskData{
+			DiskFeature: ecs.LocalDiskFeature, // 盘类型，本地盘
+			Size:        20,                   // 盘大小
+		}, // 系统盘信息
+		DataDisk: []*ecs.CreateInstanceDiskData{
+			{
+				DiskFeature: ecs.SsdDiskFeature, // 盘类型，云盘
+				Size:        20,                 // 盘大小
+			},
+		}, // 数据盘信息，仅支持云盘，可选
+		VpcInfo: &ecs.CreateInstanceVpcInfo{
+			VpcId: "vpc-id", // 私有网络id
+		}, // vpc信息
+		SubnetInfo: &ecs.CreateInstanceSubnetInfo{
+			SubnetId:  "subnet-id",          // 子网id
+			IpAddress: []string{"10.0.0.1"}, // 指定私网IP列表,列表中的IP个数与创建云主机个数一致
+		}, // 私有网络信息
+		SecurityGroups: []*ecs.CreateInstanceSecurityGroupData{
+			{
+				SecurityGroupId: "sg-id", // SecurityGroupId
+			},
+		}, // 安全组列表，安全组优先级按顺序由高到低，可选
+		StartNumber: 0,   // 云服务器名称编号起始数字，可选，不需要服务器编号可不传
+		Duration:    3,   // 只在包月算价时有意义，以月份为单位，一年值为12，大于一年要输入12的整数倍，最大值36(3年)，可选
+		IsToMonth:   &i,  // 包月是否到月底，可选 1:是  0:否 默认为1
+		DnsList:     nil, // dns 解析，可选 需要两个元素  [主dns，从dns]，不选采用默认通用DNS
+		PubnetInfo: []*ecs.CreateInstancePubnetInfo{
+			{
+				SubnetId: "subnet-id",    // 子网id;
+				EipIds:   []string{"id"}, // 绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
+
+			},
+		}, // 支持新分配公网IP和绑定已有的公网IP，可选
+		IsAutoRenewal: &i, // 是否自动续约，包月时需传。1:是  0:否 默认为1
 	})
 	if err != nil {
 		log.Fatal("Failed to describe instance list:", err)

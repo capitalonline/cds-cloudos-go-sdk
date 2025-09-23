@@ -21,6 +21,9 @@ func (c *client) DescribeRegions() (result *DescribeRegionsResult, err error) {
 }
 
 func (c *client) CreateInstance(req *CreateInstanceReq) (result *CreateInstanceResult, err error) {
+	if err = req.check(); err != nil {
+		return
+	}
 
 	result = new(CreateInstanceResult)
 
@@ -35,6 +38,9 @@ func (c *client) CreateInstance(req *CreateInstanceReq) (result *CreateInstanceR
 }
 
 func (c *client) DeleteInstance(req *DeleteInstanceReq) (result *DeleteInstanceResult, err error) {
+	if err = req.check(); err != nil {
+		return
+	}
 
 	result = new(DeleteInstanceResult)
 
@@ -49,6 +55,9 @@ func (c *client) DeleteInstance(req *DeleteInstanceReq) (result *DeleteInstanceR
 }
 
 func (c *client) ModifyInstancePassword(req *ModifyInstancePasswordReq) (result *ModifyInstancePasswordResult, err error) {
+	if err = req.check(); err != nil {
+		return
+	}
 
 	result = new(ModifyInstancePasswordResult)
 
@@ -63,6 +72,9 @@ func (c *client) ModifyInstancePassword(req *ModifyInstancePasswordReq) (result 
 }
 
 func (c *client) DescribeInstanceStatus(req *DescribeInstanceStatusReq) (result *DescribeInstanceStatusResult, err error) {
+	if err = req.check(); err != nil {
+		return
+	}
 
 	result = new(DescribeInstanceStatusResult)
 

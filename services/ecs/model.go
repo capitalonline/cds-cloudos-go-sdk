@@ -139,7 +139,7 @@ type CreateInstanceReq struct {
 	BillingMethod     billingMethod                      `json:"BillingMethod"`            // 计费方式："0": 按需  "1":包年包月
 	ImageId           string                             `json:"ImageId"`                  // 镜像id或者镜像名称
 	SystemDisk        *CreateInstanceDiskData            `json:"SystemDisk"`               // 系统盘信息
-	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk"`                 // 数据盘信息
+	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk,omitempty"`       // 数据盘信息
 	VpcInfo           *CreateInstanceVpcInfo             `json:"VpcInfo"`                  // vpc信息
 	SubnetInfo        *CreateInstanceSubnetInfo          `json:"SubnetInfo"`               // 私有网络信息
 	SecurityGroups    []*CreateInstanceSecurityGroupData `json:"SecurityGroups,omitempty"` // 安全组列表，安全组优先级按顺序由高到低
@@ -271,9 +271,9 @@ type CreateInstanceSecurityGroupData struct {
 
 // CreateInstancePubnetInfo 公有网络信息
 type CreateInstancePubnetInfo struct {
-	SubnetId          string        `json:"SubnetId"`                // 子网id;若使用虚拟出网网关IP绑定公网IP则传虚拟出网网关id
+	SubnetId          string        `json:"SubnetId"`                // 子网id
 	BandwidthConfName string        `json:"BandwidthConfName"`       // 带宽线路名称.使用新创建的vpp网络需要指定线路名称.例如：电信、联通. 带宽线路名称参考VPCBandWidthBillingScheme获取
-	IpType            string        `json:"IpType"`                  // 若使用虚拟出网网关必填.默认出网网关:"default_gateway",虚拟网关：”virtual”
+	IpType            string        `json:"IpType"`                  // 历史遗留参数，可不写。若使用虚拟出网网关必填。默认出网网关:"default_gateway",虚拟网关：”virtual”
 	EipIds            []string      `json:"EipIds,omitempty"`        // 选填,绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
 	BandwidthType     bandwidthType `json:"BandwidthType,omitempty"` // 带宽类型;若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填.固定带宽:”Bandwidth”,固定带宽包月:”BandwidthMonth”,流量按需: “Traffic”（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"）
 	Qos               int           `json:"Qos,omitempty"`           // 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写
@@ -328,8 +328,8 @@ type CreateInstanceEvent struct {
 
 // DeleteInstanceReq DeleteInstance接口请求参数
 type DeleteInstanceReq struct {
-	EcsIds    []string `json:"EcsIds"`              // 云服务器id列表
-	DeleteEip int      `json:"DeleteEip,omitempty"` // 1:解绑并删除服务器绑定的EIP，0:解绑EIP  默认为0
+	EcsIds    []string `json:"EcsIds"`    // 云服务器id列表
+	DeleteEip int      `json:"DeleteEip"` // 1:解绑并删除服务器绑定的EIP，0:解绑EIP  默认为0
 }
 
 func (req *DeleteInstanceReq) check() error {
