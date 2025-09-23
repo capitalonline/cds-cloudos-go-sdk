@@ -205,7 +205,7 @@ func (req *CreateInstanceReq) check() error {
 			return fmt.Errorf("invalid PubnetInfo[%d]: %v", i, err)
 		}
 	}
-	if req.BillingMethod == "1" { // 包年包月
+	if req.BillingMethod == MonthlyBillingMethod { // 包年包月
 		if req.Duration > 36 {
 			return fmt.Errorf("field Duration maximum value is 36")
 		}
@@ -238,6 +238,7 @@ func (d *CreateInstanceDiskData) check(isSystemDisk bool, BillingMethod billingM
 		return fmt.Errorf("field Size must be > 0")
 	}
 
+	// 参数矫正
 	if isSystemDisk {
 		d.SnapshotId = ""
 		d.ReleaseWithInstance = nil
@@ -282,17 +283,22 @@ func (p *CreateInstancePubnetInfo) check(instanceCount int, billingMethod billin
 	}
 
 	if len(p.EipIds) > 0 && len(p.EipIds) != instanceCount {
-		// 绑定已有公网IP
 		return fmt.Errorf("field EipIds must contain %d elements", instanceCount)
-
 	} else {
 		switch p.BandwidthType {
 		case Bandwidth, BandwidthMonth:
 			if p.Qos <= 0 {
 				return fmt.Errorf("field Qos must be > 0 when BandwidthType=Bandwidth")
 			}
+			// 参数矫正
+			if billingMethod == MonthlyBillingMethod {
+				p.BandwidthType = BandwidthMonth
+			}
+			if billingMethod == OnDemandBillingMethod {
+				p.BandwidthType = Bandwidth
+			}
 		case Traffic:
-			p.Qos = 0
+			p.Qos = 0 // 参数矫正
 
 		default:
 			return fmt.Errorf("field BandwidthType has invalid value: '%s'", p.BandwidthType)
