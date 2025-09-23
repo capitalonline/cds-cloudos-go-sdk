@@ -225,8 +225,8 @@ func (req *CreateInstanceReq) check() error {
 type CreateInstanceDiskData struct {
 	DiskFeature         DiskFeature `json:"DiskFeature"`                   // 盘类型:本地盘:"local", 云盘:"ssd"
 	Size                int         `json:"Size"`                          // 磁盘大小，单位为 GB
-	SnapshotId          string      `json:"SnapshotId,omitempty"`          // 创建磁盘时使用的快照 ID
-	ReleaseWithInstance *int        `json:"ReleaseWithInstance,omitempty"` // 磁盘是否随实例释放
+	SnapshotId          string      `json:"SnapshotId,omitempty"`          // 创建磁盘时使用的快照ID, 系统盘不传
+	ReleaseWithInstance *int        `json:"ReleaseWithInstance,omitempty"` // 磁盘是否随实例释放，系统盘不传，当包月计费时，数据盘ReleaseWithInstance只为0
 }
 
 func (d *CreateInstanceDiskData) check(isSystemDisk bool, BillingMethod billingMethod) error {
@@ -239,15 +239,12 @@ func (d *CreateInstanceDiskData) check(isSystemDisk bool, BillingMethod billingM
 	}
 
 	if isSystemDisk {
-		// 系统盘不能传 SnapshotId 和 ReleaseWithInstance
-		if d.SnapshotId != "" {
-			return fmt.Errorf("field SnapshotId is not allowed in SystemDisk")
-		}
+		d.SnapshotId = ""
+		d.ReleaseWithInstance = nil
 	} else {
 		if BillingMethod == MonthlyBillingMethod {
-			if d.ReleaseWithInstance != nil && *d.ReleaseWithInstance != 0 {
-				return fmt.Errorf("MonthlyBillingMethod do not support ReleaseWithInstance")
-			}
+			i0 := 0
+			d.ReleaseWithInstance = &i0
 		}
 	}
 	return nil
@@ -284,30 +281,21 @@ func (p *CreateInstancePubnetInfo) check(instanceCount int, billingMethod billin
 		return fmt.Errorf("field SubnetId is required")
 	}
 
-	if len(p.EipIds) > 0 {
+	if len(p.EipIds) > 0 && len(p.EipIds) != instanceCount {
 		// 绑定已有公网IP
-		if len(p.EipIds) != instanceCount {
-			return fmt.Errorf("field EipIds must contain %d elements", instanceCount)
-		}
+		return fmt.Errorf("field EipIds must contain %d elements", instanceCount)
 
 	} else {
-		// 新分配公网IP
-		if p.BandwidthType == "" {
-			return fmt.Errorf("field BandwidthType is required when assigning new public IP")
-		}
-
 		switch p.BandwidthType {
-		case Bandwidth:
+		case Bandwidth, BandwidthMonth:
 			if p.Qos <= 0 {
 				return fmt.Errorf("field Qos must be > 0 when BandwidthType=Bandwidth")
 			}
-		case BandwidthMonth:
-			if billingMethod != MonthlyBillingMethod { // 包年包月
-				return fmt.Errorf("field BandwidthType=BandwidthMonth is only valid for yearly/monthly billing")
-			}
 		case Traffic:
+			p.Qos = 0
+
 		default:
-			return fmt.Errorf("field BandwidthType has invalid value: %s", p.BandwidthType)
+			return fmt.Errorf("field BandwidthType has invalid value: '%s'", p.BandwidthType)
 		}
 	}
 

@@ -41,7 +41,7 @@ func TestTryEcsApi(t *testing.T) {
 
 	t.Run(ActionCreateInstance, func(t *testing.T) {
 		i := 1
-		k := 0
+		// k := 0
 		result, cliErr := cli.CreateInstance(&CreateInstanceReq{
 			AvailableZoneCode: "CN_DEMO", // 替换为实际的可用区代码
 			EcsFamilyName:     "优化型M6",
@@ -78,9 +78,8 @@ func TestTryEcsApi(t *testing.T) {
 			UtcTime:       0,
 			DataDisk: []*CreateInstanceDiskData{
 				{
-					DiskFeature:         SsdDiskFeature,
-					Size:                24,
-					ReleaseWithInstance: &k,
+					DiskFeature: SsdDiskFeature,
+					Size:        24,
 				},
 			},
 			DnsList: &[2]string{
