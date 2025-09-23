@@ -432,7 +432,7 @@ const (
 // k8s版本
 const (
 	K8sVersion1_30_14 = "v1.30.14"
-	K8sVersion1_26_5  = "v1.26.5"
+	K8sVersion1_26_15 = "v1.26.15"
 )
 
 // 服务转发模式
