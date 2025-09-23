@@ -139,7 +139,7 @@ type CreateInstanceReq struct {
 	BillingMethod     billingMethod                      `json:"BillingMethod"`            // 计费方式："0": 按需  "1":包年包月
 	ImageId           string                             `json:"ImageId"`                  // 镜像id或者镜像名称
 	SystemDisk        *CreateInstanceDiskData            `json:"SystemDisk"`               // 系统盘信息
-	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk"`                 // 数据盘信息
+	DataDisk          []*CreateInstanceDiskData          `json:"DataDisk,omitempty"`       // 数据盘信息
 	VpcInfo           *CreateInstanceVpcInfo             `json:"VpcInfo"`                  // vpc信息
 	SubnetInfo        *CreateInstanceSubnetInfo          `json:"SubnetInfo"`               // 私有网络信息
 	SecurityGroups    []*CreateInstanceSecurityGroupData `json:"SecurityGroups,omitempty"` // 安全组列表，安全组优先级按顺序由高到低
@@ -205,7 +205,7 @@ func (req *CreateInstanceReq) check() error {
 			return fmt.Errorf("invalid PubnetInfo[%d]: %v", i, err)
 		}
 	}
-	if req.BillingMethod == "1" { // 包年包月
+	if req.BillingMethod == MonthlyBillingMethod { // 包年包月
 		if req.Duration > 36 {
 			return fmt.Errorf("field Duration maximum value is 36")
 		}
@@ -225,8 +225,8 @@ func (req *CreateInstanceReq) check() error {
 type CreateInstanceDiskData struct {
 	DiskFeature         DiskFeature `json:"DiskFeature"`                   // 盘类型:本地盘:"local", 云盘:"ssd"
 	Size                int         `json:"Size"`                          // 磁盘大小，单位为 GB
-	SnapshotId          string      `json:"SnapshotId,omitempty"`          // 创建磁盘时使用的快照 ID
-	ReleaseWithInstance *int        `json:"ReleaseWithInstance,omitempty"` // 磁盘是否随实例释放
+	SnapshotId          string      `json:"SnapshotId,omitempty"`          // 创建磁盘时使用的快照ID, 系统盘不传
+	ReleaseWithInstance *int        `json:"ReleaseWithInstance,omitempty"` // 磁盘是否随实例释放，系统盘不传，当包月计费时，数据盘ReleaseWithInstance只为0
 }
 
 func (d *CreateInstanceDiskData) check(isSystemDisk bool, BillingMethod billingMethod) error {
@@ -238,16 +238,14 @@ func (d *CreateInstanceDiskData) check(isSystemDisk bool, BillingMethod billingM
 		return fmt.Errorf("field Size must be > 0")
 	}
 
+	// 参数矫正
 	if isSystemDisk {
-		// 系统盘不能传 SnapshotId 和 ReleaseWithInstance
-		if d.SnapshotId != "" {
-			return fmt.Errorf("field SnapshotId is not allowed in SystemDisk")
-		}
+		d.SnapshotId = ""
+		d.ReleaseWithInstance = nil
 	} else {
 		if BillingMethod == MonthlyBillingMethod {
-			if d.ReleaseWithInstance != nil && *d.ReleaseWithInstance != 0 {
-				return fmt.Errorf("MonthlyBillingMethod do not support ReleaseWithInstance")
-			}
+			i0 := 0
+			d.ReleaseWithInstance = &i0
 		}
 	}
 	return nil
@@ -271,9 +269,9 @@ type CreateInstanceSecurityGroupData struct {
 
 // CreateInstancePubnetInfo 公有网络信息
 type CreateInstancePubnetInfo struct {
-	SubnetId          string        `json:"SubnetId"`                // 子网id;若使用虚拟出网网关IP绑定公网IP则传虚拟出网网关id
+	SubnetId          string        `json:"SubnetId"`                // 子网id
 	BandwidthConfName string        `json:"BandwidthConfName"`       // 带宽线路名称.使用新创建的vpp网络需要指定线路名称.例如：电信、联通. 带宽线路名称参考VPCBandWidthBillingScheme获取
-	IpType            string        `json:"IpType"`                  // 若使用虚拟出网网关必填.默认出网网关:"default_gateway",虚拟网关：”virtual”
+	IpType            string        `json:"IpType"`                  // 历史遗留参数，可不写。若使用虚拟出网网关必填。默认出网网关:"default_gateway",虚拟网关：”virtual”
 	EipIds            []string      `json:"EipIds,omitempty"`        // 选填,绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
 	BandwidthType     bandwidthType `json:"BandwidthType,omitempty"` // 带宽类型;若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填.固定带宽:”Bandwidth”,固定带宽包月:”BandwidthMonth”,流量按需: “Traffic”（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"）
 	Qos               int           `json:"Qos,omitempty"`           // 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写
@@ -284,30 +282,26 @@ func (p *CreateInstancePubnetInfo) check(instanceCount int, billingMethod billin
 		return fmt.Errorf("field SubnetId is required")
 	}
 
-	if len(p.EipIds) > 0 {
-		// 绑定已有公网IP
-		if len(p.EipIds) != instanceCount {
-			return fmt.Errorf("field EipIds must contain %d elements", instanceCount)
-		}
-
+	if len(p.EipIds) > 0 && len(p.EipIds) != instanceCount {
+		return fmt.Errorf("field EipIds must contain %d elements", instanceCount)
 	} else {
-		// 新分配公网IP
-		if p.BandwidthType == "" {
-			return fmt.Errorf("field BandwidthType is required when assigning new public IP")
-		}
-
 		switch p.BandwidthType {
-		case Bandwidth:
+		case Bandwidth, BandwidthMonth:
 			if p.Qos <= 0 {
 				return fmt.Errorf("field Qos must be > 0 when BandwidthType=Bandwidth")
 			}
-		case BandwidthMonth:
-			if billingMethod != MonthlyBillingMethod { // 包年包月
-				return fmt.Errorf("field BandwidthType=BandwidthMonth is only valid for yearly/monthly billing")
+			// 参数矫正
+			if billingMethod == MonthlyBillingMethod {
+				p.BandwidthType = BandwidthMonth
+			}
+			if billingMethod == OnDemandBillingMethod {
+				p.BandwidthType = Bandwidth
 			}
 		case Traffic:
+			p.Qos = 0 // 参数矫正
+
 		default:
-			return fmt.Errorf("field BandwidthType has invalid value: %s", p.BandwidthType)
+			return fmt.Errorf("field BandwidthType has invalid value: '%s'", p.BandwidthType)
 		}
 	}
 
@@ -328,8 +322,8 @@ type CreateInstanceEvent struct {
 
 // DeleteInstanceReq DeleteInstance接口请求参数
 type DeleteInstanceReq struct {
-	EcsIds    []string `json:"EcsIds"`              // 云服务器id列表
-	DeleteEip int      `json:"DeleteEip,omitempty"` // 1:解绑并删除服务器绑定的EIP，0:解绑EIP  默认为0
+	EcsIds    []string `json:"EcsIds"`    // 云服务器id列表
+	DeleteEip int      `json:"DeleteEip"` // 1:解绑并删除服务器绑定的EIP，0:解绑EIP  默认为0
 }
 
 func (req *DeleteInstanceReq) check() error {
