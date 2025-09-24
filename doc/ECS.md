@@ -281,8 +281,10 @@ func TestEcsExamples(t *testing.T) {
 | ------------------- | ------ | ---- | ------------------------------------------------------------ |
 | DiskFeature         | string | 是   | [盘类型](#DiskFeature)                                       |
 | Size                | int    | 是   | 盘大小                                                       |
-| SnapshotId          | string | 否   | 快照id,通过此快照创建数据盘                                  |
-| ReleaseWithInstance | int    | 否   | 是否随实例删除:1:随实例删除,0:不随实例删除.不传默认随实例删除 |
+| SnapshotId          | string | 否   | 快照id,通过此快照创建数据盘，**系统盘时不传**                |
+| ReleaseWithInstance | int    | 否   | 是否随实例删除:1:随实例删除,0:不随实例删除.不传默认随实例删除，**系统盘时不传** |
+
+*提示：当包月计费时，数据盘ReleaseWithInstance只为0*
 
 ##### CreateInstanceVpcInfo
 
@@ -310,9 +312,11 @@ func TestEcsExamples(t *testing.T) {
 | SubnetId          | string | 是   | 子网id                                                       |
 | BandwidthConfName | string | 否   | 带宽线路名称：电信、联通、移动                               |
 | IpType            | string | 否   | 历史遗留参数，可不填。默认出网网关:"default_gateway"，虚拟网关：”virtual” |
-| EipIds            | string | 否   | 绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致 |
-| BandwidthType     | string | 否   | [带宽类型](#bandwidthType)，若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"） |
+| EipIds            | string | 否   | 绑定的eip的**ID(不是IP地址)**列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致 |
+| BandwidthType     | string | 否   | [带宽类型](#bandwidthType)，若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填 |
 | Qos               | int    | 否   | 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写            |
+
+*提示：若实例计费方式为包年包月选择固定带宽时，传 **固定带宽包月（BandwidthMonth）***
 
 ##### CreateInstanceResult
 
