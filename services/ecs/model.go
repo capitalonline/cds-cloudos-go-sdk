@@ -272,7 +272,7 @@ type CreateInstancePubnetInfo struct {
 	SubnetId          string        `json:"SubnetId"`                // 子网id
 	BandwidthConfName string        `json:"BandwidthConfName"`       // 带宽线路名称.使用新创建的vpp网络需要指定线路名称.例如：电信、联通. 带宽线路名称参考VPCBandWidthBillingScheme获取
 	IpType            string        `json:"IpType"`                  // 历史遗留参数，可不写。若使用虚拟出网网关必填。默认出网网关:"default_gateway",虚拟网关：”virtual”
-	EipIds            []string      `json:"EipIds,omitempty"`        // 选填,绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
+	EipIds            []string      `json:"EipIds,omitempty"`        // 选填,绑定的eip的id（不是IP地址）列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
 	BandwidthType     bandwidthType `json:"BandwidthType,omitempty"` // 带宽类型;若需新分配公网IP必填,表示绑定公网IP的带宽类型.绑定已有公网IP不填.固定带宽:”Bandwidth”,固定带宽包月:”BandwidthMonth”,流量按需: “Traffic”（若实例计费方式为包年包月选择固定带宽时需传"固定带宽包月"）
 	Qos               int           `json:"Qos,omitempty"`           // 公网带宽值,单位为M;若带宽类型选择”固定带宽”需填写
 }

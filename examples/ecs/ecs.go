@@ -179,7 +179,7 @@ func createInstanceMonthly(client ecs.Client) {
 		PubnetInfo: []*ecs.CreateInstancePubnetInfo{
 			{
 				SubnetId: "subnet-id",    // 子网id;
-				EipIds:   []string{"id"}, // 绑定的eip的id列表;若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
+				EipIds:   []string{"id"}, // 绑定的eip的id列表(注意是eip的ID，不填ip地址);若需新分配公网IP,不填,绑定已有公网IP需填,数量需要和云服务器数量一致
 
 			},
 		}, // 支持新分配公网IP和绑定已有的公网IP，可选
