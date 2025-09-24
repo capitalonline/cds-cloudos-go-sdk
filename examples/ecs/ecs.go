@@ -91,12 +91,12 @@ func createInstanceOnDemand(client ecs.Client) {
 		ImageId:           "Ubuntu 20.04 64位",        // 替换为实际的镜像id或者镜像名称
 		SystemDisk: &ecs.CreateInstanceDiskData{
 			DiskFeature: ecs.SsdDiskFeature, // 盘类型，云盘
-			Size:        24,                 // 盘大小
+			Size:        40,                 // 盘大小，大多数系统盘大小为40G起，8的倍数扩容
 		}, // 系统盘信息
 		DataDisk: []*ecs.CreateInstanceDiskData{
 			{
 				DiskFeature:         ecs.SsdDiskFeature, // 盘类型，云盘
-				Size:                40,                 // 盘大小
+				Size:                40,                 // 盘大小，8的倍数
 				SnapshotId:          "",
 				ReleaseWithInstance: &i, // 是否随实例删除:1:随实例删除,0:不随实例删除.不传默认随实例删除
 			},
@@ -106,7 +106,6 @@ func createInstanceOnDemand(client ecs.Client) {
 		}, // vpc信息
 		SubnetInfo: &ecs.CreateInstanceSubnetInfo{
 			SubnetId: "subnet-id", // 子网id
-			// IpAddress: []string{""}, // 指定私网IP列表,列表中的IP个数与创建云主机个数一致
 		}, // 私有网络信息
 		SecurityGroups: nil, // 安全组列表，安全组优先级按顺序由高到低，可选
 		StartNumber:    0,   // 云服务器名称编号起始数字，可选，不需要服务器编号可不传
@@ -151,13 +150,13 @@ func createInstanceMonthly(client ecs.Client) {
 		BillingMethod:     ecs.MonthlyBillingMethod, // 包月计费
 		ImageId:           "Ubuntu 20.04 64位",       // 替换为实际的镜像id或者镜像名称
 		SystemDisk: &ecs.CreateInstanceDiskData{
-			DiskFeature: ecs.LocalDiskFeature, // 盘类型，本地盘
-			Size:        20,                   // 盘大小
+			DiskFeature: ecs.LocalDiskFeature, // 盘类型，本地盘（大多数规格组是云盘类型的系统盘，少数是本地盘，根据实际情况填写）
+			Size:        40,                   // 盘大小，大多数系统盘大小为40G起，8的倍数扩容
 		}, // 系统盘信息
 		DataDisk: []*ecs.CreateInstanceDiskData{
 			{
 				DiskFeature: ecs.SsdDiskFeature, // 盘类型，云盘
-				Size:        20,                 // 盘大小
+				Size:        40,                 // 盘大小
 			},
 		}, // 数据盘信息，仅支持云盘，可选
 		VpcInfo: &ecs.CreateInstanceVpcInfo{
