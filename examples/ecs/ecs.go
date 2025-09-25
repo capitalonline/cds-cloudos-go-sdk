@@ -194,10 +194,10 @@ func createInstanceMonthly(client ecs.Client) {
 
 func deleteInstance(client ecs.Client) {
 	fmt.Println("=== DeleteInstance Example ===")
-	// 调用 DeleteInstance 方法修改实例名称
+	// 调用 DeleteInstance 删除实例
 	req := &ecs.DeleteInstanceReq{
 		EcsIds:    []string{"ins-test000000000000"}, // 替换为实际的实例ID
-		DeleteEip: 0,
+		DeleteEip: 1,
 	}
 	result, err := client.DeleteInstance(req)
 	if err != nil {
@@ -211,7 +211,7 @@ func deleteInstance(client ecs.Client) {
 
 func modifyInstancePassword(client ecs.Client) {
 	fmt.Println("=== ModifyInstancePassword Example ===")
-	// 调用 ModifyInstancePassword 方法修改实例名称
+	// 调用 ModifyInstancePassword 修改实例密码
 	req := &ecs.ModifyInstancePasswordReq{
 		EcsIds:   []string{"ins-test000000000000"}, // 替换为实际的实例ID
 		Password: "",                               // 登录密码,密码为8-30个字符，且同时包含三项（大写字母、小写字母、数字、()`~!@#$%^&*-+=_|{}[]:;,.?/中的特殊字符）
@@ -228,7 +228,7 @@ func modifyInstancePassword(client ecs.Client) {
 
 func operateInstance(client ecs.Client) {
 	fmt.Println("=== OperateInstance Example ===")
-	// 调用 OperateInstance 方法启动实例
+	// 调用 OperateInstance 操作实例
 	req := &ecs.OperateInstanceReq{
 		EcsIds: []string{"ins-test000000000000"}, // 替换为实际的实例ID
 		OpType: ecs.StartUpInstance,              // 开机
@@ -294,7 +294,7 @@ func describeInstance(client ecs.Client) {
 
 func describeInstanceStatus(client ecs.Client) {
 	fmt.Println("=== DescribeInstanceStatus Example ===")
-	// 调用 DescribeInstanceStatus 方法修改实例名称
+	// 调用 DescribeInstanceStatus 查询实例状态
 	req := &ecs.DescribeInstanceStatusReq{
 		EcsIds: []string{"ins-test000000000000"}, // 替换为实际的实例ID
 	}
@@ -339,10 +339,10 @@ func describeEcsFamilyInfo(client ecs.Client) {
 
 func describeImages(client ecs.Client) {
 	fmt.Println("=== DescribeImages Example ===")
-	// 调用 DescribeImages 方法获取任务事件信息
+	// 调用 DescribeImages 方法获取镜像信息
 	result, err := client.DescribeImages(&ecs.DescribeImagesReq{
-		AvailableZoneCode: "CN_DEMO",                                        // 替换为实际的可用区代码
-		ImageIds:          []string{"test0000-0000-0000-0000-000000000000"}, // 替换为实际的ImageId
+		AvailableZoneCode: "CN_DEMO", // 替换为实际的可用区代码
+		// ImageIds:          []string{"test0000-0000-0000-0000-000000000000"}, // 替换为实际的ImageId
 	})
 	if err != nil {
 		log.Fatal("Failed to describe task event:", err)
