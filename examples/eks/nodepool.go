@@ -14,10 +14,10 @@ func CreateECSNodePool() {
 	eksClient, _ := eks.NewClient(ak, sk)
 
 	req := &eks.CreateNodePoolReq{
-		ClusterId: "d83c9968-5950-478f-b657-bd63ce869206",
+		ClusterId: "560103cc-b573-434f-adcc-f3329cc79807",
 		VpcId:     "29b1a746-874a-11f0-a3b8-ce9cb1dc408c",
 		Config: eks.NodePoolConfiguration{
-			PoolName: "ecs-cpu-node-pool-01",
+			PoolName: "ecs-cpu-node-pool-03",
 			NodeType: eks.NodePoolNodeTypeECS,
 			// SubjectId 测试金项目ID; 如果没有申请默认不传或传0; 如需申请请联系销售
 			SubjectId: 0,
@@ -67,7 +67,7 @@ func CreateECSNodePool() {
 				},
 			},
 			// Replicas期望节点数量
-			Replicas: 1,
+			Replicas: 4,
 		},
 	}
 
@@ -167,7 +167,7 @@ func CreateBMSNodePoolPostPaid() {
 				// InstanceTypeIds 裸金属实例类型，目前首云仅支持一个，后续开放多实例规格
 				InstanceTypeIds: []string{
 					// 推理型智算云主机igch.c8.nr4 16C64G
-					eks.BmsGpuGbm32XLarge,
+					eks.BmsGpuC6Nr44Gbm32XLarge,
 				},
 
 				// Password eks用户登录密码，节点初始化完毕后自动创建eks用户
@@ -215,7 +215,7 @@ func CreateBMSNodePoolPrePaid() {
 				OsImageName: eks.BmsUbuntu2204K8s13014GpuRtx4090,
 				SubnetIds:   []string{"subnet-01"},
 				InstanceTypeIds: []string{
-					eks.BmsGpuGbm32XLarge,
+					eks.BmsGpuC6Nr44Gbm32XLarge,
 				},
 				Password: "YourPassword123!",
 				Shell:    "#!/bin/bash\necho 'BMS GPU PrePaid Node initialization complete'",
@@ -262,7 +262,7 @@ func ListNodePool() {
 
 // ScaleNodePool 扩缩容节点池
 func ScaleNodePool() {
-	ak, sk := "9bd55e4e690911f08df94ecd222a1a90", "48b783acb17483a9e4639a80c25f0b46"
+	ak, sk := "your-ak", "your-sk"
 
 	eksClient, _ := eks.NewClient(ak, sk)
 
@@ -301,4 +301,8 @@ func DeleteNodePool() {
 
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
+}
+
+func main() {
+	CreateECSNodePool()
 }
