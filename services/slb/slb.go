@@ -17,15 +17,34 @@ limitations under the License.
 package slb
 
 import (
+	"fmt"
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
 
 const (
-	ListSlbAction  = "DescribeVpcSlbList"
-	GetSlbAction    = "DescribeVpcSlb"
-)
+	ListSlbAction = "DescribeVpcSlbList"
+	GetSlbAction  = "DescribeVpcSlb"
 
+	CreateVpcSlb                   = "CreateVpcSlb"
+	DeleteVpcSlb                   = "DeleteVpcSlb"
+	UpdateVpcSlb                   = "UpdateVpcSlb"
+	DescribeVpcSlbListInfo         = "DescribeVpcSlbListInfo"
+	DescribeVpcSlbDetailInfo       = "DescribeVpcSlbDetailInfo"
+	DescribeVpcSlbListenCreateInfo = "DescribeVpcSlbListenCreateInfo"
+	CreateVpcSlbListen             = "CreateVpcSLBListen"
+	DeleteVpcSlbListen             = "DeleteVpcSLBListen"
+	UpdateVpcSlbListen             = "UpdateVpcSLBListen"
+	DescribeVpcSlbListenList       = "DescribeVpcSlbListenList"
+	QueryVpcSlbListen              = "QueryVpcSLBListen"
+	DescribeVpcSlbListenRsInfo     = "DescribeVpcSlbListenRsInfo"
+	CreateVpcSlbRsPort             = "CreateVpcSLBRsPort"
+	DeleteVpcSlbRsPort             = "DeleteVpcSLBRsPort"
+	UpdateVpcSlbRsPort             = "UpdateVpcSLBRsPort"
+	QueryVpcSlbRsPort              = "QueryVpcSLBRsPort"
+	BandwidthBindResource          = "BandwidthBindResource"
+	BandwidthUnbindResource        = "BandwidthUnbindResource"
+)
 
 func (c *Client) ListVpcSlb(args *ListVpcSlbReq) (*ListVpcSlbResult, error) {
 	result := &ListVpcSlbResult{}
@@ -36,7 +55,7 @@ func (c *Client) ListVpcSlb(args *ListVpcSlbReq) (*ListVpcSlbResult, error) {
 		WithQueryParam("VpcId", args.VpcId).
 		WithResult(result).
 		Do()
-
+	fmt.Println(string(vpcURI))
 	return result, err
 
 }
@@ -48,9 +67,243 @@ func (c *Client) GetVpcSlbDetail(args *GetVpcSlbDetailReq) (*GetVpcSlbResult, er
 		WithMethod(http.GET).
 		WithQueryParam("Action", GetSlbAction).
 		WithQueryParam("SlbId", args.SlbId).
-        WithQueryParam("SlbName", args.SlbName).
+		WithQueryParam("SlbName", args.SlbName).
 		WithResult(result).
 		Do()
 
+	return result, err
+}
+
+func (c *Client) CreateVpcSlb(args *CreateVpcSlbReq) (*CreateVpcSlbResult, error) {
+	result := &CreateVpcSlbResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "CreateVpcSlb").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) DeleteVpcSlb(args *DeleteVpcSlbReq) (*DeleteVpcSlbResult, error) {
+	result := &DeleteVpcSlbResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "DeleteVpcSlb").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) UpdateVpcSlb(args *UpdateVpcSlbReq) (*UpdateVpcSlbResult, error) {
+	result := &UpdateVpcSlbResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "UpdateVpcSlb").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) DescribeVpcSlbList(args *DescribeVpcSlbListReq) (*DescribeVpcSlbListResult, error) {
+	result := &DescribeVpcSlbListResult{}
+	builder := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "DescribeVpcSlbList")
+	if args != nil {
+		if args.VpcId != "" {
+			builder = builder.WithQueryParam("VpcId", args.VpcId)
+		}
+		if args.Keyword != "" {
+			builder = builder.WithQueryParam("Keyword", args.Keyword)
+		}
+	}
+	err := builder.WithResult(result).Do()
+	return result, err
+}
+
+func (c *Client) DescribeVpcSlbDetailInfo(args *DescribeVpcSlbDetailInfoReq) (*DescribeVpcSlbDetailInfoResult, error) {
+	result := &DescribeVpcSlbDetailInfoResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "DescribeVpcSlbDetailInfo").
+		WithQueryParam("SlbId", args.SlbId).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) DescribeVpcSlbListenCreateInfo(args *DescribeVpcSlbListenCreateInfoReq) (*DescribeVpcSlbListenCreateInfoResult, error) {
+	result := &DescribeVpcSlbListenCreateInfoResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "DescribeVpcSlbListenCreateInfo").
+		WithQueryParam("SlbId", args.SlbId).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) CreateVpcSlbListen(args *CreateVpcSlbListenReq) (*CreateVpcSlbListenResult, error) {
+	result := &CreateVpcSlbListenResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "CreateVpcSlbListen").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) DeleteVpcSlbListen(args *DeleteVpcSlbListenReq) (*DeleteVpcSlbListenResult, error) {
+	result := &DeleteVpcSlbListenResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "DeleteVpcSlbListen").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) UpdateVpcSlbListen(args *UpdateVpcSlbListenReq) (*UpdateVpcSlbListenResult, error) {
+	result := &UpdateVpcSlbListenResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "UpdateVpcSlbListen").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) DescribeVpcSlbListenList(args *DescribeVpcSlbListenListReq) (*DescribeVpcSlbListenListResult, error) {
+	result := &DescribeVpcSlbListenListResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "DescribeVpcSlbListenList").
+		WithQueryParam("SlbId", args.SlbId).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) QueryVpcSlbListen(args *QueryVpcSlbListenReq) (*QueryVpcSlbListenResult, error) {
+	result := &QueryVpcSlbListenResult{}
+	builder := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "QueryVpcSlbListen")
+	if args != nil {
+		if args.SlbId != "" {
+			builder = builder.WithQueryParam("SlbId", args.SlbId)
+		}
+		if args.ListenId != "" {
+			builder = builder.WithQueryParam("ListenId", args.ListenId)
+		}
+	}
+	err := builder.WithResult(result).Do()
+	return result, err
+}
+
+func (c *Client) DescribeVpcSlbListenRsInfo(args *DescribeVpcSlbListenRsInfoReq) (*DescribeVpcSlbListenRsInfoResult, error) {
+	result := &DescribeVpcSlbListenRsInfoResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "DescribeVpcSlbListenRsInfo").
+		WithQueryParam("ListenId", args.ListenId).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) CreateVpcSlbRsPort(args *CreateVpcSlbRsPortReq) (*CreateVpcSlbRsPortResult, error) {
+	result := &CreateVpcSlbRsPortResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "CreateVpcSlbRsPort").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) DeleteVpcSlbRsPort(args *DeleteVpcSlbRsPortReq) (*DeleteVpcSlbRsPortResult, error) {
+	result := &DeleteVpcSlbRsPortResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "DeleteVpcSlbRsPort").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) UpdateVpcSlbRsPort(args *UpdateVpcSlbRsPortReq) (*UpdateVpcSlbRsPortResult, error) {
+	result := &UpdateVpcSlbRsPortResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "UpdateVpcSlbRsPort").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) QueryVpcSlbRsPort(args *QueryVpcSlbRsPortReq) (*QueryVpcSlbRsPortResult, error) {
+	result := &QueryVpcSlbRsPortResult{}
+	builder := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.GET).
+		WithQueryParam("Action", "QueryVpcSlbRsPort")
+	if args != nil {
+		if args.SlbId != "" {
+			builder = builder.WithQueryParam("SlbId", args.SlbId)
+		}
+		if args.ListenId != "" {
+			builder = builder.WithQueryParam("ListenId", args.ListenId)
+		}
+	}
+	err := builder.WithResult(result).Do()
+	return result, err
+}
+
+func (c *Client) BandwidthBindResource(args *BandwidthBindResourceReq) (*BandwidthBindResourceResult, error) {
+	result := &BandwidthBindResourceResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "BandwidthBindResource").
+		WithBody(args).
+		WithResult(result).
+		Do()
+	return result, err
+}
+
+func (c *Client) BandwidthUnbindResource(args *BandwidthUnbindResourceReq) (*BandwidthUnbindResourceResult, error) {
+	result := &BandwidthUnbindResourceResult{}
+	err := cds.NewRequestBuilder(c).
+		WithURI(vpcURI).
+		WithMethod(http.POST).
+		WithQueryParam("Action", "BandwidthUnbindResource").
+		WithBody(args).
+		WithResult(result).
+		Do()
 	return result, err
 }
