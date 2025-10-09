@@ -17,7 +17,6 @@ limitations under the License.
 package slb
 
 import (
-	"fmt"
 	"github.com/capitalonline/cds-cloudos-go-sdk/cds"
 	"github.com/capitalonline/cds-cloudos-go-sdk/http"
 )
@@ -55,7 +54,6 @@ func (c *Client) ListVpcSlb(args *ListVpcSlbReq) (*ListVpcSlbResult, error) {
 		WithQueryParam("VpcId", args.VpcId).
 		WithResult(result).
 		Do()
-	fmt.Println(string(vpcURI))
 	return result, err
 
 }
@@ -115,7 +113,7 @@ func (c *Client) DescribeVpcSlbList(args *DescribeVpcSlbListReq) (*DescribeVpcSl
 	builder := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
 		WithMethod(http.GET).
-		WithQueryParam("Action", "DescribeVpcSlbList")
+		WithQueryParam("Action", "DescribeVpcSlbListInfo")
 	if args != nil {
 		if args.VpcId != "" {
 			builder = builder.WithQueryParam("VpcId", args.VpcId)
@@ -132,9 +130,9 @@ func (c *Client) DescribeVpcSlbDetailInfo(args *DescribeVpcSlbDetailInfoReq) (*D
 	result := &DescribeVpcSlbDetailInfoResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
-		WithMethod(http.GET).
+		WithMethod(http.POST).
 		WithQueryParam("Action", "DescribeVpcSlbDetailInfo").
-		WithQueryParam("SlbId", args.SlbId).
+		WithBody(args).
 		WithResult(result).
 		Do()
 	return result, err
@@ -144,9 +142,9 @@ func (c *Client) DescribeVpcSlbListenCreateInfo(args *DescribeVpcSlbListenCreate
 	result := &DescribeVpcSlbListenCreateInfoResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
-		WithMethod(http.GET).
+		WithMethod(http.POST).
 		WithQueryParam("Action", "DescribeVpcSlbListenCreateInfo").
-		WithQueryParam("SlbId", args.SlbId).
+		WithBody(args).
 		WithResult(result).
 		Do()
 	return result, err
@@ -192,9 +190,9 @@ func (c *Client) DescribeVpcSlbListenList(args *DescribeVpcSlbListenListReq) (*D
 	result := &DescribeVpcSlbListenListResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
-		WithMethod(http.GET).
+		WithMethod(http.POST).
 		WithQueryParam("Action", "DescribeVpcSlbListenList").
-		WithQueryParam("SlbId", args.SlbId).
+		WithBody(args).
 		WithResult(result).
 		Do()
 	return result, err
@@ -202,19 +200,13 @@ func (c *Client) DescribeVpcSlbListenList(args *DescribeVpcSlbListenListReq) (*D
 
 func (c *Client) QueryVpcSlbListen(args *QueryVpcSlbListenReq) (*QueryVpcSlbListenResult, error) {
 	result := &QueryVpcSlbListenResult{}
-	builder := cds.NewRequestBuilder(c).
+	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
-		WithMethod(http.GET).
-		WithQueryParam("Action", "QueryVpcSlbListen")
-	if args != nil {
-		if args.SlbId != "" {
-			builder = builder.WithQueryParam("SlbId", args.SlbId)
-		}
-		if args.ListenId != "" {
-			builder = builder.WithQueryParam("ListenId", args.ListenId)
-		}
-	}
-	err := builder.WithResult(result).Do()
+		WithMethod(http.POST).
+		WithQueryParam("Action", "QueryVpcSlbListen").
+		WithBody(args).
+		WithResult(result).
+		Do()
 	return result, err
 }
 
@@ -222,9 +214,9 @@ func (c *Client) DescribeVpcSlbListenRsInfo(args *DescribeVpcSlbListenRsInfoReq)
 	result := &DescribeVpcSlbListenRsInfoResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
-		WithMethod(http.GET).
+		WithMethod(http.POST).
 		WithQueryParam("Action", "DescribeVpcSlbListenRsInfo").
-		WithQueryParam("ListenId", args.ListenId).
+		WithBody(args).
 		WithResult(result).
 		Do()
 	return result, err
@@ -235,7 +227,7 @@ func (c *Client) CreateVpcSlbRsPort(args *CreateVpcSlbRsPortReq) (*CreateVpcSlbR
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
 		WithMethod(http.POST).
-		WithQueryParam("Action", "CreateVpcSlbRsPort").
+		WithQueryParam("Action", "CreateVpcSLBRsPort").
 		WithBody(args).
 		WithResult(result).
 		Do()
@@ -247,7 +239,7 @@ func (c *Client) DeleteVpcSlbRsPort(args *DeleteVpcSlbRsPortReq) (*DeleteVpcSlbR
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
 		WithMethod(http.POST).
-		WithQueryParam("Action", "DeleteVpcSlbRsPort").
+		WithQueryParam("Action", "DeleteVpcSLBRsPort").
 		WithBody(args).
 		WithResult(result).
 		Do()
@@ -259,7 +251,7 @@ func (c *Client) UpdateVpcSlbRsPort(args *UpdateVpcSlbRsPortReq) (*UpdateVpcSlbR
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
 		WithMethod(http.POST).
-		WithQueryParam("Action", "UpdateVpcSlbRsPort").
+		WithQueryParam("Action", "UpdateVpcSLBRsPort").
 		WithBody(args).
 		WithResult(result).
 		Do()
@@ -268,19 +260,13 @@ func (c *Client) UpdateVpcSlbRsPort(args *UpdateVpcSlbRsPortReq) (*UpdateVpcSlbR
 
 func (c *Client) QueryVpcSlbRsPort(args *QueryVpcSlbRsPortReq) (*QueryVpcSlbRsPortResult, error) {
 	result := &QueryVpcSlbRsPortResult{}
-	builder := cds.NewRequestBuilder(c).
+	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
-		WithMethod(http.GET).
-		WithQueryParam("Action", "QueryVpcSlbRsPort")
-	if args != nil {
-		if args.SlbId != "" {
-			builder = builder.WithQueryParam("SlbId", args.SlbId)
-		}
-		if args.ListenId != "" {
-			builder = builder.WithQueryParam("ListenId", args.ListenId)
-		}
-	}
-	err := builder.WithResult(result).Do()
+		WithMethod(http.POST).
+		WithQueryParam("Action", "QueryVpcSLBRsPort").
+		WithBody(args).
+		WithResult(result).
+		Do()
 	return result, err
 }
 

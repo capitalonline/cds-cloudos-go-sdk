@@ -62,10 +62,10 @@ type CreateVpcSlbReq struct {
 }
 
 type CreateVpcSlbResult struct {
-	Code    string             `json:"Code"`
-	Message string             `json:"Message"`
-	TaskId  string             `json:"TaskId,omitempty"`
-	Data    CreateVpcSlbData   `json:"Data,omitempty"`
+	Code    string           `json:"Code"`
+	Message string           `json:"Message"`
+	TaskId  string           `json:"TaskId,omitempty"`
+	Data    CreateVpcSlbData `json:"Data,omitempty"`
 }
 
 type CreateVpcSlbData struct {
@@ -83,10 +83,10 @@ type DeleteVpcSlbResult struct {
 }
 
 type UpdateVpcSlbReq struct {
-	SlbId   string `json:"SlbId"`
-	Name    string `json:"Name,omitempty"`
-	NetType string `json:"NetType,omitempty"`
-	ConfType string `json:"ConfType,omitempty"`
+	SlbId    string `json:"SlbId"`
+	Name     string `json:"Name"`
+	NetType  string `json:"NetType"`
+	ConfType string `json:"ConfType"`
 }
 
 type UpdateVpcSlbResult struct {
@@ -96,8 +96,8 @@ type UpdateVpcSlbResult struct {
 }
 
 type DescribeVpcSlbListReq struct {
-	VpcId      string `json:"VpcId,omitempty"`
-	Keyword    string `json:"Keyword,omitempty"`
+	VpcId   string `json:"VpcId,omitempty"`
+	Keyword string `json:"Keyword,omitempty"`
 }
 
 type DescribeVpcSlbListResult struct {
@@ -108,33 +108,37 @@ type DescribeVpcSlbListResult struct {
 
 type DescribeVpcSlbListData struct {
 	SlbList []DescribeVpcSlbEntry `json:"SlbList,omitempty"`
-	Total   int                   `json:"Total,omitempty"`
+	//Total   int                   `json:"Total,omitempty"`
 }
 
 type DescribeVpcSlbEntry struct {
-	AzId         string      `json:"AzId,omitempty"`
-	AzName       string      `json:"AzName,omitempty"`
-	BandwidthId  string      `json:"BandwidthId,omitempty"`
-	BandwidthName string     `json:"BandwidthName,omitempty"`
-	BillingMethod string     `json:"BillingMethod,omitempty"`
-	ConfName      string     `json:"ConfName,omitempty"`
-	SlbId        string      `json:"SlbId,omitempty"`
-	SlbName      string      `json:"SlbName,omitempty"`
-	NetType      string      `json:"NetType,omitempty"`
-	NetTypeZh    string      `json:"NetTypeZh,omitempty"`
-	RegionId     string      `json:"RegionId,omitempty"`
-	RegionName   string      `json:"RegionName,omitempty"`
-	Status       string      `json:"Status,omitempty"`
-	StatusZh     string      `json:"StatusZh,omitempty"`
-	VipList      []VipEntry  `json:"VipList,omitempty"`
-	VpcId        string      `json:"VpcId,omitempty"`
-	VpcName      string      `json:"VpcName,omitempty"`
-	VpcSegments  string      `json:"VpcSegments,omitempty"`
+	AzId          string `json:"AzId,omitempty"`
+	AzName        string `json:"AzName,omitempty"`
+	BandwidthId   string `json:"BandwidthId,omitempty"`
+	BandwidthName string `json:"BandwidthName,omitempty"`
+	BillingMethod string `json:"BillingMethod,omitempty"`
+	ConfName      string `json:"ConfName,omitempty"`
+	CreateTime    string `json:"CreateTime,omitempty"`
+	Id            string `json:"Id,omitempty"`
+	Name          string `json:"Name,omitempty"`
+	NetType       string `json:"NetType,omitempty"`
+	//NetTypeZh     string     `json:"NetTypeZh,omitempty"`
+	RegionId   string     `json:"RegionId,omitempty"`
+	RegionName string     `json:"RegionName,omitempty"`
+	Status     string     `json:"Status,omitempty"`
+	StatusZh   string     `json:"StatusZh,omitempty"`
+	VipList    []VipEntry `json:"VipList,omitempty"`
+	VpcId      string     `json:"VpcId,omitempty"`
+	VpcName    string     `json:"VpcName,omitempty"`
+	//VpcSegments   string     `json:"VpcSegments,omitempty"`
 }
 
 type VipEntry struct {
 	Address string `json:"Address,omitempty"`
 	Type    string `json:"Type,omitempty"`
+	Vip     string `json:"Vip,omitempty"`
+	VipId   string `json:"VipId,omitempty"`
+	VipType string `json:"VipType,omitempty"`
 }
 
 type DescribeVpcSlbDetailInfoReq struct {
@@ -142,18 +146,18 @@ type DescribeVpcSlbDetailInfoReq struct {
 }
 
 type DescribeVpcSlbDetailInfoResult struct {
-	Code    string                        `json:"Code"`
-	Message string                        `json:"Message"`
-	Data    DescribeVpcSlbDetailInfoData  `json:"Data,omitempty"`
+	Code    string                       `json:"Code"`
+	Message string                       `json:"Message"`
+	Data    DescribeVpcSlbDetailInfoData `json:"Data,omitempty"`
 }
 
 type DescribeVpcSlbDetailInfoData struct {
-	SlbId   string    `json:"SlbId,omitempty"`
-	SlbName string    `json:"SlbName,omitempty"`
-	NetType string    `json:"NetType,omitempty"`
-	ConfName string   `json:"ConfName,omitempty"`
-	Status  string    `json:"Status,omitempty"`
-	VipList []VipEntry `json:"VipList,omitempty"`
+	SlbId    string     `json:"SlbId,omitempty"`
+	SlbName  string     `json:"SlbName,omitempty"`
+	NetType  string     `json:"NetType,omitempty"`
+	ConfName string     `json:"ConfName,omitempty"`
+	Status   string     `json:"Status,omitempty"`
+	VipList  []VipEntry `json:"VipList,omitempty"`
 }
 
 type DescribeVpcSlbListenCreateInfoReq struct {
@@ -161,13 +165,14 @@ type DescribeVpcSlbListenCreateInfoReq struct {
 }
 
 type DescribeVpcSlbListenCreateInfoResult struct {
-	Code    string                                `json:"Code"`
-	Message string                                `json:"Message"`
-	Data    DescribeVpcSlbListenCreateInfoData    `json:"Data,omitempty"`
+	Code    string                             `json:"Code"`
+	Message string                             `json:"Message"`
+	Data    DescribeVpcSlbListenCreateInfoData `json:"Data,omitempty"`
 }
 
 type DescribeVpcSlbListenCreateInfoData struct {
 	SlbAclList []AclEntry `json:"SlbAclList,omitempty"`
+	SlbVipList []VipEntry `json:"SlbVipList,omitempty"`
 }
 
 type AclEntry struct {
@@ -176,32 +181,36 @@ type AclEntry struct {
 }
 
 type CreateVpcSlbListenReq struct {
-	SlbId          string `json:"SlbId"`
-	ListenName     string `json:"ListenName,omitempty"`
-	Vip            string `json:"Vip,omitempty"`
-	VipId          string `json:"VipId,omitempty"`
-	VipType        string `json:"VipType,omitempty"`
-	ListenProtocol string `json:"ListenProtocol,omitempty"`
-	ListenPort     int    `json:"ListenPort,omitempty"`
-	AclId          string `json:"AclId,omitempty"`
-	Scheduler      string `json:"Scheduler,omitempty"`
-	HealthCheckInfo *HealthCheckInfo `json:"HealthCheckInfo,omitempty"`
+	SlbId           string          `json:"SlbId"`
+	ListenName      string          `json:"ListenName,omitempty"`
+	Vip             string          `json:"Vip,omitempty"`
+	VipId           string          `json:"VipId,omitempty"`
+	VipType         string          `json:"VipType,omitempty"`
+	ListenProtocol  string          `json:"ListenProtocol,omitempty"`
+	ListenPort      int             `json:"ListenPort,omitempty"`
+	ListenTimeout   int             `json:"ListenTimeout,omitempty"`
+	AclId           string          `json:"AclId,omitempty"`
+	Scheduler       string          `json:"Scheduler,omitempty"`
+	HealthCheckInfo HealthCheckInfo `json:"HealthCheckInfo,omitempty"`
 }
 
 type HealthCheckInfo struct {
-	Protocol           string `json:"Protocol,omitempty"`
-	Port               string `json:"Port,omitempty"`
-	ConnectTimeout     string `json:"ConnectTimeout,omitempty"`
-	DelayLoop          int    `json:"DelayLoop,omitempty"`
-	Retry              int    `json:"Retry,omitempty"`
-	Rise               int    `json:"Rise,omitempty"`
-	DelayBeforeRetry   int    `json:"DelayBeforeRetry,omitempty"`
+	Protocol         string `json:"Protocol,omitempty"`
+	Port             int    `json:"Port,omitempty"`
+	ConnectTimeout   int    `json:"ConnectTimeout,omitempty"`
+	Virtualhost      string `json:"Virtualhost,omitempty"`
+	Path             string `json:"Path,omitempty"`
+	DelayLoop        int    `json:"DelayLoop,omitempty"`
+	Retry            int    `json:"Retry,omitempty"`
+	Rise             int    `json:"Rise,omitempty"`
+	StatusCode       int    `json:"StatusCode,omitempty"`
+	DelayBeforeRetry int    `json:"DelayBeforeRetry,omitempty"`
 }
 
 type CreateVpcSlbListenResult struct {
-	Code    string                      `json:"Code"`
-	Message string                      `json:"Message"`
-	Data    CreateVpcSlbListenData      `json:"Data,omitempty"`
+	Code    string                 `json:"Code"`
+	Message string                 `json:"Message"`
+	Data    CreateVpcSlbListenData `json:"Data,omitempty"`
 }
 
 type CreateVpcSlbListenData struct {
@@ -219,11 +228,13 @@ type DeleteVpcSlbListenResult struct {
 }
 
 type UpdateVpcSlbListenReq struct {
-	ListenId       string           `json:"ListenId"`
-	ListenName     string           `json:"ListenName,omitempty"`
-	Scheduler      string           `json:"Scheduler,omitempty"`
-	HealthCheckInfo *HealthCheckInfo `json:"HealthCheckInfo,omitempty"`
-	Virtualhost    string           `json:"Virtualhost,omitempty"`
+	ListenId        string          `json:"ListenId"`
+	ListenName      string          `json:"ListenName,omitempty"`
+	AclId           string          `json:"AclId,omitempty"`
+	ListenTimeout   int             `json:"ListenTimeout,omitempty"`
+	Scheduler       string          `json:"Scheduler,omitempty"`
+	Virtualhost     string          `json:"Virtualhost,omitempty"`
+	HealthCheckInfo HealthCheckInfo `json:"HealthCheckInfo,omitempty"`
 }
 
 type UpdateVpcSlbListenResult struct {
@@ -237,72 +248,114 @@ type DescribeVpcSlbListenListReq struct {
 }
 
 type DescribeVpcSlbListenListResult struct {
-	Code    string                        `json:"Code"`
-	Message string                        `json:"Message"`
-	Data    DescribeVpcSlbListenListData  `json:"Data,omitempty"`
+	Code    string                       `json:"Code"`
+	Message string                       `json:"Message"`
+	Data    DescribeVpcSlbListenListData `json:"Data,omitempty"`
 }
 
 type DescribeVpcSlbListenListData struct {
 	ListenList []DescribeVpcListenEntry `json:"ListenList,omitempty"`
+	Total      int                      `json:"Total,omitempty"`
 }
 
 type DescribeVpcListenEntry struct {
-	ListenId       string `json:"ListenId,omitempty"`
-	ListenName     string `json:"ListenName,omitempty"`
-	ListenProtocol string `json:"ListenProtocol,omitempty"`
-	ListenPort     int    `json:"ListenPort,omitempty"`
-	Scheduler      string `json:"Scheduler,omitempty"`
+	ListenId       string        `json:"ListenId,omitempty"`
+	ListenName     string        `json:"ListenName,omitempty"`
+	ListenPort     string        `json:"ListenPort,omitempty"`
+	ListenProtocol string        `json:"ListenProtocol,omitempty"`
+	ListenVip      string        `json:"ListenVip,omitempty"`
+	Scheduler      string        `json:"Scheduler,omitempty"`
+	SchedulerCn    string        `json:"SchedulerCn,omitempty"`
+	Status         string        `json:"Status,omitempty"`
+	StatusCn       string        `json:"StatusCn,omitempty"`
+	CheckInfo      CheckInfoData `json:"CheckInfo,omitempty"`
+}
+
+type CheckInfoData struct {
+	Error int `json:"Error,omitempty"`
+	Ok    int `json:"Ok,omitempty"`
 }
 
 type QueryVpcSlbListenReq struct {
-	SlbId   string `json:"SlbId,omitempty"`
+	SlbId    string `json:"SlbId,omitempty"`
 	ListenId string `json:"ListenId,omitempty"`
 }
 
 type QueryVpcSlbListenResult struct {
-	Code    string               `json:"Code"`
-	Message string               `json:"Message"`
-	Data    []QueryListenEntry   `json:"Data,omitempty"`
+	Code    string           `json:"Code"`
+	Message string           `json:"Message"`
+	Data    QueryListenEntry `json:"Data,omitempty"`
 }
 
 type QueryListenEntry struct {
-	ListenId string `json:"ListenId,omitempty"`
-	Port     int    `json:"Port,omitempty"`
-	Protocol string `json:"Protocol,omitempty"`
+	ListenId        string          `json:"ListenId,omitempty"`
+	ListenName      string          `json:"ListenName,omitempty"`
+	ListenProtocol  string          `json:"ListenProtocol,omitempty"`
+	ListenVip       string          `json:"ListenVip,omitempty"`
+	Vip             string          `json:"Vip,omitempty"`
+	VipId           string          `json:"VipId,omitempty"`
+	VipType         string          `json:"VipType,omitempty"`
+	ListenPort      int             `json:"ListenPort,omitempty"`
+	ListenTimeout   int             `json:"ListenTimeout,omitempty"`
+	AclId           string          `json:"AclId,omitempty"`
+	Scheduler       string          `json:"Scheduler,omitempty"`
+	SchedulerCn     string          `json:"SchedulerCn,omitempty"`
+	Status          string          `json:"Status,omitempty"`
+	StatusCn        string          `json:"StatusCn,omitempty"`
+	HealthCheckInfo HealthCheckInfo `json:"HealthCheckInfo,omitempty"`
 }
 
+//type DescribeVpcSlbListenRsInfoReq struct {
+//	VmType string `json:"VmType"`
+//}
+
 type DescribeVpcSlbListenRsInfoReq struct {
-	ListenId string `json:"ListenId"`
+	VmType string `json:"VmType"`
+	VpcId  string `json:"VpcId"`
 }
 
 type DescribeVpcSlbListenRsInfoResult struct {
-	Code    string                        `json:"Code"`
-	Message string                        `json:"Message"`
-	Data    DescribeVpcSlbListenRsInfoData `json:"Data,omitempty"`
+	Code    string                           `json:"Code"`
+	Message string                           `json:"Message"`
+	Data    []DescribeVpcSlbListenRsInfoData `json:"Data,omitempty"`
 }
 
 type DescribeVpcSlbListenRsInfoData struct {
-	ListenId string        `json:"ListenId,omitempty"`
-	RsList   []BackendRs    `json:"RsList,omitempty"`
+	VmId        string `json:"vm_id,omitempty"`
+	VmName      string `json:"vm_name,omitempty"`
+	VmPrivateIp string `json:"vm_private_ip,omitempty"`
+	VmPublicIp  string `json:"vm_public_ip,omitempty"`
+	VmType      string `json:"vm_type,omitempty"`
 }
 
 type BackendRs struct {
-	RsId string `json:"RsId,omitempty"`
+	RsId    string `json:"RsId,omitempty"`
 	Address string `json:"Address,omitempty"`
-	Port int `json:"Port,omitempty"`
-	Weight int `json:"Weight,omitempty"`
-	Status string `json:"Status,omitempty"`
+	Port    int    `json:"Port,omitempty"`
+	Weight  int    `json:"Weight,omitempty"`
+	Status  string `json:"Status,omitempty"`
 }
 
 type CreateVpcSlbRsPortReq struct {
-	ListenId string `json:"ListenId"`
-	RsList   []RsPort `json:"RsList"`
+	ListenId string       `json:"ListenId"`
+	RsList   []RsPortItem `json:"RsList"`
+}
+
+type RsPortItem struct {
+	RsPortId    string `json:"RsPortId,omitempty"`
+	VmId        string `json:"VmId,omitempty"`
+	VmName      string `json:"VmName,omitempty"`
+	VmPublicIp  string `json:"VmPublicIp,omitempty"`
+	VmType      string `json:"VmType,omitempty"`
+	VmPrivateIp string `json:"VmPrivateIp,omitempty"`
+	Port        string `json:"Port,omitempty"`
+	Weight      string `json:"Weight,omitempty"`
 }
 
 type RsPort struct {
-	RsId string `json:"RsId"`
-	Port int    `json:"Port"`
-	Weight int `json:"Weight,omitempty"`
+	RsId   string `json:"RsId"`
+	Port   int    `json:"Port"`
+	Weight int    `json:"Weight,omitempty"`
 }
 
 type CreateVpcSlbRsPortResult struct {
@@ -312,8 +365,7 @@ type CreateVpcSlbRsPortResult struct {
 }
 
 type DeleteVpcSlbRsPortReq struct {
-	ListenId string `json:"ListenId,omitempty"`
-	RsList   []RsPort `json:"RsList,omitempty"`
+	RsPortIds []string `json:"RsPortIds"`
 }
 
 type DeleteVpcSlbRsPortResult struct {
@@ -323,8 +375,7 @@ type DeleteVpcSlbRsPortResult struct {
 }
 
 type UpdateVpcSlbRsPortReq struct {
-	ListenId string `json:"ListenId"`
-	RsList   []RsPort `json:"RsList"`
+	RsPortList []RsPortItem `json:"RsPortList"`
 }
 
 type UpdateVpcSlbRsPortResult struct {
@@ -334,27 +385,40 @@ type UpdateVpcSlbRsPortResult struct {
 }
 
 type QueryVpcSlbRsPortReq struct {
-	SlbId   string `json:"SlbId,omitempty"`
+	Keyword  string `json:"Keyword"`
 	ListenId string `json:"ListenId,omitempty"`
 }
 
 type QueryVpcSlbRsPortResult struct {
-	Code    string        `json:"Code"`
-	Message string        `json:"Message"`
-	Data    []RsPortEntry `json:"Data,omitempty"`
+	Code    string                       `json:"Code"`
+	Message string                       `json:"Message"`
+	Data    QueryVpcSlbRsPortResultEntry `json:"Data,omitempty"`
+}
+
+type QueryVpcSlbRsPortResultEntry struct {
+	RsPortList []RsPortEntry `json:"RsPortList,omitempty"`
+	Total      int           `json:"Total,omitempty"`
 }
 
 type RsPortEntry struct {
-	RsId  string `json:"RsId,omitempty"`
-	Port  int    `json:"Port,omitempty"`
-	Weight int   `json:"Weight,omitempty"`
-	Status string `json:"Status,omitempty"`
+	CheckStatus    string `json:"CheckStatus,omitempty"`
+	CheckStatusStr string `json:"CheckStatusStr,omitempty"`
+	LanIp          string `json:"LanIp,omitempty"`
+	Port           string `json:"Port,omitempty"`
+	ResourceId     string `json:"ResourceId,omitempty"`
+	ResourceName   string `json:"ResourceName,omitempty"`
+	RsPortId       string `json:"RsPortId,omitempty"`
+	Status         string `json:"Status,omitempty"`
+	StatusZh       string `json:"StatusZh,omitempty"`
+	VmType         string `json:"VmType,omitempty"`
+	WanIp          string `json:"WanIp,omitempty"`
+	Weight         string `json:"Weight,omitempty"`
 }
 
 type BandwidthBindResourceReq struct {
 	BandwidthId string `json:"BandwidthId"`
 	ResourceId  string `json:"ResourceId"`
-	ResourceType string `json:"ResourceType,omitempty"`
+	BindType    string `json:"BindType"`
 }
 
 type BandwidthBindResourceResult struct {
@@ -365,7 +429,6 @@ type BandwidthBindResourceResult struct {
 
 type BandwidthUnbindResourceReq struct {
 	BandwidthId string `json:"BandwidthId"`
-	ResourceId  string `json:"ResourceId"`
 }
 
 type BandwidthUnbindResourceResult struct {
