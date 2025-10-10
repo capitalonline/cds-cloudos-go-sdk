@@ -24,7 +24,7 @@ func CreateCluster() {
 			// 集群所使用的cni相关配置
 			CniConfig: eks.CniConfig{
 				// 每个node节点所能创建的最大pod数，默认64。
-				NodePodsNum: 64,
+				NodePodsNum: eks.NodePodsNum64,
 				// 集群所使用的子网ID列表，使用vpc-cni时必填。使用flannel非必填。
 				SubnetIds: []string{"subnet-01", "subnet-02"},
 			},

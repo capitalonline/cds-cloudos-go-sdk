@@ -610,3 +610,11 @@ const (
 	BmsUbuntu2004K8s12615GpuRtxA5000 = "Ubuntu20.04-GPU-1.26-bms"
 	BmsUbuntu2204K8s13014GpuRtx4090  = "Ubuntu22.04-GPU-1.30.14-bms"
 )
+
+const (
+	NodePodsNum16  = 16
+	NodePodsNum32  = 32
+	NodePodsNum64  = 64
+	NodePodsNum128 = 128
+	NodePodsNum256 = 256
+)
