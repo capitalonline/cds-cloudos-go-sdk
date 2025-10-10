@@ -95,7 +95,7 @@ type UpdateVpcSlbResult struct {
 	TaskId  string `json:"TaskId,omitempty"`
 }
 
-type DescribeVpcSlbListReq struct {
+type ListVpcSlbDetailReq struct {
 	VpcId   string `json:"VpcId,omitempty"`
 	Keyword string `json:"Keyword,omitempty"`
 }
@@ -141,7 +141,7 @@ type VipEntry struct {
 	VipType string `json:"VipType,omitempty"`
 }
 
-type DescribeVpcSlbDetailInfoReq struct {
+type GetVpcSlbReq struct {
 	SlbId string `json:"SlbId"`
 }
 
@@ -152,15 +152,34 @@ type DescribeVpcSlbDetailInfoResult struct {
 }
 
 type DescribeVpcSlbDetailInfoData struct {
-	SlbId    string     `json:"SlbId,omitempty"`
-	SlbName  string     `json:"SlbName,omitempty"`
-	NetType  string     `json:"NetType,omitempty"`
-	ConfName string     `json:"ConfName,omitempty"`
-	Status   string     `json:"Status,omitempty"`
-	VipList  []VipEntry `json:"VipList,omitempty"`
+	AzId              string        `json:"AzId,omitempty"`
+	AzName            string        `json:"AzName,omitempty"`
+	BandwidthInfo     BandwidthInfo `json:"BandwidthInfo,omitempty"`
+	BillingMethod     string        `json:"BillingMethod,omitempty"`
+	BillingSchemeId   string        `json:"BillingSchemeId,omitempty"`
+	BillingSchemeName string        `json:"BillingSchemeName,omitempty"`
+	ConfName          string        `json:"ConfName,omitempty"`
+	CreateTime        string        `json:"CreateTime,omitempty"`
+	Id                string        `json:"Id,omitempty"`
+	Name              string        `json:"Name,omitempty"`
+	NetType           string        `json:"NetType,omitempty"`
+	NetTypeZh         string        `json:"NetTypeZh,omitempty"`
+	RegionId          string        `json:"RegionId,omitempty"`
+	RegionName        string        `json:"RegionName,omitempty"`
+	Status            string        `json:"Status,omitempty"`
+	StatusZh          string        `json:"StatusZh,omitempty"`
+	VipList           []VipEntry    `json:"VipList,omitempty"`
+	VpcId             string        `json:"VpcId,omitempty"`
+	VpcName           string        `json:"VpcName,omitempty"`
+	VpcSegments       string        `json:"VpcSegments,omitempty"`
 }
 
-type DescribeVpcSlbListenCreateInfoReq struct {
+type BandwidthInfo struct {
+	Id   string `json:"Id,omitempty"`
+	Name string `json:"Name,omitempty"`
+}
+
+type GetVpcSlbListenCreateInfoReq struct {
 	SlbId string `json:"SlbId"`
 }
 
@@ -255,7 +274,7 @@ type DescribeVpcSlbListenListResult struct {
 
 type DescribeVpcSlbListenListData struct {
 	ListenList []DescribeVpcListenEntry `json:"ListenList,omitempty"`
-	Total      int                      `json:"Total,omitempty"`
+	Total      int                      `json:"Total"`
 }
 
 type DescribeVpcListenEntry struct {
@@ -272,11 +291,11 @@ type DescribeVpcListenEntry struct {
 }
 
 type CheckInfoData struct {
-	Error int `json:"Error,omitempty"`
-	Ok    int `json:"Ok,omitempty"`
+	Error int `json:"Error"`
+	Ok    int `json:"Ok"`
 }
 
-type QueryVpcSlbListenReq struct {
+type GetVpcSlbListenReq struct {
 	SlbId    string `json:"SlbId,omitempty"`
 	ListenId string `json:"ListenId,omitempty"`
 }
@@ -296,8 +315,8 @@ type QueryListenEntry struct {
 	VipId           string          `json:"VipId,omitempty"`
 	VipType         string          `json:"VipType,omitempty"`
 	ListenPort      int             `json:"ListenPort,omitempty"`
-	ListenTimeout   int             `json:"ListenTimeout,omitempty"`
-	AclId           string          `json:"AclId,omitempty"`
+	ListenTimeout   int             `json:"ListenTimeout"`
+	AclId           string          `json:"AclId"`
 	Scheduler       string          `json:"Scheduler,omitempty"`
 	SchedulerCn     string          `json:"SchedulerCn,omitempty"`
 	Status          string          `json:"Status,omitempty"`
@@ -305,11 +324,7 @@ type QueryListenEntry struct {
 	HealthCheckInfo HealthCheckInfo `json:"HealthCheckInfo,omitempty"`
 }
 
-//type DescribeVpcSlbListenRsInfoReq struct {
-//	VmType string `json:"VmType"`
-//}
-
-type DescribeVpcSlbListenRsInfoReq struct {
+type GetVpcSlbListenRsInfoReq struct {
 	VmType string `json:"VmType"`
 	VpcId  string `json:"VpcId"`
 }
@@ -384,7 +399,7 @@ type UpdateVpcSlbRsPortResult struct {
 	TaskId  string `json:"TaskId,omitempty"`
 }
 
-type QueryVpcSlbRsPortReq struct {
+type GetVpcSlbRsPortReq struct {
 	Keyword  string `json:"Keyword"`
 	ListenId string `json:"ListenId,omitempty"`
 }
@@ -397,7 +412,7 @@ type QueryVpcSlbRsPortResult struct {
 
 type QueryVpcSlbRsPortResultEntry struct {
 	RsPortList []RsPortEntry `json:"RsPortList,omitempty"`
-	Total      int           `json:"Total,omitempty"`
+	Total      int           `json:"Total"`
 }
 
 type RsPortEntry struct {

@@ -23,7 +23,7 @@ import (
 	"github.com/capitalonline/cds-cloudos-go-sdk/services/slb"
 )
 
-func ListVPCSlb() {
+func ListVpcSlb() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
@@ -35,12 +35,12 @@ func ListVPCSlb() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func GetVPCSlbDetail() {
+func GetVpcSlbDetail() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
@@ -53,7 +53,7 @@ func GetVPCSlbDetail() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -75,7 +75,7 @@ func CreateVpcSlb() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -92,7 +92,7 @@ func DeleteVpcSlb() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -106,64 +106,64 @@ func UpdateVpcSlb() {
 		SlbId:    "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
 		ConfType: "slb.v1.small",
 		Name:     "lxl-test",
-		NetType:  "wan",
+		NetType:  "wan_lan",
 	}
 	response, err := slbClient.UpdateVpcSlb(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func DescribeVpcSlbList() {
+func ListVpcSlbDetail() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	req := &slb.DescribeVpcSlbListReq{
+	req := &slb.ListVpcSlbDetailReq{
 		VpcId: "635957ee-9543-11f0-8037-c2aae808f99f",
 	}
-	response, err := slbClient.DescribeVpcSlbList(req)
+	response, err := slbClient.ListVpcSlbDetail(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func DescribeVpcSlbDetailInfo() {
+func GetVpcSlb() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	req := &slb.DescribeVpcSlbDetailInfoReq{
+	req := &slb.GetVpcSlbReq{
 		SlbId: "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
 	}
-	response, err := slbClient.DescribeVpcSlbDetailInfo(req)
+	response, err := slbClient.GetVpcSlb(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func DescribeVpcSlbListenCreateInfo() {
+func GetVpcSlbListenCreateInfo() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	req := &slb.DescribeVpcSlbListenCreateInfoReq{
+	req := &slb.GetVpcSlbListenCreateInfoReq{
 		SlbId: "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
 	}
-	response, err := slbClient.DescribeVpcSlbListenCreateInfo(req)
+	response, err := slbClient.GetVpcSlbListenCreateInfo(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -200,7 +200,7 @@ func CreateVpcSlbListen() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -211,13 +211,13 @@ func DeleteVpcSlbListen() {
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.DeleteVpcSlbListenReq{
-		ListenIds: []string{"8c1be1ea-9ddd-11f0-ac07-428d3fdeacd7"},
+		ListenIds: []string{"37f895ec-a588-11f0-a90a-5aeb8613167f"},
 	}
 	response, err := slbClient.DeleteVpcSlbListen(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -228,10 +228,10 @@ func UpdateVpcSlbListen() {
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.UpdateVpcSlbListenReq{
-		ListenId:      "4751aff2-9916-11f0-b7f3-7a25eed710cc",
-		ListenName:    "test1",
+		ListenId:      "7f208a88-a588-11f0-8979-5aeb8613167f",
+		ListenName:    "test2",
 		AclId:         "",
-		ListenTimeout: 10,
+		ListenTimeout: 12,
 		Scheduler:     "rr",
 		HealthCheckInfo: slb.HealthCheckInfo{
 			Protocol:         "TCP",
@@ -246,12 +246,12 @@ func UpdateVpcSlbListen() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func DescribeVpcSlbListenList() {
+func ListVpcSlbListen() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
@@ -259,46 +259,46 @@ func DescribeVpcSlbListenList() {
 	req := &slb.DescribeVpcSlbListenListReq{
 		SlbId: "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
 	}
-	response, err := slbClient.DescribeVpcSlbListenList(req)
+	response, err := slbClient.ListVpcSlbListen(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func QueryVpcSlbListen() {
+func GetVpcSlbListen() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	req := &slb.QueryVpcSlbListenReq{
-		ListenId: "4751aff2-9916-11f0-b7f3-7a25eed710cc",
+	req := &slb.GetVpcSlbListenReq{
+		ListenId: "7f208a88-a588-11f0-8979-5aeb8613167f",
 	}
-	response, err := slbClient.QueryVpcSlbListen(req)
+	response, err := slbClient.GetVpcSlbListen(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func DescribeVpcSlbListenRsInfo() {
+func GetVpcSlbListenRsInfo() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	req := &slb.DescribeVpcSlbListenRsInfoReq{
+	req := &slb.GetVpcSlbListenRsInfoReq{
 		VmType: "kvm",
 		VpcId:  "635957ee-9543-11f0-8037-c2aae808f99f",
 	}
-	response, err := slbClient.DescribeVpcSlbListenRsInfo(req)
+	response, err := slbClient.GetVpcSlbListenRsInfo(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -309,7 +309,7 @@ func CreateVpcSlbRsPort() {
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.CreateVpcSlbRsPortReq{
-		ListenId: "4751aff2-9916-11f0-b7f3-7a25eed710cc",
+		ListenId: "7f208a88-a588-11f0-8979-5aeb8613167f",
 		RsList: []slb.RsPortItem{
 			{
 				VmId:        "ins-qyvk5dju93nh1cs0",
@@ -326,7 +326,7 @@ func CreateVpcSlbRsPort() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -337,13 +337,13 @@ func DeleteVpcSlbRsPort() {
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.DeleteVpcSlbRsPortReq{
-		RsPortIds: []string{"a7dccc28-a4e0-11f0-be74-5aeb8613167f"},
+		RsPortIds: []string{"b4a85c84-a589-11f0-bf17-5aeb8613167f"},
 	}
 	response, err := slbClient.DeleteVpcSlbRsPort(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -356,7 +356,7 @@ func UpdateVpcSlbRsPort() {
 	req := &slb.UpdateVpcSlbRsPortReq{
 		RsPortList: []slb.RsPortItem{
 			{
-				RsPortId: "8476da80-a4e0-11f0-8979-5aeb8613167f",
+				RsPortId: "b4a85c84-a589-11f0-bf17-5aeb8613167f",
 				Port:     "80",
 				Weight:   "200",
 			},
@@ -366,25 +366,25 @@ func UpdateVpcSlbRsPort() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
-func QueryVpcSlbRsPort() {
+func GetVpcSlbRsPort() {
 	// 替换为您的实际访问密钥
 	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
 
 	slbClient, _ := slb.NewClient(ak, sk)
-	req := &slb.QueryVpcSlbRsPortReq{
-		ListenId: "4751aff2-9916-11f0-b7f3-7a25eed710cc",
+	req := &slb.GetVpcSlbRsPortReq{
+		ListenId: "7f208a88-a588-11f0-8979-5aeb8613167f",
 		Keyword:  "",
 	}
-	response, err := slbClient.QueryVpcSlbRsPort(req)
+	response, err := slbClient.GetVpcSlbRsPort(req)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -403,7 +403,7 @@ func BandwidthBindResource() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
@@ -420,31 +420,31 @@ func BandwidthUnbindResource() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf(">>> response: %+v", response)
+	fmt.Printf(">>> response: %+v", response)
 	bytes, _ := json.Marshal(response)
 	fmt.Println(string(bytes))
 }
 
 func main() {
-	//ListVPCSlb()
-	//GetVPCSlbDetail()
+	//ListVpcSlb()
+	//GetVpcSlbDetail()
 
 	//CreateVpcSlb()
-	DeleteVpcSlb()
+	//DeleteVpcSlb()
 	//UpdateVpcSlb()
-	//DescribeVpcSlbList()
-	//DescribeVpcSlbDetailInfo()
-	//DescribeVpcSlbListenCreateInfo()
+	//ListVpcSlbDetail()
+	//GetVpcSlb()
+	//GetVpcSlbListenCreateInfo()
 	//CreateVpcSlbListen()
 	//DeleteVpcSlbListen()
 	//UpdateVpcSlbListen()
-	//DescribeVpcSlbListenList()
-	//QueryVpcSlbListen()
-	//DescribeVpcSlbListenRsInfo()
+	//ListVpcSlbListen()
+	//GetVpcSlbListen()
+	//GetVpcSlbListenRsInfo()
 	//CreateVpcSlbRsPort()
 	//DeleteVpcSlbRsPort()
 	//UpdateVpcSlbRsPort()
-	//QueryVpcSlbRsPort()
+	//GetVpcSlbRsPort()
 	//BandwidthBindResource()
 	//BandwidthUnbindResource()
 }

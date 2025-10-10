@@ -108,7 +108,7 @@ func (c *Client) UpdateVpcSlb(args *UpdateVpcSlbReq) (*UpdateVpcSlbResult, error
 	return result, err
 }
 
-func (c *Client) DescribeVpcSlbList(args *DescribeVpcSlbListReq) (*DescribeVpcSlbListResult, error) {
+func (c *Client) ListVpcSlbDetail(args *ListVpcSlbDetailReq) (*DescribeVpcSlbListResult, error) {
 	result := &DescribeVpcSlbListResult{}
 	builder := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
@@ -126,7 +126,7 @@ func (c *Client) DescribeVpcSlbList(args *DescribeVpcSlbListReq) (*DescribeVpcSl
 	return result, err
 }
 
-func (c *Client) DescribeVpcSlbDetailInfo(args *DescribeVpcSlbDetailInfoReq) (*DescribeVpcSlbDetailInfoResult, error) {
+func (c *Client) GetVpcSlb(args *GetVpcSlbReq) (*DescribeVpcSlbDetailInfoResult, error) {
 	result := &DescribeVpcSlbDetailInfoResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
@@ -138,7 +138,7 @@ func (c *Client) DescribeVpcSlbDetailInfo(args *DescribeVpcSlbDetailInfoReq) (*D
 	return result, err
 }
 
-func (c *Client) DescribeVpcSlbListenCreateInfo(args *DescribeVpcSlbListenCreateInfoReq) (*DescribeVpcSlbListenCreateInfoResult, error) {
+func (c *Client) GetVpcSlbListenCreateInfo(args *GetVpcSlbListenCreateInfoReq) (*DescribeVpcSlbListenCreateInfoResult, error) {
 	result := &DescribeVpcSlbListenCreateInfoResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
@@ -186,7 +186,7 @@ func (c *Client) UpdateVpcSlbListen(args *UpdateVpcSlbListenReq) (*UpdateVpcSlbL
 	return result, err
 }
 
-func (c *Client) DescribeVpcSlbListenList(args *DescribeVpcSlbListenListReq) (*DescribeVpcSlbListenListResult, error) {
+func (c *Client) ListVpcSlbListen(args *DescribeVpcSlbListenListReq) (*DescribeVpcSlbListenListResult, error) {
 	result := &DescribeVpcSlbListenListResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
@@ -198,7 +198,7 @@ func (c *Client) DescribeVpcSlbListenList(args *DescribeVpcSlbListenListReq) (*D
 	return result, err
 }
 
-func (c *Client) QueryVpcSlbListen(args *QueryVpcSlbListenReq) (*QueryVpcSlbListenResult, error) {
+func (c *Client) GetVpcSlbListen(args *GetVpcSlbListenReq) (*QueryVpcSlbListenResult, error) {
 	result := &QueryVpcSlbListenResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
@@ -210,7 +210,7 @@ func (c *Client) QueryVpcSlbListen(args *QueryVpcSlbListenReq) (*QueryVpcSlbList
 	return result, err
 }
 
-func (c *Client) DescribeVpcSlbListenRsInfo(args *DescribeVpcSlbListenRsInfoReq) (*DescribeVpcSlbListenRsInfoResult, error) {
+func (c *Client) GetVpcSlbListenRsInfo(args *GetVpcSlbListenRsInfoReq) (*DescribeVpcSlbListenRsInfoResult, error) {
 	result := &DescribeVpcSlbListenRsInfoResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).
@@ -258,7 +258,7 @@ func (c *Client) UpdateVpcSlbRsPort(args *UpdateVpcSlbRsPortReq) (*UpdateVpcSlbR
 	return result, err
 }
 
-func (c *Client) QueryVpcSlbRsPort(args *QueryVpcSlbRsPortReq) (*QueryVpcSlbRsPortResult, error) {
+func (c *Client) GetVpcSlbRsPort(args *GetVpcSlbRsPortReq) (*QueryVpcSlbRsPortResult, error) {
 	result := &QueryVpcSlbRsPortResult{}
 	err := cds.NewRequestBuilder(c).
 		WithURI(vpcURI).

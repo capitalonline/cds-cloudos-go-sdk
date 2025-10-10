@@ -38,8 +38,26 @@
 - **ListNatGateways**: 查询nat网关
 
 **高性能负载均衡管理**
-- **ListVPCSlb**:  查询VPC下的SLB列表信息
-- **GetVPCSlbDetail**: 查询高性能负载均衡详情
+- **ListVpcSlb**:  查询VPC下的SLB列表信息
+- **GetVpcSlbDetail**: 查询高性能负载均衡详情
+- **CreateVpcSlb**: 创建VPC下的SLB
+- **DeleteVpcSlb**: 删除VPC下的SLB
+- **UpdateVpcSlb**: 更新VPC下的SLB
+- **ListVpcSlbDetail**: 查询VPC下的SLB列表
+- **GetVpcSlb**: 查询VPC下的SLB信息
+- **GetVpcSlbListenCreateInfo**: 查询SLB可用的的VIP、ACL信息（用于监听创建）
+- **CreateVpcSlbListen**: 创建VPC下的SLB监听
+- **DeleteVpcSlbListen**: 删除VPC下的SLB监听
+- **UpdateVpcSlbListen**: 更新VPC下的SLB监听
+- **ListVpcSlbListen**: 查询VPC下的SLB监听列表
+- **GetVpcSlbListen**: 查询VPC下的SLB监听
+- **GetVpcSlbListenRsInfo**: 查询VPC下可绑定监听的主机信息（用于监听后端服务绑定）
+- **CreateVpcSlbRsPort**:创建VPC下监听后端服务绑定关系
+- **DeleteVpcSlbRsPort**: 删除VPC下监听后端服务绑定关系
+- **UpdateVpcSlbRsPort**: 更新VPC下监听后端服务绑定关系
+- **GetVpcSlbRsPort**: 查询VPC下监听后端服务绑定关系
+- **BandwidthBindResource**: 共享带宽绑定VPC下SLB
+- **BandwidthUnbindResource**: 共享带宽解绑VPC下SLB
 
 ## 快速开始
 ### 初始化VPC客户端
@@ -589,8 +607,9 @@ func ListNatGateways() {
 ```
 ### 高性能负载均衡管理代码示例
 **查询VPC下的SLB列表信息**
+
 ```go
-func ListVPCSlb() {
+func ListVpcSlb() {
 	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	slbClient, _ := slb.NewClient(ak, sk)
@@ -606,8 +625,9 @@ func ListVPCSlb() {
 }
 ```
 **查询高性能负载均衡详情**
+
 ```go
-func GetVPCSlbDetail() {
+func GetVpcSlbDetail() {
 	ak, sk := "ak", "sk"      // 替换为您的实际密钥
 
 	slbClient, _ := slb.NewClient(ak, sk)
@@ -626,7 +646,438 @@ func GetVPCSlbDetail() {
 > 注意: 对请求参数的内容解释如下
 > - SlbId: 此参数允许为空字符串，当此参数为空时会使用SlbName进行实例详情查询，当此参数不为空时将高优先级使用此参数进行实例详情查询，当SlbId和SlbName同时传参时将使用SlbId进行实例详情查询
 > - SlbName: 此参数允许为空字符串，仅当SlbId为空时会使用此参数进行实例详情查询，当SlbId不为空时不会使用此参数进行实例匹配查询
+**创建VPC下的SLB**
+
+```go
+func CreateVpcSlb() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.CreateVpcSlbReq{
+		RegionCode:        "CN_Qingyang",				//区域code
+		AvailableZoneCode: "CN_Qingyang_A",			//可用区code
+		VpcId:             "",									//SLB归属的VPC ID
+		ConfType:          "slb.v1.small",			//规格code，slb.v1.small-高阶型、slb.v1.medium-超强型、slb.v1.large-至强型
+		NetType:           "wan",								//网络类型: wan-公网、wan_lan-公网和私网
+		Name:              "name",		 //SLB名称
+	}
+	response, err := slbClient.CreateVpcSlb(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**删除VPC下的SLB**
+
+```go
+func DeleteVpcSlb() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.DeleteVpcSlbReq{
+		SlbId: "",	//需要删除的SLB实例ID
+	}
+	response, err := slbClient.DeleteVpcSlb(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**更新VPC下的SLB**
+
+```go
+func UpdateVpcSlb() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.UpdateVpcSlbReq{
+		SlbId:    "",			//需要更新的SLB实例ID
+		ConfType: "slb.v1.small",		//规格code，slb.v1.small-高阶型、slb.v1.medium-超强型、slb.v1.large-至强型
+		Name:     "test",			//SLB名称
+		NetType:  "wan",			//网络类型: wan-公网、wan_lan-公网和私网
+	}
+	response, err := slbClient.UpdateVpcSlb(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**查询VPC下的SLB列表**
+
+```go
+func ListVpcSlbDetail() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.ListVpcSlbDetailReq{
+		VpcId: "",		//查询指定VPC下的SLB实例列表
+	}
+	response, err := slbClient.ListVpcSlbDetail(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取SLB实例列表信息
+}
+```
+
+**查询VPC下的SLB信息**
+
+```go
+func GetVpcSlb() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.GetVpcSlbReq{
+		SlbId: "",				//SLB实例ID
+	}
+	response, err := slbClient.GetVpcSlb(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取SLB实例详细信息
+}
+```
+
+**查询SLB可用的的VIP、ACL信息（用于监听创建）**
+
+```go
+func GetVpcSlbListenCreateInfo() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.GetVpcSlbListenCreateInfoReq{
+		SlbId: "",		//SLB实例ID
+	}
+	response, err := slbClient.GetVpcSlbListenCreateInfo(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取SLB可用的的VIP、ACL信息
+}
+```
+
+**创建VPC下的SLB监听**
+
+```go
+func CreateVpcSlbListen() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.CreateVpcSlbListenReq{
+		SlbId:          "",			//SLB实例ID
+		ListenName:     "test",		//监听名称
+		Vip:            "",			//VIP地址
+		VipId:          "",			//VIP实例ID
+		VipType:        "wan_eip",		//VIP类型：wan_eip-公网VIP、wan_lan-内网VIP
+		ListenProtocol: "TCP",		//监听协议：TCP、UDP
+		ListenPort:     8080,		//监听端口
+		AclId:          "",			//访问控制实例ID
+		ListenTimeout:  10,			//会话保持时间，单位秒，取值范围：0-900
+		Scheduler:      "rr",		//负载均衡策略：rr-轮询、wrr-加权轮询、conhash-一致性哈希
+		HealthCheckInfo: slb.HealthCheckInfo{		//健康检查配置
+			Protocol:         "TCP",		//健康检查协议：TCP、HTTP
+			Virtualhost:      "",				//健康检查地址，仅当健康检查协议为HTTP时此参数生效
+			Port:             0,				//健康检查端口，取值范围：0-65535，0表示使用后端服务端口
+			Path:             "",				//健康检查路径，仅当健康检查协议为HTTP时此参数生效
+			StatusCode:       200,			//健康检查状态码
+			ConnectTimeout:   5,				//监测超时响应时间
+			DelayLoop:        5,				//监测间隔时间
+			Retry:            2,				//重连次数(不健康阈值)
+			DelayBeforeRetry: 10,				//重连时间间隔(不健康重试间隔时间)
+		},
+	}
+	response, err := slbClient.CreateVpcSlbListen(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+> 注意: 对请求参数的内容解释如下  
+> - AclId、Vip、VipId、VipType四个参数内容可通过接口DescribeVpcSlbListenCreateInfo查询
+> - HealthCheckInfo: 如果不传递此参数，则监听不会开启健康检查，建议开启
+
+**删除VPC下的SLB监听**
+
+```go
+func DeleteVpcSlbListen() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.DeleteVpcSlbListenReq{
+		ListenIds: []string{""},		//监听ID列表
+	}
+	response, err := slbClient.DeleteVpcSlbListen(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**更新VPC下的SLB监听**
+
+```go
+func UpdateVpcSlbListen() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.UpdateVpcSlbListenReq{
+		ListenId:      "",				//监听ID
+		ListenName:    "test",		//监听名称
+		AclId:         "",			//访问控制实例ID
+		ListenTimeout: 10,			//会话保持时间，单位秒，取值范围：0-900
+		Scheduler:     "rr",		//负载均衡策略：rr-轮询、wrr-加权轮询、conhash-一致性哈希
+		HealthCheckInfo: slb.HealthCheckInfo{		//健康检查配置
+			Protocol:         "TCP",		//健康检查协议：TCP、HTTP
+			Port:             0,				//健康检查端口，取值范围：0-65535，0表示使用后端服务端口
+			ConnectTimeout:   5,				//监测超时响应时间
+			DelayLoop:        5,				//监测间隔时间
+			Retry:            2,				//重连次数(不健康阈值)
+			DelayBeforeRetry: 10,				//重连时间间隔(不健康重试间隔时间)
+		},
+	}
+	response, err := slbClient.UpdateVpcSlbListen(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**查询VPC下的SLB监听列表**
+
+```go
+func ListVpcSlbListen() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.DescribeVpcSlbListenListReq{
+		SlbId: "",			//SLB实例ID
+	}
+	response, err := slbClient.ListVpcSlbListen(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取监听列表信息
+}
+```
+
+**查询VPC下的SLB监听**
+
+```go
+func GetVpcSlbListen() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.GetVpcSlbListenReq{
+		ListenId: "",				//监听实例ID
+	}
+	response, err := slbClient.GetVpcSlbListen(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取监听详细信息
+}
+```
+
+**查询VPC下可绑定监听的主机信息（用于监听后端服务绑定）**
+
+```go
+func GetVpcSlbListenRsInfo() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.GetVpcSlbListenRsInfoReq{
+		VmType: "kvm",		//主机类型：kvm
+		VpcId:  "",				//VPC实例ID
+	}
+	response, err := slbClient.GetVpcSlbListenRsInfo(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取可绑定监听的主机信息
+}
+```
+
+**创建VPC下监听后端服务绑定关系**
+
+```go
+func CreateVpcSlbRsPort() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.CreateVpcSlbRsPortReq{
+		ListenId: "",				//监听实例ID
+		RsList: []slb.RsPortItem{
+			{
+				VmId:        "",								//服务器ID
+				VmName:      "",								//服务器名称
+				VmPublicIp:  "",								//服务器公网IP，如果没有公网IP，可以传空字符串：""
+				VmType:      "kvm",							//服务器类型
+				VmPrivateIp: "10.0.0.6",				//服务器内网IP
+				Port:        "8080",						//后端服务端口，取值范围：2-65535
+				Weight:      "100",							//权重，取值范围：0-1000
+			},
+		},
+	}
+	response, err := slbClient.CreateVpcSlbRsPort(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+> 注意: 对请求参数的内容解释如下  
+> - VmId、VmName、VmPublicIp、VmType、VmPrivateIp五个参数内容可通过接口DescribeVpcSlbListenRsInfo查询
+
+**删除VPC下监听后端服务绑定关系**
+
+```go
+func DeleteVpcSlbRsPort() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.DeleteVpcSlbRsPortReq{
+		RsPortIds: []string{""},		//后端服务绑定实例ID列表
+	}
+	response, err := slbClient.DeleteVpcSlbRsPort(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**更新VPC下监听后端服务绑定关系**
+
+```go
+func UpdateVpcSlbRsPort() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.UpdateVpcSlbRsPortReq{
+		RsPortList: []slb.RsPortItem{
+			{
+				RsPortId: "",						//后端服务绑定实例ID
+				Port:        "8080",						//后端服务端口，取值范围：2-65535
+				Weight:      "100",							//权重，取值范围：0-1000
+			},
+		},
+	}
+	response, err := slbClient.UpdateVpcSlbRsPort(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**查询VPC下监听后端服务绑定关系**
+
+```go
+func GetVpcSlbRsPort() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.GetVpcSlbRsPortReq{
+		ListenId: "",				//监听实例ID
+		Keyword:  "",				//关键字匹配，可以传递空字符串：""
+	}
+	response, err := slbClient.GetVpcSlbRsPort(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取监听后端服务绑定实例列表
+}
+```
+
+**共享带宽绑定VPC下SLB**
+
+```go
+func BandwidthBindResource() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.BandwidthBindResourceReq{
+		BandwidthId: "",		//共享带宽ID
+		BindType:    "VPCSLB",	//绑定资源类型：VPCSLB-绑定VPC SLB
+		ResourceId:  "",		//SLB实例ID
+	}
+	response, err := slbClient.BandwidthBindResource(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+**共享带宽解绑VPC下SLB**
+
+```go
+func BandwidthUnbindResource() {
+	ak, sk := "ak", "sk"      // 替换为您的实际密钥
+
+	slbClient, _ := slb.NewClient(ak, sk)
+	req := &slb.BandwidthUnbindResourceReq{
+		BandwidthId: "",		//共享带宽ID
+	}
+	response, err := slbClient.BandwidthUnbindResource(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(">>> response: %+v", response)   // 获取返回的完整信息
+	bytes, _ := json.Marshal(response)
+	fmt.Println(string(bytes))  // 获取任务ID
+}
+```
+
+
+
 # 数据结构说明
+
 ## 创建VPC请求参数
 | 名称              | 类型   | 是否必选 | 示例值                  | 描述                                |
 | ----------------- | ------ | -------- | ----------------------- | ----------------------------------- |
@@ -733,6 +1184,255 @@ func GetVPCSlbDetail() {
 | BillScheme        | string | BandwIdth                            | 计费方案          |
 | Status            | string | ok                                   | 带宽状态                |
 | CreateTime        | string | 2022-06-02 18:05:47                  | 带宽创建时间                  |
+
+## 创建VPC SLB请求参数
+
+
+| 名称              | 类型   | 是否必选 | 示例值        | 描述                                                         |
+| ----------------- | ------ | -------- | ------------- | ------------------------------------------------------------ |
+| RegionCode        | string | 是       | CN_Hongkong   | 区域code, 见附件五                                           |
+| AvailableZoneCode | string | 是       | CN_Hongkong_B | 可用区code, 见附件五                                         |
+| VpcId             | string | 是       | VPC ID        | VPC ID                                                       |
+| Name              | string | 是       | name          | SLB名称                                                      |
+| NetType           | string | 是       | wan/wan_lan   | 网络类型: wan-公网、wan_lan-公网和私网                       |
+| ConfType          | string | 是       | slb.v1.small  | 配置规格: slb.v1.small-高阶型、slb.v1.medium-超强型、slb.v1.large-至强型 |
+
+## 更新VPC SLB请求参数
+
+| 名称     | 类型   | 是否必选 | 示例值       | 描述                                                         |
+| -------- | ------ | -------- | ------------ | ------------------------------------------------------------ |
+| SlbId    | string | 是       |              | SLB实例ID                                                    |
+| Name     | string | 是       | name         | SLB名称                                                      |
+| NetType  | string | 是       | wan/wan_lan  | 网络类型: wan-公网、wan_lan-公网和私网                       |
+| ConfType | string | 是       | slb.v1.small | 配置规格: slb.v1.small-高阶型、slb.v1.medium-超强型、slb.v1.large-至强型 |
+
+## 查询VPC下的SLB列表结果参数
+
+| 名称          | 类型   | 示例值  | 描述                                           |
+| :------------ | ------ | :------ | :--------------------------------------------- |
+| Code          | string | OK      | 错误码                                         |
+| Message       | string | success | 信息                                           |
+| Data          | dict   | {}      | 返回数据                                       |
+| SlbList       | list   |         | SLB实例列表                                    |
+| AzId          | string |         | 实例所属可用区ID                               |
+| AzName        | string |         | 可用区名称                                     |
+| BandwidthId   | string |         | 实例绑定的共享带宽ID                           |
+| BandwidthName | string |         | 共享带宽名称                                   |
+| BillingMethod | string | 0       | 实例计费类型：0-按需计费                       |
+| ConfName      | string |         | 实例规格名称                                   |
+| CreateTime    | string |         | 实例创建时间                                   |
+| Id            | string |         | 实例ID                                         |
+| Name          | string |         | 实例名称                                       |
+| NetType       | string | wan     | 网络类型：wan-公网、wan_lan-同时支持公网和私网 |
+| RegionId      | string |         | 实例所属大区ID                                 |
+| RegionName    | string |         | 实例所属大区名称                               |
+| Status        | string | ok      | 实例状态：ok-正常、error-异常                  |
+| StatusZh      | string |         | 实例状态中文翻译                               |
+| VipList       | list   |         | 实例VIP列表                                    |
+| Address       | string |         | VIP地址                                        |
+| Type          | string | public  | VIP类型：public-公网、private-内网             |
+| VpcId         | string |         | 所属的VPC ID                                   |
+| VpcName       | string |         | 所属的VPC名称                                  |
+
+## 查询VPC下的SLB信息结果参数
+
+| 名称                | 类型   | 示例值  | 描述                                           |
+| :------------------ | ------ | :------ | :--------------------------------------------- |
+| Code                | string | OK      | 错误码                                         |
+| Message             | string | success | 信息                                           |
+| Data                | dict   | {}      | 返回数据                                       |
+| AzId                | string |         | 实例所属可用区ID                               |
+| AzName              | string |         | 可用区名称                                     |
+| BandwidthInfo       | dict   |         | 实例绑定的共享带宽信息                         |
+| BandwidthInfo--Id   | string |         | 共享带宽ID                                     |
+| BandwidthInfo--Name | string |         | 共享带宽名称                                   |
+| BillingMethod       | string | 0       | 实例计费类型：0-按需计费                       |
+| BillingSchemeId     | string |         | 实例计费ID                                     |
+| BillingSchemeName   | string |         | 实例计费名称                                   |
+| ConfName            | string |         | 实例规格名称                                   |
+| CreateTime          | string |         | 实例创建时间                                   |
+| Id                  | string |         | 实例ID                                         |
+| Name                | string |         | 实例名称                                       |
+| NetType             | string | wan     | 网络类型：wan-公网、wan_lan-同时支持公网和私网 |
+| NetTypeZh           | string |         | 网络类型中文翻译                               |
+| RegionId            | string |         | 实例所属大区ID                                 |
+| RegionName          | string |         | 实例所属大区名称                               |
+| Status              | string | ok      | 实例状态：ok-正常、error-异常                  |
+| StatusZh            | string |         | 实例状态中文翻译                               |
+| VipList             | list   |         | 实例VIP列表                                    |
+| Address             | string |         | VIP地址                                        |
+| Type                | string | public  | VIP类型：public-公网、private-内网             |
+| VpcId               | string |         | 所属的VPC ID                                   |
+| VpcName             | string |         | 所属的VPC名称                                  |
+| VpcSegments         | string |         | 所属VPC的网段信息                              |
+
+## 查询SLB可用的的VIP、ACL信息结果参数
+
+| 名称       | 类型   | 示例值      | 描述                                      |
+| :--------- | ------ | :---------- | :---------------------------------------- |
+| Code       | string | OK          | 错误码                                    |
+| Message    | string | success     | 信息                                      |
+| data       | dict   | {}          | 返回数据                                  |
+| SlbAclList | list   |             | SLB可用的ACL信息列表                      |
+| AclId      | string |             | ACL实例ID                                 |
+| AclName    | string |             | ACL名称                                   |
+| SlbVipList | list   |             | SLB可用的VIP信息列表                      |
+| Vip        | string | 38.123.96.8 | 监听虚拟IP                                |
+| VipId      | string |             | VIP实例ID                                 |
+| VipType    | string | wan_eip     | VIP类型：wan_eip-公网VIP、wan_lan-内网VIP |
+
+## 创建VPC下的SLB监听请求参数
+
+| 名称             | 类型   | 是否必选 | 示例值   | 描述                                                    |
+| ---------------- | ------ | -------- | -------- | ------------------------------------------------------- |
+| SlbId            | string | 是       |          | SLB实例ID                                               |
+| ListenName       | string | 是       | test     | 监听名称                                                |
+| Vip              | string | 是       | 10.0.0.1 | VIP地址                                                 |
+| VipId            | string | 是       |          | VIP实例ID                                               |
+| VipType          | string | 是       | wan_eip  | VIP类型：wan_eip-公网VIP、wan_lan-内网VIP               |
+| ListenProtocol   | string | 是       | TCP      | 监听协议：TCP、UDP                                      |
+| ListenPort       | int    | 是       | 8080     | 监听端口，取值范围：1-65535                             |
+| AclId            | string | 否       |          | 需要绑定的ACL实例ID                                     |
+| ListenTimeout    | int    | 否       | 10       | 会话保持时间，单位秒，取值范围：0-900                   |
+| Scheduler        | string | 是       | rr       | 负载均衡策略：rr-轮询、wrr-加权轮询、conhash-一致性哈希 |
+| HealthCheckInfo  | string | 否       |          | 健康检查配置                                            |
+| Protocol         | string | 否       |          | 健康检查协议：TCP、HTTP                                 |
+| Virtualhost      | string | 否       |          | 健康检查地址，仅当健康检查协议为HTTP时此参数生效        |
+| Port             | int    | 否       |          | 健康检查端口，取值范围：0-65535，0表示使用后端服务端口  |
+| Path             | string | 否       |          | 健康检查路径，仅当健康检查协议为HTTP时此参数生效        |
+| StatusCode       | int    | 否       |          | 健康检查状态码                                          |
+| ConnectTimeout   | int    | 否       |          | 监测超时响应时间                                        |
+| DelayLoop        | int    | 否       |          | 监测间隔时间                                            |
+| Retry            | int    | 否       |          | 重连次数(不健康阈值)                                    |
+| DelayBeforeRetry | int    | 否       |          | 重连时间间隔(不健康重试间隔时间)                        |
+
+## 更新VPC下的SLB监听请求参数
+
+| 名称             | 类型   | 是否必选 | 示例值 | 描述                                                    |
+| ---------------- | ------ | -------- | ------ | ------------------------------------------------------- |
+| ListenId         | string | 是       |        | 监听实例ID                                              |
+| ListenName       | string | 是       | test   | 监听名称                                                |
+| AclId            | string | 否       |        | 需要绑定的ACL实例ID                                     |
+| ListenTimeout    | int    | 否       | 10     | 会话保持时间，单位秒，取值范围：0-900                   |
+| Scheduler        | string | 是       | rr     | 负载均衡策略：rr-轮询、wrr-加权轮询、conhash-一致性哈希 |
+| HealthCheckInfo  | string | 否       |        | 健康检查配置                                            |
+| Protocol         | string | 否       |        | 健康检查协议：TCP、HTTP                                 |
+| Virtualhost      | string | 否       |        | 健康检查地址，仅当健康检查协议为HTTP时此参数生效        |
+| Port             | int    | 否       |        | 健康检查端口，取值范围：1-65535                         |
+| Path             | string | 否       |        | 健康检查路径，仅当健康检查协议为HTTP时此参数生效        |
+| StatusCode       | int    | 否       |        | 健康检查状态码                                          |
+| ConnectTimeout   | int    | 否       |        | 监测超时响应时间                                        |
+| DelayLoop        | int    | 否       |        | 监测间隔时间                                            |
+| Retry            | int    | 否       |        | 重连次数(不健康阈值)                                    |
+| DelayBeforeRetry | int    | 否       |        | 重连时间间隔(不健康重试间隔时间)                        |
+
+## 查询VPC下的SLB监听列表结果参数
+
+| 名称           | 类型   | 示例值  | 描述                     |
+| :------------- | ------ | :------ | :----------------------- |
+| Code           | string | OK      | 错误码                   |
+| Message        | string | success | 信息                     |
+| TaskId         | string |         | 任务ID                   |
+| Data           | dict   | {}      | 返回数据                 |
+| ListenList     | list   |         | SLB中监听列表            |
+| CheckInfo      | dict   |         | 后端服务端口健康检查信息 |
+| Error          | int    |         | 健康检查失败数量         |
+| Ok             | int    |         | 健康检查成功数量         |
+| ListenId       | string |         | 监听ID                   |
+| ListenName     | string |         | 监听名称                 |
+| ListenPort     | string |         | 监听端口                 |
+| ListenProtocol | string | TCP     | 监听协议                 |
+| ListenVip      | string |         | 监听VIP                  |
+| Scheduler      | string | rr      | 监听转发策略             |
+| SchedulerCn    | string | 轮询    | 转发策略中文翻译         |
+| Status         | string | ok      | 监听状态                 |
+| StatusCn       | string | 正常    | 监听状态中文翻译         |
+
+## 查询VPC下的SLB监听结果参数
+
+| 名称             | 类型   | 示例值   | 描述                                                    |
+| ---------------- | ------ | -------- | ------------------------------------------------------- |
+| Code             | string |          | 错误码                                                  |
+| Message          | string | success  | 信息                                                    |
+| Data             | dict   | {}       | 返回数据                                                |
+| ListenId         | string |          | 监听实例ID                                              |
+| ListenName       | string | test     | 监听名称                                                |
+| Vip              | string | 10.0.0.1 | VIP地址                                                 |
+| VipId            | string |          | VIP实例ID                                               |
+| VipType          | string | wan_eip  | VIP类型：wan_eip-公网VIP、wan_lan-内网VIP               |
+| ListenProtocol   | string | TCP      | 监听协议：TCP、UDP                                      |
+| ListenPort       | int    | 8080     | 监听端口，取值范围：1-65535                             |
+| AclId            | string |          | 需要绑定的ACL实例ID                                     |
+| ListenTimeout    | int    | 10       | 会话保持时间，单位秒，取值范围：0-900                   |
+| Scheduler        | string | rr       | 负载均衡策略：rr-轮询、wrr-加权轮询、conhash-一致性哈希 |
+| HealthCheckInfo  | string |          | 健康检查配置                                            |
+| Protocol         | string |          | 健康检查协议：TCP、HTTP                                 |
+| Virtualhost      | string |          | 健康检查地址，仅当健康检查协议为HTTP时此参数生效        |
+| Port             | int    |          | 健康检查端口，取值范围：1-65535                         |
+| Path             | string |          | 健康检查路径，仅当健康检查协议为HTTP时此参数生效        |
+| StatusCode       | int    |          | 健康检查状态码                                          |
+| ConnectTimeout   | int    |          | 监测超时响应时间                                        |
+| DelayLoop        | int    |          | 监测间隔时间                                            |
+| Retry            | int    |          | 重连次数(不健康阈值)                                    |
+| DelayBeforeRetry | int    |          | 重连时间间隔(不健康重试间隔时间)                        |
+
+## 查询VPC下可绑定监听的主机信息结果参数
+
+| 名称          | 类型   | 示例值  | 描述         |
+| :------------ | ------ | :------ | :----------- |
+| Code          | string | OK      | 错误码       |
+| Message       | string | success | 信息         |
+| Data          | list   |         | 返回数据     |
+| vm_id         | string |         | 服务器ID     |
+| vm_name       | string |         | 服务器名称   |
+| vm_private_ip | string |         | 服务器内网IP |
+| vm_public_ip  | string |         | 服务器公网IP |
+| vm_type       | string |         | 服务器类型   |
+
+## 创建VPC下监听后端服务绑定关系请求参数
+
+| 名称        | 类型   | 是否必选 | 示例值 | 描述                                             |
+| ----------- | ------ | -------- | ------ | ------------------------------------------------ |
+| ListenId    | string | 是       |        | 监听实例ID                                       |
+| RsList      | string | 是       |        | 绑定的后端服务器列表                             |
+| VmId        | string | 是       |        | 服务器ID                                         |
+| VmName      | string | 是       |        | 服务器名称                                       |
+| VmPublicIp  | string | 是       |        | 服务器公网IP，如果没有公网IP，可以传空字符串："" |
+| VmType      | string | 是       |        | 服务器类型                                       |
+| VmPrivateIp | string | 是       |        | 服务器内网IP                                     |
+| Port        | string | 是       |        | 后端服务端口，取值范围：2-65535                  |
+| Weight      | string | 是       |        | 权重，取值范围：0-1000                           |
+
+## 更新VPC下监听后端服务绑定关系请求参数
+
+| 名称       | 类型   | 是否必选 | 示例值 | 描述                            |
+| ---------- | ------ | -------- | ------ | ------------------------------- |
+| RsPortList | list   | 是       |        | 需要修改的后端服务列表          |
+| RsPortId   | string | 是       |        | 后端服务实例ID                  |
+| Port       | string | 是       |        | 后端服务端口，取值范围：2-65535 |
+| Weight     | string | 是       |        | 权重，取值范围：0-1000          |
+
+## 查询VPC下监听后端服务绑定关系结果参数
+
+| 名称           | 类型   | 示例值  | 描述                 |
+| :------------- | ------ | :------ | :------------------- |
+| Code           | string | OK      | 错误码               |
+| Message        | string | success | 信息                 |
+| Data           | dict   | {}      | 返回数据             |
+| RsPortList     |        |         | 后端服务列表         |
+| CheckStatus    | string |         | 健康检查状态         |
+| CheckStatusStr | string |         | 健康检查状态中文翻译 |
+| LanIp          | string |         | 内网IP               |
+| Port           | string |         | 服务端口             |
+| ResourceId     | string |         | 服务器ID             |
+| ResourceName   | string |         | 服务器名称           |
+| RsPortId       | string |         | 后端服务实例ID       |
+| Status         | string |         | 后端服务状态         |
+| StatusZh       | string |         | 后端服务状态中文翻译 |
+| VmType         | string |         | 服务器类型           |
+| WanIp          | string |         | 服务器公网IP         |
+| Weight         | string |         | 权重                 |
+| Total          | int    |         | 后端服务数量         |
 
 ## 错误处理
 
