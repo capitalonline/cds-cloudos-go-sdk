@@ -588,7 +588,7 @@ const (
 // 节点池ECS、BMS实例类型 (持续更新中)
 const (
 	EcsGpuGch4XLarge        = "Inference gch c8 nr4.16c64g1gpu"
-	EcsCpuC11ComputeLarge   = "CPU Compute C11.2c4g"
+	EcsCpuC11ComputeXLarge  = "CPU Compute C11.4c8g"
 	EcsCpuC11Compute2XLarge = "CPU Compute C11.8c16g"
 	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
 	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
