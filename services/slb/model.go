@@ -216,14 +216,14 @@ type CreateVpcSlbListenReq struct {
 type HealthCheckInfo struct {
 	Protocol         string `json:"Protocol"`
 	Port             int    `json:"Port"`
-	ConnectTimeout   int    `json:"ConnectTimeout"`
+	ConnectTimeout   int    `json:"ConnectTimeout,omitempty"`
 	Virtualhost      string `json:"Virtualhost"`
-	Path             string `json:"Path"`
-	DelayLoop        int    `json:"DelayLoop"`
-	Retry            int    `json:"Retry"`
-	Rise             int    `json:"Rise"`
-	StatusCode       int    `json:"StatusCode"`
-	DelayBeforeRetry int    `json:"DelayBeforeRetry"`
+	Path             string `json:"Path,omitempty"`
+	DelayLoop        int    `json:"DelayLoop,omitempty"`
+	Retry            int    `json:"Retry,omitempty"`
+	Rise             int    `json:"Rise,omitempty"`
+	StatusCode       int    `json:"StatusCode,omitempty"`
+	DelayBeforeRetry int    `json:"DelayBeforeRetry,omitempty"`
 }
 
 type CreateVpcSlbListenResult struct {
