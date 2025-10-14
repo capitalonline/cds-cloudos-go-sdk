@@ -25,11 +25,11 @@ import (
 
 func ListVpcSlb() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.ListVpcSlbReq{
-		VpcId: "635957ee-9543-11f0-8037-c2aae808f99f",
+		VpcId: "",
 	}
 	response, err := slbClient.ListVpcSlb(req)
 	if err != nil {
@@ -42,7 +42,7 @@ func ListVpcSlb() {
 
 func GetVpcSlbDetail() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	args := &slb.GetVpcSlbDetailReq{
@@ -60,16 +60,16 @@ func GetVpcSlbDetail() {
 
 func CreateVpcSlb() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.CreateVpcSlbReq{
 		RegionCode:        "CN_Qingyang",
 		AvailableZoneCode: "CN_Qingyang_A",
-		VpcId:             "635957ee-9543-11f0-8037-c2aae808f99f",
+		VpcId:             "",
 		ConfType:          "slb.v1.small",
 		NetType:           "wan",
-		Name:              "创建测试openapi",
+		Name:              "",
 	}
 	response, err := slbClient.CreateVpcSlb(req)
 	if err != nil {
@@ -82,11 +82,11 @@ func CreateVpcSlb() {
 
 func DeleteVpcSlb() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.DeleteVpcSlbReq{
-		SlbId: "d33fca12-a4ec-11f0-9ab9-5aeb8613167f",
+		SlbId: "",
 	}
 	response, err := slbClient.DeleteVpcSlb(req)
 	if err != nil {
@@ -99,13 +99,13 @@ func DeleteVpcSlb() {
 
 func UpdateVpcSlb() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.UpdateVpcSlbReq{
-		SlbId:    "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
+		SlbId:    "",
 		ConfType: "slb.v1.small",
-		Name:     "lxl-test",
+		Name:     "",
 		NetType:  "wan_lan",
 	}
 	response, err := slbClient.UpdateVpcSlb(req)
@@ -119,11 +119,11 @@ func UpdateVpcSlb() {
 
 func ListVpcSlbDetail() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.ListVpcSlbDetailReq{
-		VpcId: "635957ee-9543-11f0-8037-c2aae808f99f",
+		VpcId: "",
 	}
 	response, err := slbClient.ListVpcSlbDetail(req)
 	if err != nil {
@@ -136,11 +136,11 @@ func ListVpcSlbDetail() {
 
 func GetVpcSlb() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.GetVpcSlbReq{
-		SlbId: "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
+		SlbId: "",
 	}
 	response, err := slbClient.GetVpcSlb(req)
 	if err != nil {
@@ -153,11 +153,11 @@ func GetVpcSlb() {
 
 func GetVpcSlbListenCreateInfo() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.GetVpcSlbListenCreateInfoReq{
-		SlbId: "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
+		SlbId: "",
 	}
 	response, err := slbClient.GetVpcSlbListenCreateInfo(req)
 	if err != nil {
@@ -170,14 +170,14 @@ func GetVpcSlbListenCreateInfo() {
 
 func CreateVpcSlbListen() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.CreateVpcSlbListenReq{
-		SlbId:          "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
-		ListenName:     "test1",
-		Vip:            "38.123.96.8",
-		VipId:          "22e20ec2-9778-11f0-8f0f-962fdefe13b1",
+		SlbId:          "",
+		ListenName:     "",
+		Vip:            "",
+		VipId:          "",
 		VipType:        "wan_eip",
 		ListenProtocol: "TCP",
 		ListenPort:     8082,
@@ -207,11 +207,11 @@ func CreateVpcSlbListen() {
 
 func DeleteVpcSlbListen() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.DeleteVpcSlbListenReq{
-		ListenIds: []string{"37f895ec-a588-11f0-a90a-5aeb8613167f"},
+		ListenIds: []string{""},
 	}
 	response, err := slbClient.DeleteVpcSlbListen(req)
 	if err != nil {
@@ -224,12 +224,12 @@ func DeleteVpcSlbListen() {
 
 func UpdateVpcSlbListen() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.UpdateVpcSlbListenReq{
-		ListenId:      "7f208a88-a588-11f0-8979-5aeb8613167f",
-		ListenName:    "test2",
+		ListenId:      "",
+		ListenName:    "",
 		AclId:         "",
 		ListenTimeout: 12,
 		Scheduler:     "rr",
@@ -253,11 +253,11 @@ func UpdateVpcSlbListen() {
 
 func ListVpcSlbListen() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.DescribeVpcSlbListenListReq{
-		SlbId: "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
+		SlbId: "",
 	}
 	response, err := slbClient.ListVpcSlbListen(req)
 	if err != nil {
@@ -270,11 +270,11 @@ func ListVpcSlbListen() {
 
 func GetVpcSlbListen() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.GetVpcSlbListenReq{
-		ListenId: "7f208a88-a588-11f0-8979-5aeb8613167f",
+		ListenId: "",
 	}
 	response, err := slbClient.GetVpcSlbListen(req)
 	if err != nil {
@@ -287,12 +287,12 @@ func GetVpcSlbListen() {
 
 func GetVpcSlbListenRsInfo() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.GetVpcSlbListenRsInfoReq{
 		VmType: "kvm",
-		VpcId:  "635957ee-9543-11f0-8037-c2aae808f99f",
+		VpcId:  "",
 	}
 	response, err := slbClient.GetVpcSlbListenRsInfo(req)
 	if err != nil {
@@ -305,16 +305,16 @@ func GetVpcSlbListenRsInfo() {
 
 func CreateVpcSlbRsPort() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.CreateVpcSlbRsPortReq{
-		ListenId: "7f208a88-a588-11f0-8979-5aeb8613167f",
+		ListenId: "",
 		RsList: []slb.RsPortItem{
 			{
-				VmId:        "ins-qyvk5dju93nh1cs0",
-				VmName:      "ne1aAHzJSr2S1GxC-003",
-				VmPublicIp:  "38.123.96.14",
+				VmId:        "",
+				VmName:      "",
+				VmPublicIp:  "",
 				VmType:      "kvm",
 				VmPrivateIp: "10.0.0.6",
 				Port:        "8080",
@@ -333,11 +333,11 @@ func CreateVpcSlbRsPort() {
 
 func DeleteVpcSlbRsPort() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.DeleteVpcSlbRsPortReq{
-		RsPortIds: []string{"b4a85c84-a589-11f0-bf17-5aeb8613167f"},
+		RsPortIds: []string{""},
 	}
 	response, err := slbClient.DeleteVpcSlbRsPort(req)
 	if err != nil {
@@ -350,13 +350,13 @@ func DeleteVpcSlbRsPort() {
 
 func UpdateVpcSlbRsPort() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.UpdateVpcSlbRsPortReq{
 		RsPortList: []slb.RsPortItem{
 			{
-				RsPortId: "b4a85c84-a589-11f0-bf17-5aeb8613167f",
+				RsPortId: "",
 				Port:     "80",
 				Weight:   "200",
 			},
@@ -373,11 +373,11 @@ func UpdateVpcSlbRsPort() {
 
 func GetVpcSlbRsPort() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.GetVpcSlbRsPortReq{
-		ListenId: "7f208a88-a588-11f0-8979-5aeb8613167f",
+		ListenId: "",
 		Keyword:  "",
 	}
 	response, err := slbClient.GetVpcSlbRsPort(req)
@@ -391,13 +391,13 @@ func GetVpcSlbRsPort() {
 
 func BandwidthBindResource() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.BandwidthBindResourceReq{
-		BandwidthId: "8bbe3f84-9777-11f0-b451-c2aae808f99f",
+		BandwidthId: "",
 		BindType:    "VPCSLB",
-		ResourceId:  "0f9c3a1e-9551-11f0-b451-c2aae808f99f",
+		ResourceId:  "",
 	}
 	response, err := slbClient.BandwidthBindResource(req)
 	if err != nil {
@@ -410,11 +410,11 @@ func BandwidthBindResource() {
 
 func BandwidthUnbindResource() {
 	// 替换为您的实际访问密钥
-	ak, sk := "9fa289fa729d11f09c1702852519bf7f", "651b4e9c04c3ce6cb444c54b81169bc4"
+	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
 	req := &slb.BandwidthUnbindResourceReq{
-		BandwidthId: "8bbe3f84-9777-11f0-b451-c2aae808f99f",
+		BandwidthId: "",
 	}
 	response, err := slbClient.BandwidthUnbindResource(req)
 	if err != nil {
