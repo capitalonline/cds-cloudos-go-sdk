@@ -588,7 +588,7 @@ const (
 // 节点池ECS、BMS实例类型 (持续更新中)
 const (
 	EcsGpuGch4XLarge        = "Inference gch c8 nr4.16c64g1gpu"
-	EcsCpuC11ComputeLarge   = "CPU Compute C11.2c4g"
+	EcsCpuC11ComputeXLarge  = "CPU Compute C11.4c8g"
 	EcsCpuC11Compute2XLarge = "CPU Compute C11.8c16g"
 	EcsCpuC11Compute4XLarge = "CPU Compute C11.16c32g"
 	EcsCpuC11Compute8XLarge = "CPU Compute C11.32c64g"
@@ -609,4 +609,12 @@ const (
 	BmsUbuntu2204K8s12615GpuRtx4090  = "Ubuntu22.04-GPU-Geforce-1.26-bms"
 	BmsUbuntu2004K8s12615GpuRtxA5000 = "Ubuntu20.04-GPU-1.26-bms"
 	BmsUbuntu2204K8s13014GpuRtx4090  = "Ubuntu22.04-GPU-1.30.14-bms"
+)
+
+const (
+	NodePodsNum16  = 16
+	NodePodsNum32  = 32
+	NodePodsNum64  = 64
+	NodePodsNum128 = 128
+	NodePodsNum256 = 256
 )
