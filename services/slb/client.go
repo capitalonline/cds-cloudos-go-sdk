@@ -19,7 +19,7 @@ package slb
 import "github.com/capitalonline/cds-cloudos-go-sdk/cds"
 
 const (
-	vpcURI = "/openapi/vpc"
+	vpcURI = "/vpc"
 )
 
 type Client struct {

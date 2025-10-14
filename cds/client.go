@@ -39,9 +39,9 @@ var (
 	envCDSAPIHost   = "CDS_API_HOST"
 	envCDSAPISchema = "CDS_API_SCHEMA"
 
-	defaultEndpoint = "https://api.capitalonline.net"
-	//defaultNetworkEndpoint = "http://cdsapi.capitalonline.net"
-	defaultNetworkEndpoint = "http://cdsapi-gateway.gic.pre"
+	defaultEndpoint        = "https://api.capitalonline.net"
+	defaultNetworkEndpoint = "http://cdsapi.capitalonline.net"
+	//defaultNetworkEndpoint = "http://cdsapi-gateway.gic.pre"
 )
 
 func init() {

@@ -84,8 +84,7 @@ func (b *CdsSigner) Sign(req *http.Request, cred *CdsCredentials) {
 		"SignatureVersion": signatureVersion,
 		"Timestamp":        time.Now().UTC().Format(timeStampFormat),
 		"Version":          version,
-		"CustomerId":       "E036042",
-		"UserId":           "18600529015"}
+	}
 
 	if req.Params() != nil {
 		for k, v := range req.Params() {
