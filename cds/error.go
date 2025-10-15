@@ -53,12 +53,15 @@ type CdsServiceError struct {
 	Msg        string `json:"Msg"` // EKS service uses "Msg" instead of "Message"
 	RequestId  string `json:"RequestId"`
 	StatusCode int    `json:"-"`
+	Desc       string `json:"Desc"`
 }
 
 func (b *CdsServiceError) Error() string {
 	ret := "[Code: " + b.Code
 	// Prefer Msg over Message for EKS service compatibility
-	if b.Msg != "" {
+	if b.Desc != "" {
+		ret += "; Message: " + b.Desc
+	} else if b.Msg != "" {
 		ret += "; Message: " + b.Msg
 	} else {
 		ret += "; Message: " + b.Message
