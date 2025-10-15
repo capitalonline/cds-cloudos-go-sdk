@@ -41,7 +41,6 @@ var (
 
 	defaultEndpoint        = "https://api.capitalonline.net"
 	defaultNetworkEndpoint = "http://cdsapi.capitalonline.net"
-	//defaultNetworkEndpoint = "http://cdsapi-gateway.gic.pre"
 )
 
 func init() {

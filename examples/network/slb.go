@@ -45,6 +45,7 @@ func GetVpcSlbDetail() {
 	ak, sk := "ak", "sk"
 
 	slbClient, _ := slb.NewClient(ak, sk)
+
 	args := &slb.GetVpcSlbDetailReq{
 		SlbId:   "",
 		SlbName: "",
